@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPU 3212 Critical Thinking — Quiz Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f7f7f5;--card:#fff;--border:#e3e3e0;--text:#1a1a1a;--text2:#6b6b6b;--dim:#9b9b9b;--accent:#2383e2;--accent2:#1b6ec2;--ok:#2ea043;--ok-bg:#dafbe1;--no:#cf222e;--no-bg:#ffebe9;--ch1:#2383e2;--ch2:#8e44ad;--ch3:#0d9488;--ch4:#d97706;--ch5:#cf222e;--ch6:#db2777;--ch7:#7c3aed;--ch8:#059669}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.c{max-width:740px;margin:0 auto;padding:24px 20px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 0;margin-bottom:8px;border-bottom:1px solid var(--border)}
+.topbar span{font-size:.82rem;color:var(--text2);font-weight:500}
+.topbar button{font-size:.82rem;color:var(--accent);cursor:pointer;font-weight:500;background:none;border:none;font-family:inherit}
+.topbar button:hover{text-decoration:underline}
+.ss h1{font-family:'Noto Serif',serif;font-size:2rem;font-weight:700;margin:20px 0 4px;letter-spacing:-.02em}
+.ss .sub{color:var(--text2);font-size:.95rem;margin-bottom:32px}
+.sl{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:10px}
+.cs{display:flex;flex-direction:column;gap:6px;margin-bottom:28px}
+.cr{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;user-select:none}
+.cr:hover{background:var(--bg2)}
+.cr.sel{border-color:var(--accent);background:rgba(35,131,226,.05)}
+.cr input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+.cd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cr label{flex:1;font-size:.9rem;cursor:pointer;line-height:1.4}
+.cr .cc{font-size:.78rem;color:var(--dim);white-space:nowrap}
+.sa{display:flex;gap:8px;margin-bottom:20px}
+.sa button{font-family:inherit;font-size:.8rem;padding:4px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text2);cursor:pointer}
+.sa button:hover{background:var(--bg2)}
+.ms{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.mb{flex:1;min-width:200px;padding:16px 18px;border:1px solid var(--border);border-radius:10px;background:var(--bg);cursor:pointer;transition:all .15s;text-align:left}
+.mb:hover{border-color:var(--accent);background:rgba(35,131,226,.03)}
+.mb h3{font-size:.95rem;font-weight:600;margin-bottom:3px}
+.mb p{font-size:.82rem;color:var(--text2);line-height:1.4}
+.si{font-size:.82rem;color:var(--dim);margin-top:8px}
+.qs{display:none}
+.pw{margin-bottom:20px}
+.pt{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pt span{font-size:.82rem;color:var(--text2)}
+.pt .sl2{font-weight:600}
+.pb{width:100%;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.pf{height:100%;background:var(--accent);border-radius:2px;transition:width .35s ease}
+.ct{display:inline-block;padding:3px 10px;border-radius:4px;font-size:.72rem;font-weight:600;margin-bottom:12px;color:#fff;letter-spacing:.02em}
+.qt{font-family:'Noto Serif',serif;font-size:1.1rem;font-weight:600;line-height:1.6;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.ob{display:flex;align-items:flex-start;gap:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-size:.9rem;line-height:1.5;color:var(--text);font-family:inherit}
+.ob:hover:not(.dis){border-color:var(--accent);background:rgba(35,131,226,.03)}
+.ob .le{display:flex;align-items:center;justify-content:center;min-width:28px;height:28px;border-radius:6px;border:1px solid var(--border);font-weight:600;font-size:.8rem;flex-shrink:0;transition:all .15s;color:var(--text2)}
+.ob.ok{border-color:var(--ok);background:var(--ok-bg)}.ob.ok .le{background:var(--ok);border-color:var(--ok);color:#fff}
+.ob.no{border-color:var(--no);background:var(--no-bg)}.ob.no .le{background:var(--no);border-color:var(--no);color:#fff}
+.ob.dis{cursor:default;opacity:.5}.ob.dis.ok,.ob.dis.no{opacity:1}
+.fb{display:none;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;border-radius:8px;font-weight:600;font-size:.85rem}
+.fb.sh{display:flex}.fb.fc{background:var(--ok-bg);color:var(--ok)}.fb.fw{background:var(--no-bg);color:var(--no)}
+.nr{display:flex;gap:8px;margin-top:14px}
+.nb{flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);font-family:inherit;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .15s;color:var(--text)}
+.nb:hover{background:var(--bg2)}.nb.pr{background:var(--accent);color:#fff;border-color:var(--accent)}.nb.pr:hover{background:var(--accent2)}
+.nb:disabled{opacity:.35;cursor:not-allowed}
+.rs{display:none}
+.rh{text-align:center;padding:32px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.rp{font-family:'Noto Serif',serif;font-size:3.5rem;font-weight:700;letter-spacing:-.03em}
+.rp.hi{color:var(--ok)}.rp.mi{color:var(--ch4)}.rp.lo{color:var(--no)}
+.rsb{font-size:.95rem;color:var(--text2);margin-top:4px}
+.ra{display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.ra button{padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:.85rem;font-weight:500;cursor:pointer}
+.ra button:hover{background:var(--bg2)}.ra button.pr{background:var(--accent);border-color:var(--accent);color:#fff}.ra button.pr:hover{background:var(--accent2)}
+.rvs{margin-top:24px}
+.rvs h3{font-size:1rem;font-weight:600;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.ri{padding:14px 0;border-bottom:1px solid var(--border)}.ri:last-child{border-bottom:none}
+.ric{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;color:var(--accent)}
+.riq{font-weight:500;margin-bottom:8px;line-height:1.5;font-size:.9rem}
+.riy{color:var(--no);font-size:.84rem;margin-bottom:2px}
+.rik{color:var(--ok);font-size:.84rem}
+.hid{display:none!important}
+@media(max-width:600px){.ms{flex-direction:column}.mb{min-width:100%}}
+</style>
+</head>
+<body>
+<div class="c">
+<div class="topbar"><span>MPU 3212 Critical Thinking</span><button onclick="goHome()">Main Menu</button></div>
+<div class="ss" id="S">
+<h1>Critical Thinking Quiz Bank</h1>
+<p class="sub">Sunway University — Select chapters and start practicing.</p>
+<p style="font-size:.82rem;color:var(--dim);margin-top:-24px;margin-bottom:28px;">Made by Bryan Tan Chun Xing</p>
+<p class="sl">Select Chapters</p>
+<div class="sa"><button onclick="tAll(true)">Select All</button><button onclick="tAll(false)">Deselect All</button></div>
+<div class="cs" id="CS"></div>
+<p class="sl">Choose Mode</p>
+<div class="ms">
+<div class="mb" onclick="go('quick')"><h3>Quick 40</h3><p>40 questions evenly split across selected chapters.</p></div>
+<div class="mb" onclick="go('full')"><h3>Full Bank</h3><p id="FD">All questions from selected chapters.</p></div>
+</div>
+<p class="si" id="SI"></p>
+</div>
+<div class="qs" id="QS">
+<div class="pw"><div class="pt"><span id="QC">1/40</span><span class="sl2" id="SL">Score: 0/0</span></div><div class="pb"><div class="pf" id="PF"></div></div></div>
+<div class="ct" id="CT"></div>
+<div class="qt" id="QT"></div>
+<div class="opts" id="OW"></div>
+<div class="fb" id="FB"><span id="FT"></span></div>
+<div class="nr"><button class="nb" id="PB" onclick="pq()">Previous</button><button class="nb pr" id="NB" onclick="nq()">Next</button></div>
+</div>
+<div class="rs" id="RS">
+<div class="rh"><div class="rp" id="RP">0%</div><div class="rsb" id="RB"></div></div>
+<div class="ra"><button class="pr" onclick="goHome()">Try Again</button><button id="TB" onclick="tRev()">View Wrong Answers</button></div>
+<div class="rvs hid" id="RV"><h3 id="RT">Wrong Answers</h3><div id="RL"></div></div>
+</div>
+</div>
+<script>
+const Q=[
+// ═══ CH1: INTRO TO CRITICAL THINKING (30) ═══
+{c:1,q:"Which statement best reflects the true nature of critical thinking?",o:["Accepting expert opinions without questioning","Systematically evaluating information before forming a judgment","Relying on intuition when making complicated decisions","Memorizing facts from previous experience to support arguments"],a:1},
+{c:1,q:"Critical thinking involves all of the following EXCEPT:",o:["Asking questions","Memorizing facts without analysis","Evaluating information","Making informed decisions"],a:1},
+{c:1,q:"Which best defines critical thinking?",o:["Accepting information at face value","A type of thinking that involves questioning, analyzing, interpreting, evaluating, and decision-making","Thinking quickly without reflection","Relying solely on personal opinions"],a:1},
+{c:1,q:"Critical thinking goes beyond accepting facts — it enables individuals to:",o:["Follow authority without questioning","Question assumptions, explore different views, and make well-informed judgments","Avoid complex analysis","Rely only on personal experience"],a:1},
+{c:1,q:"The concept of 'Reasoning' in critical thinking is based on:",o:["Emotional reactions","Logical and rational thought processes","Random guessing","Peer pressure"],a:1},
+{c:1,q:"Which concept involves examining the dependability and relevancy of information?",o:["Context","Evidence","Perspective","Communication"],a:1},
+{c:1,q:"'Analysis' in critical thinking refers to:",o:["Accepting information without question","Breaking down complex information into smaller components for thorough examination","Ignoring details","Relying on assumptions"],a:1},
+{c:1,q:"Understanding the broader circumstances that influence meaning is called:",o:["Perspective","Context","Reflection","Questioning"],a:1},
+{c:1,q:"Which concept involves recognizing biases, cultural influences, and alternative interpretations?",o:["Evidence","Reasoning","Perspective","Decision-Making"],a:2},
+{c:1,q:"Which key aspect of critical thinking involves drawing logical conclusions from available evidence?",o:["Analysis","Interpretation","Inference","Explanation"],a:2},
+{c:1,q:"Open-mindedness as a key aspect means:",o:["Sticking to one viewpoint","Being willing to consider different perspectives and new ideas","Avoiding all new information","Only trusting personal experience"],a:1},
+{c:1,q:"Ethical reasoning as a benefit of critical thinking fosters:",o:["Bias and prejudice","Fairness and integrity in judgments","Ignoring moral implications","Emotional decision-making"],a:1},
+{c:1,q:"Which necessity of critical thinking relates to handling setbacks with a problem-solving mindset?",o:["Resilience","Civic Engagement","Academic Success","Time Management"],a:0},
+{c:1,q:"Critical thinking promotes empathy and better communication in which area?",o:["Academic Success","Career Success","Healthier Relationships","Civic Engagement"],a:2},
+{c:1,q:"How many key aspects of critical thinking are listed in Chapter 1?",o:["6","8","10","12"],a:1},
+{c:1,q:"In critical thinking, asking questions is important because it:",o:["Eliminates the need for analysis","Focuses only on memorization","Avoids evaluating situations","Encourages curiosity and deeper understanding"],a:3},
+{c:1,q:"Sarah reads a news article claiming a supplement cures all diseases. She researches the claim, checks studies, and consults her doctor. This demonstrates:",o:["Memorization","Critical thinking","Emotional reasoning","Blind obedience"],a:1},
+{c:1,q:"During a meeting, James notices everyone agrees without discussion. He raises questions about risks. Which aspect is James applying?",o:["Conformity","Questioning","Avoidance","Memorization"],a:1},
+{c:1,q:"A student reads multiple articles, compares data, and forms her own conclusion for an essay. This reflects:",o:["Plagiarism","Analysis and evaluation","Guessing","Following instructions blindly"],a:1},
+{c:1,q:"A doctor receives a patient with unusual symptoms and orders additional tests before diagnosing. This demonstrates:",o:["Evidence gathering","Guessing","Ignoring symptoms","Relying on first impressions"],a:0},
+{c:1,q:"Which benefit helps individuals rely on credible information rather than assumptions?",o:["Ethical Reasoning","Broader Perspective","Informed Decision-Making","Better Communication"],a:2},
+{c:1,q:"Conflict resolution benefits from critical thinking because it involves:",o:["Ignoring the other party","Analyzing issues and proposing reasoned solutions","Using only emotional arguments","Avoiding the conflict entirely"],a:1},
+{c:1,q:"Ahmad reads two conflicting laptop reviews. He lists pros and cons from both and checks specs. This is:",o:["Impulse buying","Critical evaluation","Emotional decision-making","Ignoring information"],a:1},
+{c:1,q:"Which is NOT a benefit of principles of critical thinking?",o:["Improved decision-making","Reduced cognitive biases","Increased emotional reactions","Better communication"],a:2},
+{c:1,q:"Critical thinking helps in career success primarily because:",o:["It replaces technical skills","Employees who think critically are more effective problem solvers","It guarantees a promotion","It eliminates teamwork"],a:1},
+{c:1,q:"Critical thinking is important for civic engagement because it allows individuals to:",o:["Avoid political information","Assess political information and make informed decisions","Follow others without questioning","Ignore public discourse"],a:1},
+{c:1,q:"Harry reads two articles with conflicting conclusions on climate change. He should:",o:["Accept the one by the more famous author","Compare evidence, methodology, and credibility of both","Reject both and find ones matching his opinion","Choose the one supporting personal beliefs"],a:1},
+{c:1,q:"Timothee identifies weaknesses in reasoning and lack of supporting evidence. Which skill is he applying?",o:["Observation","Memorization","Evaluation","Reflection"],a:2},
+{c:1,q:"The six vital skills of critical thinking include all EXCEPT:",o:["Problem solving","Analysis","Memorization","Reasoning"],a:2},
+{c:1,q:"How many necessities of critical thinking in life are discussed in Chapter 1?",o:["8","10","12","15"],a:2},
+
+// ═══ CH2: ELEMENTS OF LOGIC (30) ═══
+{c:2,q:"In logical reasoning, premises are best defined as:",o:["Foundational statements that support a conclusion","Statements that challenge the argument","Questions used to introduce a topic","Emotional opinions used to persuade others"],a:0},
+{c:2,q:"Which correctly describes inference in logical reasoning?",o:["A random assumption without evidence","An emotional reaction to a problem","A logical conclusion drawn from premises or available information","A statement that contradicts an argument"],a:2},
+{c:2,q:"Evidence supports premises and strengthens arguments. It can include:",o:["Only personal feelings","Facts, data, examples, or expert opinions","Rumors and hearsay","Unverified social media posts"],a:1},
+{c:2,q:"Assumptions in critical thinking can be:",o:["Only explicit","Only implicit","Both implicit and explicit","Neither implicit nor explicit"],a:2},
+{c:2,q:"Implications refer to:",o:["The starting points of reasoning","The consequences or results that follow from conclusions","Foundational beliefs","Irrelevant information"],a:1},
+{c:2,q:"Consistency in a logical argument means:",o:["Premises and conclusions can contradict","Premises, inferences, and conclusions should not contain contradictions","Only the conclusion matters","Evidence is not needed"],a:1},
+{c:2,q:"The element of 'Relevance' requires that:",o:["All information is included regardless of connection","Every part of the argument is directly related to the issue","Emotional appeals are prioritized","Assumptions are never questioned"],a:1},
+{c:2,q:"Clarity in logical thinking means:",o:["Using ambiguous language","Clear communication to avoid misunderstandings","Keeping ideas vague","Avoiding specifics"],a:1},
+{c:2,q:"Validity means:",o:["The premises are true","The conclusion follows logically from the premises","The argument is emotionally appealing","Everyone agrees"],a:1},
+{c:2,q:"A sound argument is:",o:["Valid but with false premises","Invalid but with true premises","Both valid and has true premises","Neither valid nor true"],a:2},
+{c:2,q:"Counter arguments involve:",o:["Ignoring alternatives","Considering alternative viewpoints and anticipating objections","Accepting all arguments","Only supporting one side"],a:1},
+{c:2,q:"Rationality involves decisions based on:",o:["Emotion and unsupported beliefs","Reason and evidence","Peer pressure","Tradition alone"],a:1},
+{c:2,q:"Deductive reasoning involves:",o:["Making generalizations from specifics","Drawing specific conclusions from general principles","Guessing outcomes","Ignoring evidence"],a:1},
+{c:2,q:"Inductive reasoning aims to provide:",o:["Absolute certainty","A probable conclusion based on specific observations","No conclusion","Only emotional satisfaction"],a:1},
+{c:2,q:"A YouTube creator claims lo-fi music guarantees better grades, supported only by personal experience. The weakest element is:",o:["Premises","Evidence","Clarity","Consistency"],a:1},
+{c:2,q:"P1: All university students need time management. P2: Saoirse is a student. C: Saoirse needs time management. This illustrates:",o:["Deductive reasoning","Inductive reasoning","Counterargument","Logical fallacy"],a:0},
+{c:2,q:"Niall argues online classes are ineffective because one class was poorly organized. This demonstrates:",o:["Rational analysis","Deductive reasoning","Overgeneralization","Sound argumentation"],a:2},
+{c:2,q:"P1: All cats are mammals. P2: A dog is a mammal. C: A dog is a cat. This is:",o:["A valid argument","An invalid argument","A sound argument","An inductive conclusion"],a:1},
+{c:2,q:"A manager says 'We trust you' but enforces hourly check-ins. This shows a lack of:",o:["Relevance","Clarity","Consistency","Validity"],a:2},
+{c:2,q:"Which is an application of logical elements in analysis?",o:["Ignoring premises","Detecting logical fallacies","Avoiding evidence","Relying on emotions"],a:1},
+{c:2,q:"Logical thinking is based on:",o:["Deductive and inductive reasoning","Emotional intelligence only","Memorization","Random processes"],a:0},
+{c:2,q:"Which involves expressing thoughts clearly and in an organized manner?",o:["Deductive Reasoning","Clarity and Coherence","Analytical Skills","Avoiding Fallacies"],a:1},
+{c:2,q:"How many elements of logic are discussed in Chapter 2?",o:["8","10","12","15"],a:2},
+{c:2,q:"Emma assumes a 23-year-old cannot lead because of age. This is:",o:["A warranted assumption","No assumption","An unwarranted assumption based on age bias","A logical conclusion"],a:2},
+{c:2,q:"A school proposes banning smartphones. Phones are also used for research. The best action is:",o:["Ban all technology","Allow restricted use for educational purposes","Ignore the counterargument","Make no decision"],a:1},
+{c:2,q:"A teacher says 'The assignment is due soon.' This lacks:",o:["Relevance","Validity","Clarity","Soundness"],a:2},
+{c:2,q:"A company switches to a 4-day workweek. A possible negative implication is:",o:["Employees get more rest","Higher satisfaction","Clients may receive slower responses","Better balance"],a:2},
+{c:2,q:"A manager promotes his friend instead of the best performer. This lacks:",o:["Clarity","Rationality","Implications","Premises"],a:1},
+{c:2,q:"Sarah believes green tea improves memory. She finds a journal article supporting it but acknowledges her own experience could be placebo. She is properly evaluating:",o:["Premises","Evidence","Implications","Counterarguments"],a:1},
+{c:2,q:"In a group project, Alex hasn't responded for three days. A good inference process involves:",o:["Immediately assuming irresponsibility","Considering multiple explanations before concluding","Ignoring the issue","Reporting Alex immediately"],a:1},
+
+// ═══ CH3: ANALYTICAL SKILLS (30) ═══
+{c:3,q:"Developing analytical skills involves:",o:["Memorizing large data sets","Breaking complex problems into smaller parts and reaching insightful conclusions","Avoiding difficult problems","Accepting all information without question"],a:1},
+{c:3,q:"Which is a key step in developing analytical skills?",o:["Avoiding discussions","Critical Thinking Training","Ignoring feedback","Working in isolation"],a:1},
+{c:3,q:"Mind mapping helps by:",o:["Replacing critical thinking","Visually representing relationships between elements","Making problems more complex","Eliminating need for analysis"],a:1},
+{c:3,q:"SWOT analysis stands for:",o:["Strengths, Weaknesses, Opportunities, Threats","Systems, Workflows, Operations, Tasks","Strategies, Work, Outcomes, Targets","Solutions, Warnings, Options, Tools"],a:0},
+{c:3,q:"'Define Your Purpose' when gathering information means:",o:["Collecting random data","Clearly defining why you need information to focus on relevant sources","Ignoring the research question","Gathering unrelated data"],a:1},
+{c:3,q:"Primary sources provide:",o:["Secondhand information","Firsthand information","Only opinions","Only statistics"],a:1},
+{c:3,q:"Evaluating arguments involves:",o:["Accepting all claims at face value","Assessing strength and identifying logical fallacies","Ignoring inconsistencies","Relying solely on opinion"],a:1},
+{c:3,q:"Environmental scanning helps by:",o:["Ignoring changes","Identifying changes in regulations, technology, or preferences that may impact you","Working alone","Avoiding questions"],a:1},
+{c:3,q:"Active listening means:",o:["Ignoring feedback","Listening to concerns and feedback of stakeholders","Only hearing what you want","Talking without listening"],a:1},
+{c:3,q:"'Formulate Your Own Conclusion' requires:",o:["Copying others","Distinguishing between factual information and your interpretation","Accepting everything as fact","Avoiding conclusions"],a:1},
+{c:3,q:"Networking helps identify problems by:",o:["Isolating you","Exposing you to different perspectives and insights","Avoiding contacts","Limiting sources"],a:1},
+{c:3,q:"Which is NOT recommended for developing analytical skills?",o:["Practice Problem-Solving","Engage in Discussions","Avoid seeking feedback","Continuous Learning"],a:2},
+{c:3,q:"Secondary sources:",o:["Provide firsthand information","Analyze or interpret primary information","Are always unreliable","Only include opinions"],a:1},
+{c:3,q:"Which would most effectively help a student develop analytical skills?",o:["Memorizing slides without comprehending","Solving puzzles, analyzing arguments, evaluating evidence","Avoiding complexity","Following others' opinions"],a:1},
+{c:3,q:"Louis watches educational channels and reads about emerging tech. This reflects:",o:["Continuous learning","Logical fallacy","Emotional reasoning","Limited research"],a:0},
+{c:3,q:"Zayn monitors social media trends for career opportunities. This demonstrates:",o:["Memorization","Logical inconsistency","Deductive reasoning","Environmental scanning"],a:3},
+{c:3,q:"The purpose of developing analytical skills is:",o:["To improve ability to analyze information and make informed decisions","To eliminate the need for research","To memorize facts more efficiently","To simplify arguments"],a:0},
+{c:3,q:"A project manager categorizes customer complaints by type and identifies patterns. She is applying:",o:["Memorization","Analytical skills","Emotional reasoning","Avoidance"],a:1},
+{c:3,q:"Students take turns challenging each other's arguments about a case study. This develops:",o:["Memorization skills","Debating and analytical skills","Avoidance behavior","Emotional dependence"],a:1},
+{c:3,q:"Before writing a paper, Maya creates an outline organizing key arguments. This reflects:",o:["Procrastination","Taking notes and organizing information","Copying from sources","Ignoring the topic"],a:1},
+{c:3,q:"A marketing team surveys customers, analyzes data, and reviews competitors. This is:",o:["Ignoring trends","Gathering and evaluating information","Making assumptions","Relying on gut feeling"],a:1},
+{c:3,q:"Critical reading means:",o:["Speed reading without comprehension","Reading actively, questioning assumptions, and evaluating evidence","Reading only headlines","Accepting all claims as true"],a:1},
+{c:3,q:"Mentorship contributes to development by:",o:["Providing all answers","Sharing experience and giving constructive feedback","Doing work for you","Eliminating need for practice"],a:1},
+{c:3,q:"A researcher uses both academic journals and government reports. This demonstrates:",o:["Relying on a single source","Using a variety of sources","Ignoring primary data","Poor practice"],a:1},
+{c:3,q:"Feedback and reflection help by:",o:["Making you feel bad","Allowing learning from both successes and challenges","Discouraging attempts","Replacing practice"],a:1},
+{c:3,q:"A data analyst notices a sales drop and breaks data into regions, periods, and product lines. This is:",o:["Guessing","Analytical problem-solving","Avoiding the issue","Emotional reasoning"],a:1},
+{c:3,q:"Asking 'What could be improved?' demonstrates:",o:["Ignoring issues","Asking questions to prompt critical reflection","Environmental scanning","SWOT analysis"],a:1},
+{c:3,q:"Evaluating a blog post by checking author credentials, date, and references is:",o:["Uncritical acceptance","Evaluating information sources","Ignoring source quality","Plagiarism"],a:1},
+{c:3,q:"Time management as an analytical skill means:",o:["Rushing through tasks","Prioritizing tasks effectively based on importance","Avoiding deadlines","Working without breaks"],a:1},
+{c:3,q:"A student evaluates whether an online article is from a credible organization before citing it. This is an example of:",o:["Lazy research","Assessing source credibility","Accepting all sources equally","Ignoring references"],a:1},
+
+// ═══ CH4: PROBLEM SOLVING (30) ═══
+{c:4,q:"Problem-solving is best described as:",o:["Avoiding challenges","The cognitive process of discovering, analyzing, and developing effective solutions","Relying on luck","Accepting problems without action"],a:1},
+{c:4,q:"Problem solving primarily aims to:",o:["Eliminate uncertainty in every situation","Apply logical processes to bridge the gap between current and desired state","Generate ideas regardless of feasibility","Replace analytical thinking with intuition"],a:1},
+{c:4,q:"Which differentiates effective problem-solving from simple decision-making?",o:["Speed of decisions","Reliance on intuition","Elimination of creative thinking","Use of structured analysis and evaluation of multiple alternatives"],a:3},
+{c:4,q:"The 5 stages of problem-solving in order are:",o:["Evaluate, Define, Generate, Pick, Plan","Define, Generate, Evaluate, Pick, Make a plan","Make a plan, Define, Generate, Evaluate, Pick","Pick, Define, Generate, Evaluate, Plan"],a:1},
+{c:4,q:"SWOT analysis is useful for all EXCEPT:",o:["Decision-making","Strategic planning","Avoiding all risks entirely","Increasing competitiveness"],a:2},
+{c:4,q:"In SWOT, 'Strengths' refers to:",o:["External risks","Areas where the company does well or has competitive advantages","Factors beyond control","Limiting factors"],a:1},
+{c:4,q:"In SWOT, 'Threats' are:",o:["Internal advantages","Internal weaknesses","Potential external risks that affect success","Opportunities for growth"],a:2},
+{c:4,q:"In SWOT, 'Weaknesses' refers to:",o:["Competitive advantages","Limiting factors that hinder performance","External opportunities","Potential external risks"],a:1},
+{c:4,q:"Heuristics are:",o:["Comprehensive analytical methods","Mental shortcuts for quick decisions","Always accurate tools","Formal logical proofs"],a:1},
+{c:4,q:"The word 'heuristic' comes from Greek meaning:",o:["To calculate","To discover or to find","To memorize","To avoid"],a:1},
+{c:4,q:"The Availability Heuristic involves:",o:["Decisions based on easily available information","Relying on anchoring points","Decisions based on emotions","Systematic analysis"],a:0},
+{c:4,q:"The Anchoring Heuristic involves:",o:["Decisions based on available info","Decisions influenced by a subjective anchoring point","Emotions as a guide","Systematic evaluation"],a:1},
+{c:4,q:"The Affect Heuristic involves decisions based on:",o:["Logical analysis","Statistical data","Emotions, moods, and gut feelings","Expert opinions only"],a:2},
+{c:4,q:"A disadvantage of heuristics is they can lead to:",o:["Perfect decisions always","Cognitive biases and errors","Always optimal outcomes","Elimination of uncertainty"],a:1},
+{c:4,q:"Which step comes first in problem-solving?",o:["Brainstorm Solutions","Define the Problem","Pick a Solution","Review Results"],a:1},
+{c:4,q:"The last step in the problem-solving process is:",o:["Define the Problem","Implement","Review the Results","Pick a Solution"],a:2},
+{c:4,q:"In strategic problem solving, SWOT is primarily used to:",o:["Identify only external risks","Replace decision-making","Focus solely on weaknesses","Examine both internal capabilities and external factors"],a:3},
+{c:4,q:"A boyband has strong singing but lacks personality for fans. In SWOT these are:",o:["Strengths and weaknesses","Opportunities and threats","Strengths and threats","Opportunities and weaknesses"],a:0},
+{c:4,q:"Before updating an app, a company evaluates design options before choosing. This illustrates:",o:["Solution evaluation","Problem identification","Implementation","Problem avoidance"],a:0},
+{c:4,q:"After a rainstorm, a city clears blocked drains and installs better drainage. Clearing drains is which stage?",o:["Define Problem","Brainstorm","Implement the Solution","Review Results"],a:2},
+{c:4,q:"A restaurant receives complaints about slow service. The manager collects data, identifies bottlenecks, and redesigns workflow. This is:",o:["Ignoring feedback","Systematic problem solving","Guessing","Heuristic thinking only"],a:1},
+{c:4,q:"Maria lists salary, benefits, growth, and commute for two job offers. She is in which stage?",o:["Define problem","Generate solutions","Evaluate solutions","Make a plan"],a:2},
+{c:4,q:"After seeing news about plane crashes, Tom overestimates flying danger. This is:",o:["Anchoring heuristic","Availability heuristic","Affect heuristic","Rational analysis"],a:1},
+{c:4,q:"A shopper sees a jacket 'marked down from RM500 to RM200' and thinks it's great, though it's worth RM150. This is:",o:["Availability heuristic","Affect heuristic","Anchoring heuristic","Logical reasoning"],a:2},
+{c:4,q:"Jenny feels happy and impulsively invests in a risky stock. This is:",o:["Anchoring","Availability","Affect heuristic","Sound reasoning"],a:2},
+{c:4,q:"Heuristics are useful because they help people:",o:["Make comprehensive analyses always","Handle situations efficiently when full analysis is impractical","Always reach correct answers","Avoid all biases"],a:1},
+{c:4,q:"New technology trends are which SWOT element?",o:["Strength","Weakness","Opportunity","Threat"],a:2},
+{c:4,q:"Increasing competition from rivals is classified as:",o:["Strength","Weakness","Opportunity","Threat"],a:3},
+{c:4,q:"A student hires a tutor, practices daily, and tracks progress. This illustrates:",o:["Avoidance","Structured problem solving","Guessing","Heuristic thinking"],a:1},
+{c:4,q:"Problem-solving requires the ability to:",o:["Avoid all feedback","Adjust strategies in response to review and feedback","Ignore results","Accept the first solution always"],a:1},
+
+// ═══ CH5: ASSESSMENT & CRITICAL JUDGEMENT (30) ═══
+{c:5,q:"Assessment is the process of:",o:["Ignoring information","Evaluating something based on specific criteria, norms, or benchmarks","Making random judgments","Avoiding data collection"],a:1},
+{c:5,q:"Which is NOT a key element of assessment?",o:["Criteria","Data Collection","Guesswork","Feedback"],a:2},
+{c:5,q:"Critical judgment involves:",o:["Only observation","Applying careful and reasoned appraisal to information","Quick, uninformed decisions","Ignoring perspectives"],a:1},
+{c:5,q:"'Synthesis' in critical judgement means:",o:["Breaking info apart only","Integrating different pieces of information for comprehensive understanding","Ignoring context","Focusing on one source"],a:1},
+{c:5,q:"Contextualization means:",o:["Ignoring the situation","Considering context in which decisions are situated","Only looking at data","Avoiding background info"],a:1},
+{c:5,q:"A fact is best described as:",o:["A personal belief","A statement that can be objectively verified and proven true or false","An emotional response","A cultural tradition"],a:1},
+{c:5,q:"An opinion is characterized by:",o:["Being objectively verifiable","Reflecting a personal belief or subjective viewpoint","Being universally agreed upon","Being based on empirical evidence only"],a:1},
+{c:5,q:"'Your heart pumps blood through your body' is:",o:["An opinion","A fact","A hypothesis","A bias"],a:1},
+{c:5,q:"'The cake tastes delicious' is:",o:["A fact","An opinion","Scientific evidence","A logical conclusion"],a:1},
+{c:5,q:"OPVL stands for:",o:["Origin, Purpose, Value, Limitation","Opinion, Perspective, Validity, Logic","Observation, Process, Verification, Logic","Outcome, Purpose, Verification, Limitation"],a:0},
+{c:5,q:"Root Cause Identification involves:",o:["Ignoring patterns","Examining patterns, relationships, and dependencies within data","Making assumptions without data","Skipping analysis"],a:1},
+{c:5,q:"A case study is:",o:["A random collection of facts","An in-depth analysis of a situation or problem and solutions used","A brief opinion piece","A statistical report only"],a:1},
+{c:5,q:"The first step in real-context problem-solving is:",o:["Solution Generation","Data Collection","Problem Definition","Implementation"],a:2},
+{c:5,q:"Hyacinth claims a video is reliable because the creator has millions of subscribers. This confuses:",o:["Popularity with credibility","Data collection with analysis","Judgment with contextualization","Synthesis with evaluation"],a:0},
+{c:5,q:"Agnes finds a blog post by an anonymous author and a peer-reviewed article. She should first:",o:["Select the most detailed source","Evaluate credibility and reliability of both","Choose whichever aligns with her argument","Combine without evaluation"],a:1},
+{c:5,q:"Dimitri says: 'This café is the best study spot because I feel productive there.' This is:",o:["A fact because productivity is measurable","An opinion based on personal experience","A fact because many study in cafés","An objective claim with evidence"],a:1},
+{c:5,q:"Caleb checks scientific articles before sharing an Instagram health post. He is primarily:",o:["Contextualizing based on experience","Evaluating reliability and validity of sources","Synthesizing viewpoints for a new argument","Deciding based on persuasive content"],a:1},
+{c:5,q:"A company finds delivery delays are caused by inefficient routing after analyzing data. This is:",o:["Root cause identification","Problem definition only","Solution generation","Decision-making"],a:0},
+{c:5,q:"Which is an example of critical judgment?",o:["Accepting all news at face value","Analyzing media to discern biases","Ignoring ethical implications","Impulsive decisions"],a:1},
+{c:5,q:"Educational Assessment evaluates students through:",o:["Only oral exams","Exams, projects, or other testing","Teacher opinions","Random selection"],a:1},
+{c:5,q:"Performance Assessment focuses on:",o:["Personal beliefs","Job performance based on criteria and goals","Random evaluation","Popularity"],a:1},
+{c:5,q:"'Origin' in OPVL asks:",o:["Is it useful?","Where does this source come from and who is the author?","What are the limitations?","Is the purpose clear?"],a:1},
+{c:5,q:"'Value' in OPVL asks:",o:["How reliable?","Who is the author?","How useful is this source and can it be verified?","What was the purpose?"],a:2},
+{c:5,q:"'Limitation' in OPVL considers:",o:["Usefulness","Whether there are political, cultural, or personal biases","Who the author is","Date of publication only"],a:1},
+{c:5,q:"A case study introduction should include:",o:["Only the solution","Problem statement, hypothesis, and significance","Random opinions","Unrelated background"],a:1},
+{c:5,q:"Media literacy involves:",o:["Accepting all media as truth","Analyzing news critically to discern biases and evaluate accuracy","Sharing articles without checking","Watching only entertainment"],a:1},
+{c:5,q:"Ethical decision-making uses critical judgment by:",o:["Ignoring morals","Evaluating dilemmas with principled moral reasoning","Deciding based on popularity","Avoiding difficult decisions"],a:1},
+{c:5,q:"Solution Generation involves:",o:["Choosing the first idea","Brainstorming potential solutions with creative thinking","Avoiding creativity","Implementing without planning"],a:1},
+{c:5,q:"When analyzing a case study, you should first:",o:["Write the conclusion","Identify the key points or issues","Generate solutions immediately","Ignore context"],a:1},
+{c:5,q:"Data Collection in assessment involves:",o:["Gathering relevant information to inform the process","Ignoring evidence","Making assumptions","Using one source only"],a:0},
+
+// ═══ CH6: CREATIVITY & INNOVATION (30) ═══
+{c:6,q:"Creativity is defined as:",o:["Following rules strictly","The ability to generate novel and valuable ideas, solutions, or products","Copying existing ideas","Avoiding original thinking"],a:1},
+{c:6,q:"Innovation is best described as:",o:["Generating ideas only","Transforming creative ideas into practical and valuable outcomes","Avoiding change","Theory without application"],a:1},
+{c:6,q:"The Four C Model was proposed by:",o:["Paul and Elder","Tversky and Kahneman","Kaufman and Beghetto","Maslow and Rogers"],a:2},
+{c:6,q:"At the Mini-c level:",o:["Remembered in history","Recognized by critics","What one creates is new and meaningful to them personally","Makes a living from creative work"],a:2},
+{c:6,q:"At the Little-c level:",o:["Professional creator","Work may be of value to others with feedback","Creative genius","Work has no value"],a:1},
+{c:6,q:"Pro-c level means:",o:["Creativity inherent in learning","Creative at a professional level with years of practice","Remembered in history","First attempt"],a:1},
+{c:6,q:"Big-C describes people who:",o:["Are beginners","Have everyday actions","Will be remembered in history for contributions","Are hobbyists"],a:2},
+{c:6,q:"The key difference between creativity and innovation:",o:["They are the same","Creativity generates ideas; innovation implements them","Innovation comes first","Creativity is only for artists"],a:1},
+{c:6,q:"Open-Mindedness and Flexibility means:",o:["Accepting all ideas without evaluation","Being open to possibilities while discerning in assessment","Avoiding unconventional ideas","Only following established methods"],a:1},
+{c:6,q:"Creativity contributes to critical thinking through:",o:["Convergent thinking only","Divergent thinking, problem reframing, and exploring perspectives","Memorizing solutions","Following strict procedures"],a:1},
+{c:6,q:"A brainstorming tip is:",o:["Limit ideas strictly","Let ideas flow naturally","Only one idea","Avoid visual brainstorming"],a:1},
+{c:6,q:"Innovation requires critical thinking to assess:",o:["Only emotional appeal","Feasibility, viability, and desirability","Only cost","Whether everyone agrees"],a:1},
+{c:6,q:"Creativity spends money to generate ideas; innovation:",o:["Spends more money","Spends ideas to generate money","Avoids spending","Copies competitors"],a:1},
+{c:6,q:"Continuous improvement involves:",o:["Never changing","Iterative process of creativity and critical evaluation","Avoiding feedback","First solution only"],a:1},
+{c:6,q:"Martin tries editing videos for the first time for class. The result is meaningful to him. This is:",o:["Big-C","Pro-C","Little-c","Mini-c"],a:3},
+{c:6,q:"Kiana creates aesthetic study notes and shares them. Classmates find them helpful. This is:",o:["Mini-c","Little-c","Pro-c","Big-C"],a:1},
+{c:6,q:"Ethan designs and launches a deadline-tracking app. This process is:",o:["Creativity","Innovation","Critical judgment","Analytical reasoning"],a:1},
+{c:6,q:"Students generate innovative solutions to food waste, then evaluate practicality. This demonstrates:",o:["Creativity replacing thinking","Problem avoidance","Interaction between creative and critical thinking","Decisions based only on originality"],a:2},
+{c:6,q:"Claude uses mind maps and visual diagrams for a complex topic. This illustrates:",o:["Generating novel and meaningful ideas","Applying memorized info","Evaluating source reliability","Implementing existing methods exactly"],a:0},
+{c:6,q:"A chef combines Malaysian flavors with Japanese techniques. This is:",o:["Memorization","Creative thinking","Following a recipe exactly","Avoiding risks"],a:1},
+{c:6,q:"A startup creates a ride-sharing app for university students. From idea to product, this is:",o:["Creativity only","Innovation","Heuristic thinking","Problem avoidance"],a:1},
+{c:6,q:"Critical thinking helps refine creative ideas by ensuring:",o:["Ideas never change","Clarity, coherence, and persuasive argumentation","All ideas equally valid","Quantity over quality"],a:1},
+{c:6,q:"The relationship between creativity and critical thinking encourages:",o:["Rigid thinking","A flexible yet analytical mindset","Blind acceptance","Only emotional decisions"],a:1},
+{c:6,q:"An artist with paintings in galleries recognized by experts is at:",o:["Mini-c","Little-c","Pro-c","Big-C"],a:2},
+{c:6,q:"A person whose body of work will be studied in history is at:",o:["Mini-c","Little-c","Pro-c","Big-C"],a:3},
+{c:6,q:"Which tip suggests making alternative plans?",o:["Tip 1: Let ideas flow","Tip 2: Build ideas","Tip 3: Visual brainstorming","Tip 4: Make alternative plans"],a:3},
+{c:6,q:"Innovation is a process similar to:",o:["Memorization","Design thinking","Random experimentation","Emotional expression"],a:1},
+{c:6,q:"Combining creativity and critical thinking in problem-solving:",o:["Limits solutions","Fosters unique and effective resolutions","Makes problems more complicated","Eliminates evaluation"],a:1},
+{c:6,q:"Creativity in critical thinking involves:",o:["Thinking within conventional boundaries only","Thinking beyond boundaries and making new connections","Avoiding new perspectives","Repeating past solutions"],a:1},
+{c:6,q:"A student who has never painted creates her first artwork. According to Four-C, this is:",o:["Pro-c because in a class","Big-C because she created something","Mini-c because new and meaningful to her","Little-c because others see it"],a:2},
+
+// ═══ CH7: BARRIERS TO CRITICAL THINKING (30) ═══
+{c:7,q:"Barriers to critical thinking are:",o:["Tools that enhance thinking","Obstacles that make it difficult to think critically","Shortcuts that improve decisions","Principles of reasoning"],a:1},
+{c:7,q:"Which best describes barriers to critical thinking?",o:["Strategies for creative solving","Methods to evaluate logically","Processes for innovative solutions","Obstacles preventing objective analysis"],a:3},
+{c:7,q:"Which is NOT a common barrier?",o:["Uncontrolled emotions","Groupthink","Open-mindedness","Bias and Stereotypes"],a:2},
+{c:7,q:"Egocentrism means:",o:["Considering all viewpoints equally","Excessive focus on one's own thoughts leading to narrow perspective","Being empathetic","Seeking diverse opinions"],a:1},
+{c:7,q:"Sociocentrism involves:",o:["Viewing all cultures equally","Viewing one's own group as superior","Being open to diversity","Avoiding group identity"],a:1},
+{c:7,q:"Which best describes sociocentrism?",o:["Judging ideas on personal experience","Evaluating other cultures as inferior to one's own","Searching for evidence supporting beliefs","Rejecting arguments due to discomfort"],a:1},
+{c:7,q:"Confirmation bias is the tendency to:",o:["Seek contradicting evidence","Seek information that confirms preexisting beliefs","Consider all evidence equally","Avoid all information"],a:1},
+{c:7,q:"Stereotyping involves:",o:["Recognizing individual differences","Making generalizations based on limited information","Thorough research","Considering diverse perspectives"],a:1},
+{c:7,q:"Groupthink is a barrier because it:",o:["Encourages independence","Pressures conformity to group consensus","Promotes diverse views","Strengthens analysis"],a:1},
+{c:7,q:"'Inability to accept new information' means:",o:["Being open","Resisting info that challenges existing beliefs","Actively seeking data","Welcoming perspectives"],a:1},
+{c:7,q:"Overcoming barriers includes all EXCEPT:",o:["Rewarding","Expanding thinking","Avoiding new challenges","Exploring new ideas"],a:2},
+{c:7,q:"Discomfort with uncertainty leads to:",o:["Embracing ambiguity","Seeking premature closure or simplistic answers","Exploring possibilities","Delaying judgment appropriately"],a:1},
+{c:7,q:"Why is discomfort with uncertainty a barrier?",o:["It leads to accepting simple answers without deeper analysis","It encourages multiple perspectives","It promotes open exploration","It increases curiosity"],a:0},
+{c:7,q:"Which helps overcome barriers?",o:["Decisions based on facts","Relying only on emotions","Avoiding analysis","Following the crowd"],a:0},
+{c:7,q:"'Failure to use critical thinking' refers to:",o:["Deliberately applying analysis","Not engaging critical thinking when needed","Being overly analytical","Questioning too much"],a:1},
+{c:7,q:"Monica refuses Chandler's opinion because she believes she's always correct. This is:",o:["Egocentrism","Sociocentrism","Confirmation bias","Stereotyping"],a:0},
+{c:7,q:"Stella gets frustrated in a debate and stops listening because she's offended. This is:",o:["Lack of information","Uncontrolled emotions","Sociocentrism","Discomfort with uncertainty"],a:1},
+{c:7,q:"A manager rejects all applicants from a certain university without reviewing qualifications. This is:",o:["Critical evaluation","Stereotyping","Sound judgment","Open-mindedness"],a:1},
+{c:7,q:"In a group project, no one disagrees with the leader despite concerns. This is:",o:["Effective teamwork","Groupthink","Critical analysis","Healthy debate"],a:1},
+{c:7,q:"A student only reads news from sources matching her political views. This is:",o:["Balanced research","Confirmation bias","Open-mindedness","Critical evaluation"],a:1},
+{c:7,q:"A person believes their country's traditions are always superior. This reflects:",o:["Egocentrism","Sociocentrism","Confirmation bias","Analytical thinking"],a:1},
+{c:7,q:"To overcome egocentrism, one should:",o:["Ignore all feedback","Consider perspectives beyond one's own","Only value personal experience","Avoid group discussions"],a:1},
+{c:7,q:"A manager avoids decisions when data is incomplete, waiting for certainty that never comes. This is:",o:["Groupthink","Egocentrism","Discomfort with uncertainty","Confirmation bias"],a:2},
+{c:7,q:"Analyzing information carefully is a method to overcome:",o:["Only groupthink","Only confirmation bias","Barriers to critical thinking generally","Creative thinking"],a:2},
+{c:7,q:"A teacher assumes all quiet students are disengaged. This is:",o:["Evidence-based assessment","Stereotyping","Critical judgment","Contextual analysis"],a:1},
+{c:7,q:"Accepting new challenges helps individuals:",o:["Reinforce biases","Overcome barriers to critical thinking","Avoid difficult situations","Strengthen groupthink"],a:1},
+{c:7,q:"Expanding thinking involves:",o:["Thinking within familiar frameworks only","Exploring new perspectives and broadening viewpoint","Avoiding all new information","Relying on emotions"],a:1},
+{c:7,q:"A scientist ignores data contradicting her hypothesis. This is:",o:["Good practice","Confirmation bias","Open-mindedness","Analytical rigor"],a:1},
+{c:7,q:"Lack of knowledge is a barrier because:",o:["It ensures unbiased decisions","Without sufficient info, critical analysis is incomplete","It encourages effective guessing","It simplifies decisions"],a:1},
+{c:7,q:"A team always defers to the senior person without discussion. This is:",o:["Critical thinking","Groupthink","Evidence-based reasoning","Analytical skills"],a:1},
+
+// ═══ CH8: CRITICAL THINKING STANDARDS (30) ═══
+{c:8,q:"Critical thinking standards are:",o:["Personal opinions","Criteria or benchmarks to assess quality of thinking","Emotional measures","Random assessments"],a:1},
+{c:8,q:"Which best describes the purpose of standards?",o:["Encourage ideas without evaluation","Provide criteria to assess quality and effectiveness of thinking","Ensure arguments support personal beliefs","Simplify complex issues"],a:1},
+{c:8,q:"The Paul-Elder Framework outlines how many standards?",o:["6","8","10","12"],a:1},
+{c:8,q:"'Clarity' involves:",o:["Using vague language","Expressing ideas clearly, concisely, and understandably","Keeping ideas ambiguous","Avoiding examples"],a:1},
+{c:8,q:"'Accuracy' requires:",o:["Approximate info is fine","Thinking with precision and correctness, ensuring reliability","Personal feelings matter most","Only secondary sources"],a:1},
+{c:8,q:"Which standard focuses on ensuring info is correct, reliable, and evidence-based?",o:["Accuracy","Breadth","Logic","Relevance"],a:0},
+{c:8,q:"'Precision' involves:",o:["Being vague","Using exact language and details to enhance specificity","Approximate statements are fine","Avoiding details"],a:1},
+{c:8,q:"'Relevance' means:",o:["Including all information","Focusing on info directly related to the issue at hand","Emotional appeals are important","All details equally valuable"],a:1},
+{c:8,q:"'Depth' requires:",o:["Superficial understanding is enough","Exploring issues in detail and analyzing underlying assumptions","Oversimplified explanations","Avoiding complexities"],a:1},
+{c:8,q:"A student investigates underlying causes and avoids oversimplifying. This demonstrates:",o:["Precision","Depth","Logic","Accuracy"],a:1},
+{c:8,q:"'Breadth' involves:",o:["Only one perspective","Multiple perspectives, viewpoints, or dimensions","Narrow analysis","Ignoring alternatives"],a:1},
+{c:8,q:"'Logic' ensures arguments are:",o:["Emotionally appealing","Sound, consistent, and based on valid reasoning","Popular","Based on assumptions"],a:1},
+{c:8,q:"'Fairness' requires:",o:["Favoring one's viewpoint","Considering viewpoints without bias with intellectual integrity","Ignoring opposing views","Quick judgments"],a:1},
+{c:8,q:"Isabella evaluates both supporting and opposing arguments before concluding. This demonstrates:",o:["Fairness","Depth","Precision","Accuracy"],a:0},
+{c:8,q:"Mona's climate essay includes unrelated global politics points. Which standard is violated?",o:["Breadth","Depth","Accuracy","Relevance"],a:3},
+{c:8,q:"A key question for Clarity is:",o:["How can you delve deeper?","Can you elaborate on that point?","What alternative viewpoints exist?","Are there fallacies?"],a:1},
+{c:8,q:"A key question for Depth is:",o:["Can you be more specific?","Is your message clear?","What are the underlying assumptions?","How does this relate to the problem?"],a:2},
+{c:8,q:"Which standard asks 'Are there fallacies in your reasoning?'",o:["Clarity","Accuracy","Logic","Fairness"],a:2},
+{c:8,q:"The Fairness standard asks:",o:["Can you verify facts?","Can you provide details?","Are you considering all relevant viewpoints?","What factors contribute?"],a:2},
+{c:8,q:"Which standard avoids distractions from irrelevant details?",o:["Depth","Breadth","Relevance","Precision"],a:2},
+{c:8,q:"A researcher says 'Crime has increased' without statistics, time frames, or locations. This lacks:",o:["Clarity","Precision","Breadth","Fairness"],a:1},
+{c:8,q:"A journalist writes a report from only one interview as the full story. This violates:",o:["Clarity","Accuracy","Breadth","Precision"],a:2},
+{c:8,q:"A student claims 'Studies show...' without citing any study. This lacks:",o:["Relevance","Accuracy","Depth","Fairness"],a:1},
+{c:8,q:"A debater acknowledges valid points from the opposition. This demonstrates:",o:["Precision","Fairness","Clarity","Relevance"],a:1},
+{c:8,q:"An argument jumping from premises to unrelated conclusions violates:",o:["Accuracy","Logic","Depth","Breadth"],a:1},
+{c:8,q:"'Can you be more specific?' tests which standard?",o:["Clarity","Precision","Depth","Breadth"],a:1},
+{c:8,q:"'How does this info relate to the problem?' tests:",o:["Precision","Relevance","Depth","Logic"],a:1},
+{c:8,q:"Exploring a topic only at surface level needs improvement in:",o:["Clarity","Precision","Depth","Breadth"],a:2},
+{c:8,q:"Ensuring conclusions are based on evidence and sound logic relates to:",o:["Clarity","Accuracy","Logic","Fairness"],a:2},
+{c:8,q:"A politician claims a policy is good without addressing downsides. This lacks:",o:["Precision","Breadth","Accuracy","Clarity"],a:1},
+];
+
+const CH={1:{n:"Intro to Critical Thinking",cl:"var(--ch1)"},2:{n:"Elements of Logic",cl:"var(--ch2)"},3:{n:"Analytical Skills",cl:"var(--ch3)"},4:{n:"Problem Solving",cl:"var(--ch4)"},5:{n:"Assessment & Critical Judgement",cl:"var(--ch5)"},6:{n:"Creativity & Innovation",cl:"var(--ch6)"},7:{n:"Barriers to Critical Thinking",cl:"var(--ch7)"},8:{n:"Critical Thinking Standards",cl:"var(--ch8)"}};
+
+let quiz=[],ci=0,results=[],sel=new Set([1,2,3,4,5,6,7,8]);
+
+(function(){
+const w=document.getElementById('CS');
+for(let c=1;c<=8;c++){const n=Q.filter(x=>x.c===c).length;w.innerHTML+=`<div class="cr sel" id="R${c}" onclick="tC(${c})"><input type="checkbox" checked id="B${c}"><span class="cd" style="background:${CH[c].cl}"></span><label>Ch ${c}: ${CH[c].n}</label><span class="cc">${n} Qs</span></div>`;}
+uI();
+})();
+
+function tC(c){if(sel.has(c))sel.delete(c);else sel.add(c);document.getElementById('B'+c).checked=sel.has(c);document.getElementById('R'+c).classList.toggle('sel',sel.has(c));uI();}
+function tAll(on){for(let c=1;c<=8;c++){if(on)sel.add(c);else sel.delete(c);document.getElementById('B'+c).checked=on;document.getElementById('R'+c).classList.toggle('sel',on);}uI();}
+function uI(){const p=Q.filter(x=>sel.has(x.c)),n=p.length;document.getElementById('SI').textContent=n>0?`${n} questions from ${sel.size} chapter${sel.size!==1?'s':''}.`:'Select at least one chapter.';document.getElementById('FD').textContent=`All ${n} questions from selected chapters.`;}
+function sh(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function go(mode){
+if(!sel.size){alert('Select at least one chapter.');return;}
+ci=0;results=[];
+const pool=Q.filter(x=>sel.has(x.c));
+if(mode==='full'){quiz=sh([...pool]);}
+else{let pk=[],chs=[...sel],per=Math.max(1,Math.floor(40/chs.length)),ex=40-per*chs.length;chs.forEach((c,i)=>{let cq=sh(pool.filter(x=>x.c===c));pk.push(...cq.slice(0,per+(i<ex?1:0)));});quiz=sh(pk);if(quiz.length>40)quiz=quiz.slice(0,40);}
+results=quiz.map(()=>null);
+document.getElementById('S').style.display='none';
+document.getElementById('QS').style.display='block';
+sQ();
+}
+
+function sQ(){
+const q=quiz[ci],t=quiz.length,ans=results[ci]!==null;
+document.getElementById('QC').textContent=`${ci+1} / ${t}`;
+document.getElementById('SL').textContent=`Score: ${results.filter(r=>r&&r.ok).length}/${results.filter(r=>r!==null).length}`;
+document.getElementById('PF').style.width=`${((ci+1)/t)*100}%`;
+const tag=document.getElementById('CT');tag.textContent=`Chapter ${q.c}: ${CH[q.c].n}`;tag.style.background=CH[q.c].cl;
+document.getElementById('QT').textContent=q.q;
+const L=['A','B','C','D'];
+if(!q._s)q._s=sh(q.o.map((o,i)=>({t:o,i})));
+const w=document.getElementById('OW');w.innerHTML='';
+q._s.forEach((op,i)=>{const b=document.createElement('button');b.className='ob';if(ans){b.classList.add('dis');const r=results[ci];if(op.i===q.a)b.classList.add('ok');if(op.t===r.ua&&!r.ok)b.classList.add('no');}b.innerHTML=`<span class="le">${L[i]}</span><span>${op.t}</span>`;if(!ans)b.onclick=()=>pick(b,op.i,q.a,op.t);w.appendChild(b);});
+const fb=document.getElementById('FB');
+if(ans){const r=results[ci];fb.className=`fb sh ${r.ok?'fc':'fw'}`;document.getElementById('FT').textContent=r.ok?'Correct':'Incorrect — the correct answer is highlighted above.';}
+else{fb.className='fb';}
+document.getElementById('PB').disabled=ci===0;
+const nb=document.getElementById('NB');
+nb.disabled=!ans;
+if(ci===t-1&&ans){nb.textContent='See Results';nb.className='nb pr';}else{nb.textContent='Next';nb.className='nb pr';}
+}
+
+function pick(btn,chosen,correct,text){
+if(results[ci]!==null)return;
+const q=quiz[ci],ok=chosen===correct;
+document.querySelectorAll('.ob').forEach(b=>{b.classList.add('dis');const t=b.querySelector('span:last-child').textContent;if(q.o.indexOf(t)===correct)b.classList.add('ok');});
+if(!ok)btn.classList.add('no');
+results[ci]={q:q.q,ch:q.c,ua:text,ca:q.o[correct],ok};
+const fb=document.getElementById('FB');fb.className=`fb sh ${ok?'fc':'fw'}`;document.getElementById('FT').textContent=ok?'Correct':'Incorrect — the correct answer is highlighted above.';
+const nb=document.getElementById('NB');nb.disabled=false;
+if(ci===quiz.length-1){nb.textContent='See Results';nb.className='nb pr';}
+}
+
+function nq(){if(results[ci]===null)return;if(ci>=quiz.length-1){sR();return;}ci++;sQ();}
+function pq(){if(ci<=0)return;ci--;sQ();}
+
+function sR(){
+document.getElementById('QS').style.display='none';
+const rs=document.getElementById('RS');rs.style.display='block';
+const ok=results.filter(r=>r&&r.ok).length,t=quiz.length,pct=Math.round((ok/t)*100);
+const pe=document.getElementById('RP');pe.textContent=`${pct}%`;pe.className='rp '+(pct>=70?'hi':pct>=50?'mi':'lo');
+document.getElementById('RB').textContent=`${ok} out of ${t} correct`;
+const wr=results.filter(r=>r&&!r.ok),rl=document.getElementById('RL');rl.innerHTML='';
+if(!wr.length){document.getElementById('TB').textContent='Perfect Score';document.getElementById('TB').disabled=true;document.getElementById('RT').textContent='You got everything right.';}
+else{document.getElementById('TB').textContent=`View Wrong Answers (${wr.length})`;document.getElementById('TB').disabled=false;
+wr.forEach((r,i)=>{rl.innerHTML+=`<div class="ri"><div class="ric">Chapter ${r.ch}: ${CH[r.ch].n}</div><div class="riq">${i+1}. ${r.q}</div><div class="riy">Your answer: ${r.ua}</div><div class="rik">Correct: ${r.ca}</div></div>`;});}
+}
+function tRev(){const s=document.getElementById('RV');s.classList.toggle('hid');const b=document.getElementById('TB'),w=results.filter(r=>r&&!r.ok).length;b.textContent=s.classList.contains('hid')?`View Wrong Answers (${w})`:'Hide Wrong Answers';}
+function goHome(){Q.forEach(q=>delete q._s);document.getElementById('QS').style.display='none';document.getElementById('RS').style.display='none';document.getElementById('RV').classList.add('hid');document.getElementById('S').style.display='';quiz=[];ci=0;results=[];}
+</script>
+</body>
+</html>
