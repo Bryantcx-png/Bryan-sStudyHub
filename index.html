@@ -481,13 +481,6 @@
             </div>
         </div>
 
-        <!-- Session History -->
-        <div class="semester-block" id="history-section" style="display:none">
-            <div class="semester-label">Recent Sessions</div>
-            <div class="semester-card">
-                <div class="subjects-list" id="history-list"></div>
-            </div>
-        </div>
     </div>
 
     <!-- Add Subject Modal -->
@@ -566,7 +559,6 @@
                 lastSeen: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
             loadProgress(user.uid);
-            loadHistory(user.uid);
             loadSettings(user.uid);
             checkAdmin(user.uid);
         });
@@ -664,34 +656,6 @@
                 });
         }
 
-        // ── Session history ──
-        function loadHistory(uid) {
-            db.collection('users').doc(uid).collection('sessions')
-                .orderBy('date', 'desc').limit(5).get()
-                .then(snap => {
-                    if (snap.empty) return;
-                    const list = document.getElementById('history-list');
-                    const CH_NAMES = {1:'Ch1',2:'Ch2',3:'Ch3',4:'Ch4',5:'Ch5',6:'Ch6',7:'Ch7',8:'Ch8'};
-                    snap.forEach(doc => {
-                        const s    = doc.data();
-                        const date = s.date ? s.date.toDate().toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '—';
-                        const chs  = (s.chapters||[]).map(c => CH_NAMES[c]||`Ch${c}`).join(', ');
-                        const col  = s.pct >= 70 ? '#2ea043' : s.pct >= 50 ? '#d97706' : '#cf222e';
-                        list.innerHTML += `
-                            <div style="display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--border)">
-                                <div style="flex:1">
-                                    <div style="font-size:.88rem;font-weight:500">Critical Thinking</div>
-                                    <div style="font-size:.75rem;color:var(--dim);margin-top:2px">${chs} · ${s.mode==='quick'?'Quick 40':'Full Bank'} · ${date}</div>
-                                </div>
-                                <div style="font-size:.9rem;font-weight:600;color:${col}">${s.pct}%</div>
-                                <div style="font-size:.78rem;color:var(--dim)">${s.score}/${s.total}</div>
-                            </div>`;
-                    });
-                    const rows = list.querySelectorAll('div[style*="border-bottom"]');
-                    if (rows.length) rows[rows.length-1].style.borderBottom = 'none';
-                    document.getElementById('history-section').style.display = '';
-                });
-        }
 
         // ── Add Subject Modal ──
         function openModal(semKey, semLabel) {
