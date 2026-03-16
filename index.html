@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Hub</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #fff;
@@ -21,11 +19,7 @@
             --accent2: #1b6ec2;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -50,11 +44,7 @@
             border-bottom: 1px solid var(--border)
         }
 
-        .topbar span {
-            font-size: .82rem;
-            color: var(--text2);
-            font-weight: 500
-        }
+        .topbar span { font-size: .82rem; color: var(--text2); font-weight: 500 }
 
         .hero {
             padding: 32px 0 28px;
@@ -70,14 +60,9 @@
             letter-spacing: -.02em
         }
 
-        .hero p {
-            color: var(--text2);
-            font-size: .95rem
-        }
+        .hero p { color: var(--text2); font-size: .95rem }
 
-        .semester-block {
-            margin-bottom: 32px
-        }
+        .semester-block { margin-bottom: 32px }
 
         .semester-label {
             font-size: .75rem;
@@ -103,11 +88,7 @@
             gap: 10px
         }
 
-        .semester-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: -.01em
-        }
+        .semester-header h2 { font-size: 1rem; font-weight: 600; letter-spacing: -.01em }
 
         .semester-badge {
             font-size: .7rem;
@@ -119,10 +100,7 @@
             letter-spacing: .03em
         }
 
-        .subjects-list {
-            display: flex;
-            flex-direction: column
-        }
+        .subjects-list { display: flex; flex-direction: column }
 
         .subject-row {
             display: flex;
@@ -136,22 +114,11 @@
             cursor: pointer
         }
 
-        .subject-row:last-child {
-            border-bottom: none
-        }
+        .subject-row:last-child { border-bottom: none }
+        .subject-row:hover { background: var(--bg2) }
 
-        .subject-row:hover {
-            background: var(--bg2)
-        }
-
-        .subject-row.disabled {
-            cursor: default;
-            opacity: .55
-        }
-
-        .subject-row.disabled:hover {
-            background: none
-        }
+        .subject-row.disabled { cursor: default; opacity: .55 }
+        .subject-row.disabled:hover { background: none }
 
         .subject-dot {
             width: 8px;
@@ -160,25 +127,10 @@
             flex-shrink: 0
         }
 
-        .subject-info {
-            flex: 1
-        }
-
-        .subject-name {
-            font-size: .92rem;
-            font-weight: 500
-        }
-
-        .subject-code {
-            font-size: .78rem;
-            color: var(--dim);
-            margin-top: 1px
-        }
-
-        .subject-arrow {
-            font-size: .85rem;
-            color: var(--dim)
-        }
+        .subject-info { flex: 1 }
+        .subject-name { font-size: .92rem; font-weight: 500 }
+        .subject-code { font-size: .78rem; color: var(--dim); margin-top: 1px }
+        .subject-arrow { font-size: .85rem; color: var(--dim) }
 
         .subject-tag {
             font-size: .72rem;
@@ -190,17 +142,18 @@
             border: 1px solid var(--border)
         }
 
-        /* Colour accents per subject */
+        /* Colour accents */
         .dot-blue   { background: #2383e2 }
         .dot-purple { background: #8e44ad }
         .dot-teal   { background: #0d9488 }
         .dot-amber  { background: #d97706 }
         .dot-green  { background: #059669 }
         .dot-pink   { background: #db2777 }
+        .dot-red    { background: #cf222e }
+        .dot-indigo { background: #7c3aed }
 
-        .prog-wrap {
-            margin-top: 6px
-        }
+        /* Progress bar */
+        .prog-wrap { margin-top: 6px }
 
         .prog-meta {
             display: flex;
@@ -210,10 +163,7 @@
             margin-bottom: 4px
         }
 
-        .prog-meta strong {
-            color: var(--text2);
-            font-weight: 600
-        }
+        .prog-meta strong { color: var(--text2); font-weight: 600 }
 
         .prog-track {
             width: 100%;
@@ -229,6 +179,223 @@
             border-radius: 2px;
             transition: width .4s ease
         }
+
+        /* ── Edit mode ── */
+        .edit-btn {
+            font-size: .82rem;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            padding: 0
+        }
+
+        .edit-btn.idle { color: var(--accent) }
+        .edit-btn.done { color: var(--text2) }
+
+        /* vis-toggle: hidden by default, shown in edit mode */
+        .vis-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: .85rem;
+            transition: background .12s, border-color .12s
+        }
+
+        .vis-toggle:hover { background: var(--bg2); border-color: var(--text2) }
+
+        /* delete btn for custom subjects */
+        .del-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid #ffebe9;
+            background: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: .8rem;
+            color: #cf222e;
+            transition: background .12s
+        }
+
+        .del-btn:hover { background: #ffebe9 }
+
+        /* add-subject row */
+        .add-row {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-top: 1px dashed var(--border);
+            cursor: pointer;
+            color: var(--accent);
+            font-size: .85rem;
+            font-weight: 500;
+            background: none;
+            border-bottom: none;
+            width: 100%;
+            font-family: inherit;
+            text-align: left;
+            transition: background .12s
+        }
+
+        .add-row:hover { background: var(--bg2) }
+
+        /* Edit mode active states */
+        body.is-editing .vis-toggle { display: flex }
+        body.is-editing .del-btn { display: flex }
+        body.is-editing .add-row { display: flex }
+        body.is-editing .subject-row { cursor: default }
+        body.is-editing .subject-row:hover { background: none }
+        body.is-editing a.subject-row { pointer-events: none }
+
+        /* Hidden subjects: invisible normally, faded in edit mode */
+        .subject-row[data-hidden="true"] { display: none }
+        body.is-editing .subject-row[data-hidden="true"] {
+            display: flex;
+            opacity: .4
+        }
+
+        body.is-editing .subject-row[data-hidden="true"] .subject-name {
+            text-decoration: line-through
+        }
+
+        /* ── Modal ── */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.35);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .modal-bg.open { display: flex }
+
+        .modal {
+            background: var(--bg);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 40px rgba(0,0,0,.18);
+            overflow: hidden
+        }
+
+        .modal-head {
+            padding: 18px 20px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .modal-head h3 { font-size: 1rem; font-weight: 600 }
+
+        .modal-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .modal-body { padding: 18px 20px }
+
+        .field { margin-bottom: 14px }
+
+        .field label {
+            display: block;
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--text2);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .field input, .field select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            font-size: .88rem;
+            font-family: inherit;
+            color: var(--text);
+            background: var(--bg);
+            outline: none;
+            transition: border-color .15s
+        }
+
+        .field input:focus, .field select:focus { border-color: var(--accent) }
+
+        .color-swatches {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .swatch {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color .12s, transform .12s
+        }
+
+        .swatch.selected { border-color: var(--text); transform: scale(1.15) }
+
+        .modal-foot {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end
+        }
+
+        .btn-ghost {
+            padding: 8px 16px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background: none;
+            font-size: .85rem;
+            font-family: inherit;
+            cursor: pointer;
+            color: var(--text2)
+        }
+
+        .btn-primary {
+            padding: 8px 16px;
+            border-radius: 7px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            font-size: .85rem;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: 500
+        }
+
+        .btn-primary:hover { background: var(--accent2) }
     </style>
 </head>
 
@@ -238,13 +405,12 @@
             <span>Bryan's Study Hub</span>
             <div style="display:flex;align-items:center;gap:14px">
                 <span id="user-email" style="font-size:.78rem;color:var(--dim)"></span>
-                <button onclick="signOut()" style="font-size:.82rem;color:var(--accent);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">Sign out</button>
+                <button class="edit-btn idle" id="edit-btn" onclick="toggleEdit()">Edit</button>
+                <button onclick="signOut()" style="font-size:.82rem;color:var(--text2);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">Sign out</button>
             </div>
         </div>
 
-        <div class="hero">
-            <h1>My Subjects</h1>
-        </div>
+        <div class="hero"><h1>My Subjects</h1></div>
 
         <!-- Year 2 Semester 2 -->
         <div class="semester-block">
@@ -254,8 +420,8 @@
                     <h2>Semester 2</h2>
                     <span class="semester-badge">Y2S2</span>
                 </div>
-                <div class="subjects-list">
-                    <a href="critical-thinking.html" class="subject-row" style="flex-wrap:wrap">
+                <div class="subjects-list" id="list-y2s2">
+                    <a href="critical-thinking.html" class="subject-row" data-sid="ct" style="flex-wrap:wrap">
                         <span class="subject-dot dot-blue"></span>
                         <div class="subject-info">
                             <div class="subject-name">Critical Thinking</div>
@@ -275,7 +441,9 @@
                             <span class="subject-tag">Quiz Bank</span>
                             <span class="subject-arrow">→</span>
                         </div>
+                        <button class="vis-toggle" onclick="toggleHide(event,'ct')" title="Toggle visibility">👁</button>
                     </a>
+                    <button class="add-row" onclick="openModal('Y2S2','Semester 2')">＋ Add subject</button>
                 </div>
             </div>
         </div>
@@ -288,23 +456,26 @@
                     <h2>Semester 3</h2>
                     <span class="semester-badge">Y2S3</span>
                 </div>
-                <div class="subjects-list">
-                    <div class="subject-row disabled">
+                <div class="subjects-list" id="list-y2s3">
+                    <div class="subject-row disabled" data-sid="re">
                         <span class="subject-dot dot-teal"></span>
                         <div class="subject-info">
                             <div class="subject-name">Requirement Engineering</div>
                             <div class="subject-code">SWE2033</div>
                         </div>
                         <span class="subject-tag">Coming soon</span>
+                        <button class="vis-toggle" onclick="toggleHide(event,'re')" title="Toggle visibility">👁</button>
                     </div>
-                    <div class="subject-row disabled">
+                    <div class="subject-row disabled" data-sid="pm">
                         <span class="subject-dot dot-amber"></span>
                         <div class="subject-info">
                             <div class="subject-name">Project Management</div>
                             <div class="subject-code">BIS3106</div>
                         </div>
                         <span class="subject-tag">Coming soon</span>
+                        <button class="vis-toggle" onclick="toggleHide(event,'pm')" title="Toggle visibility">👁</button>
                     </div>
+                    <button class="add-row" onclick="openModal('Y2S3','Semester 3')">＋ Add subject</button>
                 </div>
             </div>
         </div>
@@ -317,6 +488,55 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Subject Modal -->
+    <div class="modal-bg" id="modal-bg" onclick="closeModalBg(event)">
+        <div class="modal">
+            <div class="modal-head">
+                <h3>Add Subject</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="field">
+                    <label>Subject Name</label>
+                    <input id="m-name" type="text" placeholder="e.g. Data Structures">
+                </div>
+                <div class="field">
+                    <label>Subject Code</label>
+                    <input id="m-code" type="text" placeholder="e.g. CS2101">
+                </div>
+                <div class="field">
+                    <label>Semester</label>
+                    <select id="m-sem">
+                        <option value="Y2S2|Semester 2|list-y2s2">Y2S2 — Semester 2</option>
+                        <option value="Y2S3|Semester 3|list-y2s3">Y2S3 — Semester 3</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Colour</label>
+                    <div class="color-swatches">
+                        <div class="swatch selected" data-color="blue"   style="background:#2383e2" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="purple" style="background:#8e44ad" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="teal"   style="background:#0d9488" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="amber"  style="background:#d97706" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="green"  style="background:#059669" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="pink"   style="background:#db2777" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="red"    style="background:#cf222e" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="indigo" style="background:#7c3aed" onclick="pickColor(this)"></div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Link <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--dim)">(optional — HTML file)</span></label>
+                    <input id="m-link" type="text" placeholder="e.g. requirement-engineering.html">
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveSubject()">Add Subject</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -326,68 +546,222 @@
         const auth = firebase.auth();
         const db   = firebase.firestore();
 
+        let currentUid = null;
+        let editMode   = false;
+        let hiddenIds  = new Set();
+        let modalSem   = null; // { key, label, listId }
+        let selectedColor = 'blue';
+
+        // ── Auth ──
         auth.onAuthStateChanged(user => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                document.getElementById('user-email').textContent = user.email;
-                document.body.style.display = '';
-                loadProgress(user.uid);
-                loadHistory(user.uid);
-            }
+            if (!user) { window.location.href = 'login.html'; return; }
+            currentUid = user.uid;
+            document.getElementById('user-email').textContent = user.displayName || user.email;
+            document.body.style.display = '';
+            loadProgress(user.uid);
+            loadHistory(user.uid);
+            loadSettings(user.uid);
         });
 
-        function loadProgress(uid) {
-            db.collection('users').doc(uid).collection('progress').doc('critical-thinking').get()
+        // ── Settings (hidden + custom subjects) ──
+        function loadSettings(uid) {
+            db.collection('users').doc(uid).collection('settings').doc('home').get()
                 .then(doc => {
-                    if (doc.exists) {
-                        const { answeredIds = [], totalBank = 0 } = doc.data();
-                        const answered = answeredIds.length;
-                        const total = totalBank || 0;
-                        const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
-
-                        document.getElementById('ct-answered').textContent = answered;
-                        document.getElementById('ct-total').textContent = total;
-                        document.getElementById('ct-pct').textContent = pct + '%';
-                        document.getElementById('ct-fill').style.width = pct + '%';
-                        document.getElementById('ct-progress').style.display = '';
-                        document.getElementById('ct-progress-empty').style.display = 'none';
-                    }
+                    if (!doc.exists) return;
+                    const { hidden = [], customSubjects = [] } = doc.data();
+                    hiddenIds = new Set(hidden);
+                    applyHidden();
+                    customSubjects.forEach(s => renderCustomSubject(s));
                 });
         }
 
+        function saveSettings() {
+            if (!currentUid) return;
+            // Collect current custom subjects from DOM
+            const customs = [];
+            document.querySelectorAll('.subject-row[data-custom]').forEach(row => {
+                customs.push({
+                    id:        row.dataset.sid,
+                    name:      row.dataset.name,
+                    code:      row.dataset.code,
+                    color:     row.dataset.color,
+                    link:      row.dataset.link || '',
+                    listId:    row.dataset.listId
+                });
+            });
+            db.collection('users').doc(currentUid).collection('settings').doc('home').set({
+                hidden: [...hiddenIds],
+                customSubjects: customs
+            }, { merge: true });
+        }
+
+        function applyHidden() {
+            document.querySelectorAll('.subject-row[data-sid]').forEach(row => {
+                row.dataset.hidden = hiddenIds.has(row.dataset.sid) ? 'true' : 'false';
+            });
+            // Update eye icons
+            document.querySelectorAll('.vis-toggle').forEach(btn => {
+                const row = btn.closest('.subject-row');
+                if (row) btn.textContent = row.dataset.hidden === 'true' ? '🙈' : '👁';
+            });
+        }
+
+        // ── Edit mode ──
+        function toggleEdit() {
+            editMode = !editMode;
+            document.body.classList.toggle('is-editing', editMode);
+            const btn = document.getElementById('edit-btn');
+            btn.textContent  = editMode ? 'Done' : 'Edit';
+            btn.className    = 'edit-btn ' + (editMode ? 'done' : 'idle');
+            if (!editMode) saveSettings(); // save on Done
+        }
+
+        // ── Hide / Show ──
+        function toggleHide(e, sid) {
+            e.preventDefault(); e.stopPropagation();
+            if (hiddenIds.has(sid)) hiddenIds.delete(sid);
+            else hiddenIds.add(sid);
+            applyHidden();
+        }
+
+        // ── Progress bar ──
+        function loadProgress(uid) {
+            db.collection('users').doc(uid).collection('progress').doc('critical-thinking').get()
+                .then(doc => {
+                    if (!doc.exists) return;
+                    const { answeredIds = [], totalBank = 0 } = doc.data();
+                    const answered = answeredIds.length;
+                    const total    = totalBank || 0;
+                    const pct      = total > 0 ? Math.round((answered / total) * 100) : 0;
+                    document.getElementById('ct-answered').textContent   = answered;
+                    document.getElementById('ct-total').textContent      = total;
+                    document.getElementById('ct-pct').textContent        = pct + '%';
+                    document.getElementById('ct-fill').style.width       = pct + '%';
+                    document.getElementById('ct-progress').style.display = '';
+                    document.getElementById('ct-progress-empty').style.display = 'none';
+                });
+        }
+
+        // ── Session history ──
         function loadHistory(uid) {
             db.collection('users').doc(uid).collection('sessions')
                 .orderBy('date', 'desc').limit(5).get()
                 .then(snap => {
                     if (snap.empty) return;
                     const list = document.getElementById('history-list');
-                    const CH_NAMES = { 1:'Ch1', 2:'Ch2', 3:'Ch3', 4:'Ch4', 5:'Ch5', 6:'Ch6', 7:'Ch7', 8:'Ch8' };
+                    const CH_NAMES = {1:'Ch1',2:'Ch2',3:'Ch3',4:'Ch4',5:'Ch5',6:'Ch6',7:'Ch7',8:'Ch8'};
                     snap.forEach(doc => {
-                        const s = doc.data();
-                        const date = s.date ? s.date.toDate().toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : '—';
-                        const chs  = (s.chapters || []).map(c => CH_NAMES[c] || `Ch${c}`).join(', ');
+                        const s    = doc.data();
+                        const date = s.date ? s.date.toDate().toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '—';
+                        const chs  = (s.chapters||[]).map(c => CH_NAMES[c]||`Ch${c}`).join(', ');
                         const col  = s.pct >= 70 ? '#2ea043' : s.pct >= 50 ? '#d97706' : '#cf222e';
                         list.innerHTML += `
                             <div style="display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--border)">
                                 <div style="flex:1">
                                     <div style="font-size:.88rem;font-weight:500">Critical Thinking</div>
-                                    <div style="font-size:.75rem;color:var(--dim);margin-top:2px">${chs} · ${s.mode === 'quick' ? 'Quick 40' : 'Full Bank'} · ${date}</div>
+                                    <div style="font-size:.75rem;color:var(--dim);margin-top:2px">${chs} · ${s.mode==='quick'?'Quick 40':'Full Bank'} · ${date}</div>
                                 </div>
                                 <div style="font-size:.9rem;font-weight:600;color:${col}">${s.pct}%</div>
                                 <div style="font-size:.78rem;color:var(--dim)">${s.score}/${s.total}</div>
                             </div>`;
                     });
-                    // Remove border from last row
                     const rows = list.querySelectorAll('div[style*="border-bottom"]');
-                    if (rows.length) rows[rows.length - 1].style.borderBottom = 'none';
+                    if (rows.length) rows[rows.length-1].style.borderBottom = 'none';
                     document.getElementById('history-section').style.display = '';
                 });
         }
 
-        function signOut() {
-            auth.signOut().then(() => window.location.href = 'login.html');
+        // ── Add Subject Modal ──
+        function openModal(semKey, semLabel) {
+            const listMap = { 'Y2S2': 'list-y2s2', 'Y2S3': 'list-y2s3' };
+            modalSem = { key: semKey, label: semLabel, listId: listMap[semKey] };
+            // Pre-select the right semester in dropdown
+            const sel = document.getElementById('m-sem');
+            for (let i = 0; i < sel.options.length; i++) {
+                if (sel.options[i].value.startsWith(semKey)) { sel.selectedIndex = i; break; }
+            }
+            document.getElementById('m-name').value = '';
+            document.getElementById('m-code').value = '';
+            document.getElementById('m-link').value = '';
+            pickColorByName('blue');
+            document.getElementById('modal-bg').classList.add('open');
+            setTimeout(() => document.getElementById('m-name').focus(), 50);
         }
+
+        function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+        function closeModalBg(e) { if (e.target === document.getElementById('modal-bg')) closeModal(); }
+
+        function pickColor(el) {
+            document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedColor = el.dataset.color;
+        }
+
+        function pickColorByName(name) {
+            const el = document.querySelector(`.swatch[data-color="${name}"]`);
+            if (el) pickColor(el);
+        }
+
+        function saveSubject() {
+            const name = document.getElementById('m-name').value.trim();
+            const code = document.getElementById('m-code').value.trim();
+            const link = document.getElementById('m-link').value.trim();
+            if (!name || !code) { alert('Please fill in the subject name and code.'); return; }
+
+            // Read chosen semester from dropdown
+            const semVal = document.getElementById('m-sem').value.split('|'); // [key, label, listId]
+            const listId = semVal[2];
+
+            const id = 'custom_' + Date.now();
+            const subject = { id, name, code, color: selectedColor, link, listId };
+            renderCustomSubject(subject);
+            saveSettings();
+            closeModal();
+        }
+
+        function renderCustomSubject(s) {
+            const list = document.getElementById(s.listId);
+            if (!list) return;
+
+            const row = document.createElement(s.link ? 'a' : 'div');
+            row.className    = 'subject-row' + (s.link ? '' : ' disabled');
+            row.dataset.sid  = s.id;
+            row.dataset.custom = '1';
+            row.dataset.name = s.name;
+            row.dataset.code = s.code;
+            row.dataset.color = s.color;
+            row.dataset.link = s.link || '';
+            row.dataset.listId = s.listId;
+            row.dataset.hidden = hiddenIds.has(s.id) ? 'true' : 'false';
+            if (s.link) row.href = s.link;
+
+            row.innerHTML = `
+                <span class="subject-dot dot-${s.color}"></span>
+                <div class="subject-info">
+                    <div class="subject-name">${s.name}</div>
+                    <div class="subject-code">${s.code}</div>
+                </div>
+                <span class="subject-tag">${s.link ? '→' : 'Coming soon'}</span>
+                <button class="vis-toggle" title="Toggle visibility">👁</button>
+                <button class="del-btn" title="Delete subject">✕</button>`;
+
+            row.querySelector('.vis-toggle').onclick = e => toggleHide(e, s.id);
+            row.querySelector('.del-btn').onclick    = e => deleteSubject(e, row, s.id);
+
+            // Insert before the "+ Add subject" button
+            const addBtn = list.querySelector('.add-row');
+            list.insertBefore(row, addBtn);
+        }
+
+        function deleteSubject(e, row, sid) {
+            e.preventDefault(); e.stopPropagation();
+            if (!confirm('Remove this subject?')) return;
+            hiddenIds.delete(sid);
+            row.remove();
+            saveSettings();
+        }
+
+        function signOut() { auth.signOut().then(() => window.location.href = 'login.html'); }
     </script>
 </body>
 
