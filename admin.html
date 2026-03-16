@@ -333,12 +333,8 @@
             <div class="page-title">Admin Panel</div>
             <p class="page-sub">Overview of all users, progress, and quiz sessions.</p>
 
-            <!-- Summary stats -->
+            <!-- Summary stats (reflects selected user) -->
             <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-label">Total Users</div>
-                    <div class="stat-value" id="stat-users">—</div>
-                </div>
                 <div class="stat-card">
                     <div class="stat-label">Total Sessions</div>
                     <div class="stat-value" id="stat-sessions">—</div>
@@ -401,12 +397,10 @@
 
             list.innerHTML = '';
             allUsers = [];
-            let totalSessions = 0, totalPct = 0, pctCount = 0, totalAnswered = 0, totalBank = 0;
 
             // Load each user's data in parallel
             const userPromises = snap.docs.map(async doc => {
                 const u    = { uid: doc.id, ...doc.data() };
-                const name = u.displayName || u.email || 'Unknown';
 
                 // Fetch progress + sessions in parallel
                 const [progDoc, sessSnap] = await Promise.all([
@@ -417,25 +411,11 @@
                 u.progress = progDoc.exists ? progDoc.data() : null;
                 u.sessions = sessSnap.docs.map(d => d.data());
 
-                // Accumulate stats
-                totalSessions += u.sessions.length;
-                u.sessions.forEach(s => { if (s.pct != null) { totalPct += s.pct; pctCount++; } });
-                if (u.progress) {
-                    totalAnswered += (u.progress.answeredIds || []).length;
-                    if (!totalBank && u.progress.totalBank) totalBank = u.progress.totalBank;
-                }
-
                 return u;
             });
 
             const users = await Promise.all(userPromises);
             allUsers = users;
-
-            // Update stat cards
-            document.getElementById('stat-users').textContent    = users.length;
-            document.getElementById('stat-sessions').textContent = totalSessions;
-            document.getElementById('stat-avg').textContent      = pctCount ? Math.round(totalPct / pctCount) + '%' : '—';
-            document.getElementById('stat-coverage').textContent = totalBank ? `${totalAnswered}/${totalBank}` : '—';
 
             renderUsers(users);
         }
@@ -505,7 +485,38 @@
         }
 
         function toggleCard(head) {
-            head.closest('.user-card').classList.toggle('open');
+            const card = head.closest('.user-card');
+            const isOpen = card.classList.contains('open');
+
+            // Close all open cards
+            document.querySelectorAll('.user-card.open').forEach(c => c.classList.remove('open'));
+
+            if (!isOpen) {
+                card.classList.add('open');
+                const uid = card.dataset.uid;
+                const u = allUsers.find(x => x.uid === uid);
+                if (u) updateStatCards(u);
+            } else {
+                resetStatCards();
+            }
+        }
+
+        function updateStatCards(u) {
+            const sessions = u.sessions || [];
+            const pctsWithVal = sessions.filter(s => s.pct != null);
+            const avgScore = pctsWithVal.length ? Math.round(pctsWithVal.reduce((a, s) => a + s.pct, 0) / pctsWithVal.length) + '%' : '—';
+            const answered = u.progress ? (u.progress.answeredIds || []).length : 0;
+            const bank = u.progress ? (u.progress.totalBank || 0) : 0;
+
+            document.getElementById('stat-sessions').textContent = sessions.length;
+            document.getElementById('stat-avg').textContent      = avgScore;
+            document.getElementById('stat-coverage').textContent = bank ? `${answered}/${bank}` : '—';
+        }
+
+        function resetStatCards() {
+            document.getElementById('stat-sessions').textContent = '—';
+            document.getElementById('stat-avg').textContent      = '—';
+            document.getElementById('stat-coverage').textContent = '—';
         }
 
         function filterUsers() {
