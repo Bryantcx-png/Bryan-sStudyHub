@@ -558,10 +558,31 @@
             currentUid = user.uid;
             document.getElementById('user-email').textContent = user.displayName || user.email;
             document.body.style.display = '';
+            // Save/update profile so admin panel can list users
+            db.collection('users').doc(user.uid).set({
+                email: user.email,
+                displayName: user.displayName || '',
+                lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
             loadProgress(user.uid);
             loadHistory(user.uid);
             loadSettings(user.uid);
+            checkAdmin(user.uid);
         });
+
+        function checkAdmin(uid) {
+            db.collection('admins').doc(uid).get().then(doc => {
+                if (doc.exists) {
+                    const link = document.createElement('a');
+                    link.href = 'admin.html';
+                    link.textContent = 'Admin';
+                    link.style.cssText = 'font-size:.82rem;color:var(--dim);font-weight:500;text-decoration:none;font-family:inherit';
+                    link.onmouseenter = () => link.style.color = 'var(--text)';
+                    link.onmouseleave = () => link.style.color = 'var(--dim)';
+                    document.getElementById('user-email').insertAdjacentElement('afterend', link);
+                }
+            });
+        }
 
         // ── Settings (hidden + custom subjects) ──
         function loadSettings(uid) {
