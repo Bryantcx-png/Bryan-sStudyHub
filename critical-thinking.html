@@ -218,6 +218,79 @@
             line-height: 1.4
         }
 
+        .mb-smart {
+            width: 100%;
+            padding: 16px 18px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .15s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px
+        }
+
+        .mb-smart:hover { background: #2c2c2c }
+
+        .mb-smart h3 {
+            font-size: .95rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 3px
+        }
+
+        .mb-smart p {
+            font-size: .82rem;
+            color: rgba(255,255,255,.5);
+            line-height: 1.4
+        }
+
+        .mb-smart .arrow {
+            font-size: .75rem;
+            color: rgba(255,255,255,.4);
+            transition: transform .2s;
+            flex-shrink: 0;
+            margin-left: 12px
+        }
+
+        .mb-smart .arrow.open { transform: rotate(180deg) }
+
+        .smart-sub {
+            display: none;
+            gap: 8px;
+            margin-top: 8px
+        }
+
+        .smart-sub.open { display: flex }
+
+        .smart-sub button {
+            flex: 1;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid #1a1a1a;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: inherit;
+            font-size: .84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+            text-align: left
+        }
+
+        .smart-sub button:hover { background: #2c2c2c }
+
+        .smart-sub button span {
+            display: block;
+            font-size: .75rem;
+            font-weight: 400;
+            color: rgba(255,255,255,.5);
+            margin-top: 2px
+        }
+
         .si {
             font-size: .82rem;
             color: var(--dim);
@@ -702,6 +775,17 @@
                     <p id="FD">All questions from selected chapters.</p>
                 </div>
             </div>
+            <button class="mb-smart" onclick="toggleSmart()">
+                <div>
+                    <h3>Smart Practice</h3>
+                    <p id="smart-desc">Focus on questions you haven't answered yet.</p>
+                </div>
+                <span class="arrow" id="smart-arrow">▼</span>
+            </button>
+            <div class="smart-sub" id="smart-sub">
+                <button onclick="go('unanswered')">Unanswered Only<span>Only questions you haven't seen yet.</span></button>
+                <button onclick="go('mixed')">Mixed<span>Unanswered first, then seen questions.</span></button>
+            </div>
             <p class="si" id="SI"></p>
         </div>
         <div class="qs" id="QS">
@@ -1101,6 +1185,14 @@
         const CH = { 1: { n: "Intro to Critical Thinking", cl: "var(--ch1)" }, 2: { n: "Elements of Logic", cl: "var(--ch2)" }, 3: { n: "Analytical Skills", cl: "var(--ch3)" }, 4: { n: "Problem Solving", cl: "var(--ch4)" }, 5: { n: "Assessment & Critical Judgement", cl: "var(--ch5)" }, 6: { n: "Creativity & Innovation", cl: "var(--ch6)" }, 7: { n: "Barriers to Critical Thinking", cl: "var(--ch7)" }, 8: { n: "Critical Thinking Standards", cl: "var(--ch8)" } };
 
         let quiz = [], ci = 0, results = [], sel = new Set([1, 2, 3, 4, 5, 6, 7, 8]), quizMode = '';
+        let bankAnswered = new Set();
+
+        function toggleSmart() {
+            const sub = document.getElementById('smart-sub');
+            const arrow = document.getElementById('smart-arrow');
+            const open = sub.classList.toggle('open');
+            arrow.classList.toggle('open', open);
+        }
 
         (function () {
             const w = document.getElementById('CS');
@@ -1118,6 +1210,18 @@
             ci = 0; results = []; quizMode = mode;
             const pool = Q.filter(x => sel.has(x.c));
             if (mode === 'full') { quiz = sh([...pool]); }
+            else if (mode === 'unanswered') {
+                const unseen = pool.filter(q => !bankAnswered.has(Q.indexOf(q)));
+                if (!unseen.length) { alert('You\'ve already answered all questions in the selected chapters! Try Mixed or Full Bank.'); return; }
+                quiz = sh(unseen).slice(0, 40);
+            }
+            else if (mode === 'mixed') {
+                const unseen = sh(pool.filter(q => !bankAnswered.has(Q.indexOf(q))));
+                const seen   = sh(pool.filter(q =>  bankAnswered.has(Q.indexOf(q))));
+                const need   = Math.max(0, 40 - unseen.length);
+                quiz = sh([...unseen, ...seen.slice(0, need)]).slice(0, 40);
+                if (!quiz.length) { alert('No questions available. Try Full Bank instead.'); return; }
+            }
             else { let pk = [], chs = [...sel], per = Math.max(1, Math.floor(40 / chs.length)), ex = 40 - per * chs.length; chs.forEach((c, i) => { let cq = sh(pool.filter(x => x.c === c)); pk.push(...cq.slice(0, per + (i < ex ? 1 : 0))); }); quiz = sh(pk); if (quiz.length > 40) quiz = quiz.slice(0, 40); }
             results = quiz.map(() => null);
             document.getElementById('S').style.display = 'none';
@@ -1223,7 +1327,11 @@
                 .then(doc => {
                     if (!doc.exists) return;
                     const { answeredIds = [], totalBank = 0 } = doc.data();
+                    bankAnswered = new Set(answeredIds);
                     const answered = answeredIds.length;
+                    const unansCount = Math.max(0, (totalBank || Q.length) - answered);
+                    const sd = document.getElementById('smart-desc');
+                    if (sd) sd.textContent = `${unansCount} unanswered question${unansCount !== 1 ? 's' : ''} remaining.`;
                     const total = totalBank || Q.length;
                     const remaining = Math.max(0, total - answered);
                     const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
