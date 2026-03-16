@@ -197,6 +197,38 @@
         .dot-amber  { background: #d97706 }
         .dot-green  { background: #059669 }
         .dot-pink   { background: #db2777 }
+
+        .prog-wrap {
+            margin-top: 6px
+        }
+
+        .prog-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: .72rem;
+            color: var(--dim);
+            margin-bottom: 4px
+        }
+
+        .prog-meta strong {
+            color: var(--text2);
+            font-weight: 600
+        }
+
+        .prog-track {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden
+        }
+
+        .prog-fill {
+            height: 100%;
+            background: #2383e2;
+            border-radius: 2px;
+            transition: width .4s ease
+        }
     </style>
 </head>
 
@@ -223,15 +255,26 @@
                     <span class="semester-badge">Y2S2</span>
                 </div>
                 <div class="subjects-list">
-                    <a href="critical-thinking.html" class="subject-row">
+                    <a href="critical-thinking.html" class="subject-row" style="flex-wrap:wrap">
                         <span class="subject-dot dot-blue"></span>
                         <div class="subject-info">
                             <div class="subject-name">Critical Thinking</div>
                             <div class="subject-code">MPU 3212</div>
-                            <div id="ct-progress" style="font-size:.75rem;color:var(--dim);margin-top:3px"></div>
+                            <div id="ct-progress" class="prog-wrap" style="display:none">
+                                <div class="prog-meta">
+                                    <span><strong id="ct-answered">0</strong> / <span id="ct-total">0</span> questions answered</span>
+                                    <span id="ct-pct">0%</span>
+                                </div>
+                                <div class="prog-track">
+                                    <div class="prog-fill" id="ct-fill" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div id="ct-progress-empty" style="font-size:.75rem;color:var(--dim);margin-top:4px">No quizzes yet</div>
                         </div>
-                        <span class="subject-tag">Quiz Bank</span>
-                        <span class="subject-arrow">→</span>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+                            <span class="subject-tag">Quiz Bank</span>
+                            <span class="subject-arrow">→</span>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -297,13 +340,18 @@
         function loadProgress(uid) {
             db.collection('users').doc(uid).collection('progress').doc('critical-thinking').get()
                 .then(doc => {
-                    const el = document.getElementById('ct-progress');
                     if (doc.exists) {
                         const { answeredIds = [], totalBank = 0 } = doc.data();
                         const answered = answeredIds.length;
-                        el.textContent = `${answered} / ${totalBank} questions answered`;
-                    } else {
-                        el.textContent = '0 questions answered yet';
+                        const total = totalBank || 0;
+                        const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+
+                        document.getElementById('ct-answered').textContent = answered;
+                        document.getElementById('ct-total').textContent = total;
+                        document.getElementById('ct-pct').textContent = pct + '%';
+                        document.getElementById('ct-fill').style.width = pct + '%';
+                        document.getElementById('ct-progress').style.display = '';
+                        document.getElementById('ct-progress-empty').style.display = 'none';
                     }
                 });
         }

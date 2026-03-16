@@ -646,8 +646,22 @@
         <div class="ss" id="S">
             <h1>Critical Thinking Quiz Bank</h1>
             <p class="sub">Sunway University — Select chapters and start practicing.</p>
-            <p style="font-size:.82rem;color:var(--dim);margin-top:-24px;margin-bottom:20px;">Made by Bryan Tan Chun
+            <p style="font-size:.82rem;color:var(--dim);margin-top:-24px;margin-bottom:16px;">Made by Bryan Tan Chun
                 Xing</p>
+
+            <!-- Bank progress -->
+            <div id="bank-progress" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:20px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                    <span style="font-size:.82rem;font-weight:600;color:var(--text)">Question Bank Progress</span>
+                    <span id="bp-pct" style="font-size:.82rem;font-weight:700;color:var(--accent)">0%</span>
+                </div>
+                <div style="width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px">
+                    <div id="bp-fill" style="height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width .4s ease"></div>
+                </div>
+                <div style="font-size:.75rem;color:var(--dim)">
+                    <strong id="bp-answered" style="color:var(--text2)">0</strong> of <strong id="bp-total" style="color:var(--text2)">0</strong> unique questions answered &mdash; <span id="bp-remaining" style="color:var(--text2)">0</span> remaining
+                </div>
+            </div>
 
             <div class="cl">
                 <div class="cl-hd" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.cl-arrow').classList.toggle('open')">
@@ -1161,14 +1175,13 @@
             }
         }
         function saveSession(correct, total, pct) {
-            if (!firebase.apps.length) return;
-            const user = firebase.auth().currentUser;
+            const user = typeof firebase !== 'undefined' && firebase.apps.length ? firebase.auth().currentUser : null;
             if (!user) return;
-            const db = firebase.firestore();
             const uid = user.uid;
+            const fdb = firebase.firestore();
             const answeredIds = quiz.map(q => Q.indexOf(q)).filter(i => i !== -1);
             // Save session record
-            db.collection('users').doc(uid).collection('sessions').add({
+            fdb.collection('users').doc(uid).collection('sessions').add({
                 subject: 'critical-thinking',
                 date: firebase.firestore.FieldValue.serverTimestamp(),
                 score: correct,
@@ -1177,8 +1190,8 @@
                 chapters: [...sel].sort((a, b) => a - b),
                 mode: quizMode
             });
-            // Merge unique answered question indices
-            db.collection('users').doc(uid).collection('progress').doc('critical-thinking').set({
+            // Merge unique answered question indices into the bank tracker
+            fdb.collection('users').doc(uid).collection('progress').doc('critical-thinking').set({
                 answeredIds: firebase.firestore.FieldValue.arrayUnion(...answeredIds),
                 totalBank: Q.length
             }, { merge: true });
@@ -1192,16 +1205,37 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script>
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db   = firebase.firestore();
 
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = 'login.html';
             } else {
                 document.body.style.display = '';
+                loadBankProgress(user.uid);
             }
         });
+
+        function loadBankProgress(uid) {
+            db.collection('users').doc(uid).collection('progress').doc('critical-thinking').get()
+                .then(doc => {
+                    if (!doc.exists) return;
+                    const { answeredIds = [], totalBank = 0 } = doc.data();
+                    const answered = answeredIds.length;
+                    const total = totalBank || Q.length;
+                    const remaining = Math.max(0, total - answered);
+                    const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+
+                    document.getElementById('bp-answered').textContent = answered;
+                    document.getElementById('bp-total').textContent = total;
+                    document.getElementById('bp-remaining').textContent = remaining;
+                    document.getElementById('bp-pct').textContent = pct + '%';
+                    document.getElementById('bp-fill').style.width = pct + '%';
+                    document.getElementById('bank-progress').style.display = '';
+                });
+        }
 
         function signOut() {
             auth.signOut().then(() => window.location.href = 'login.html');
