@@ -543,6 +543,91 @@
             display: none !important
         }
 
+        .cl {
+            margin-bottom: 28px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .cl-hd {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--bg2);
+            cursor: pointer;
+            user-select: none
+        }
+
+        .cl-hd:hover {
+            background: #efefed
+        }
+
+        .cl-badge {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .05em;
+            background: var(--accent);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px
+        }
+
+        .cl-title {
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--text);
+            flex: 1
+        }
+
+        .cl-arrow {
+            font-size: .72rem;
+            color: var(--dim);
+            transition: transform .2s
+        }
+
+        .cl-arrow.open {
+            transform: rotate(180deg)
+        }
+
+        .cl-body {
+            display: none;
+            padding: 12px 14px 14px;
+            border-top: 1px solid var(--border)
+        }
+
+        .cl-body.open {
+            display: block
+        }
+
+        .cl-body ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .cl-body ul li {
+            font-size: .82rem;
+            color: var(--text2);
+            display: flex;
+            gap: 8px;
+            line-height: 1.45
+        }
+
+        .cl-body ul li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0
+        }
+
+        .cl-body ul li strong {
+            color: var(--text);
+            font-weight: 600
+        }
+
         @media(max-width:600px) {
             .ms {
                 flex-direction: column
@@ -561,8 +646,32 @@
         <div class="ss" id="S">
             <h1>Critical Thinking Quiz Bank</h1>
             <p class="sub">Sunway University — Select chapters and start practicing.</p>
-            <p style="font-size:.82rem;color:var(--dim);margin-top:-24px;margin-bottom:28px;">Made by Bryan Tan Chun
+            <p style="font-size:.82rem;color:var(--dim);margin-top:-24px;margin-bottom:20px;">Made by Bryan Tan Chun
                 Xing</p>
+
+            <div class="cl">
+                <div class="cl-hd" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.cl-arrow').classList.toggle('open')">
+                    <span class="cl-badge">v1.2</span>
+                    <span class="cl-title">What's New</span>
+                    <span class="cl-arrow">▼</span>
+                </div>
+                <div class="cl-body">
+                    <ul>
+                        <li><strong>Removed</strong> all "how many" count-based questions — replaced with conceptual questions tied directly to slide content.</li>
+                        <li><strong>Expanded</strong> every chapter with 10–12 new questions each, ensuring full coverage of all slide topics.</li>
+                        <li><strong>Ch1</strong> — Now covers Reflection, Decision-Making, Communication, Self-Regulation, Explanation, Evaluation, Financial Literacy, Mental Health, Adaptability, and Critical Media Consumption.</li>
+                        <li><strong>Ch2</strong> — Added questions on Objectivity, Open-Mindedness, Pattern Recognition, Analytical Thinking, Problem-Solving Approach, soundness vs validity, and Clarity & Coherence.</li>
+                        <li><strong>Ch3</strong> — New questions on Take Notes, Use a Variety of Sources, Stakeholder Feedback, Data Analysis, Root Cause Analysis, and Assess Source Credibility.</li>
+                        <li><strong>Ch4</strong> — Added Implement the Solution, Review Results, circular process, Tversky & Kahneman origin, Generate and Evaluate Solutions stages.</li>
+                        <li><strong>Ch5</strong> — Now covers Purpose in OPVL, Health Assessment, Analysis, Judgment, Feedback elements, case study Body and Conclusion sections, and Real-context problem solving.</li>
+                        <li><strong>Ch6</strong> — Added Visual Brainstorming (Tip 3), Build on Ideas (Tip 2), Stay Focused (Tip 5), Communication & Expression, Aha moment, Convergent thinking, and the Creativity → Innovation relationship.</li>
+                        <li><strong>Ch7</strong> — New questions on Rewarding, Intellectual Humility, Diverse Perspectives, Education to overcome barriers, Groupthink prevention, and Emotional Regulation.</li>
+                        <li><strong>Ch8</strong> — Added key questions for Accuracy, Breadth, and Logic standards; Depth vs Breadth distinction; scenario-based standard violations.</li>
+                        <li><strong>Total questions</strong> increased from 240 to 326 across all 8 chapters.</li>
+                    </ul>
+                </div>
+            </div>
+
             <p class="sl">Select Chapters</p>
             <div class="sa"><button onclick="tAll(true)">Select All</button><button onclick="tAll(false)">Deselect
                     All</button></div>
@@ -633,7 +742,7 @@
             { c: 1, q: "Ethical reasoning as a benefit of critical thinking fosters:", o: ["Bias and prejudice", "Fairness and integrity in judgments", "Ignoring moral implications", "Emotional decision-making"], a: 1 },
             { c: 1, q: "Which necessity of critical thinking relates to handling setbacks with a problem-solving mindset?", o: ["Resilience", "Civic Engagement", "Academic Success", "Time Management"], a: 0 },
             { c: 1, q: "Critical thinking promotes empathy and better communication in which area?", o: ["Academic Success", "Career Success", "Healthier Relationships", "Civic Engagement"], a: 2 },
-            { c: 1, q: "How many key aspects of critical thinking are listed in Chapter 1?", o: ["6", "8", "10", "12"], a: 1 },
+            { c: 1, q: "Which of the following is correctly identified as a key aspect of critical thinking?", o: ["Memorizing established theories to recall during decisions", "Inference — drawing logical conclusions from available evidence and reasoning", "Accepting conclusions from recognised authority figures without question", "Avoiding self-reflection to remain objective"], a: 1 },
             { c: 1, q: "In critical thinking, asking questions is important because it:", o: ["Eliminates the need for analysis", "Focuses only on memorization", "Avoids evaluating situations", "Encourages curiosity and deeper understanding"], a: 3 },
             { c: 1, q: "Sarah reads a news article claiming a supplement cures all diseases. She researches the claim, checks studies, and consults her doctor. This demonstrates:", o: ["Memorization", "Critical thinking", "Emotional reasoning", "Blind obedience"], a: 1 },
             { c: 1, q: "During a meeting, James notices everyone agrees without discussion. He raises questions about risks. Which aspect is James applying?", o: ["Conformity", "Questioning", "Avoidance", "Memorization"], a: 1 },
@@ -648,7 +757,7 @@
             { c: 1, q: "Harry reads two articles with conflicting conclusions on climate change. He should:", o: ["Accept the one by the more famous author", "Compare evidence, methodology, and credibility of both", "Reject both and find ones matching his opinion", "Choose the one supporting personal beliefs"], a: 1 },
             { c: 1, q: "Timothee identifies weaknesses in reasoning and lack of supporting evidence. Which skill is he applying?", o: ["Observation", "Memorization", "Evaluation", "Reflection"], a: 2 },
             { c: 1, q: "The six vital skills of critical thinking include all EXCEPT:", o: ["Problem solving", "Analysis", "Memorization", "Reasoning"], a: 2 },
-            { c: 1, q: "How many necessities of critical thinking in life are discussed in Chapter 1?", o: ["8", "10", "12", "15"], a: 2 },
+            { c: 1, q: "According to Chapter 1, how does critical thinking contribute to career success?", o: ["It allows employees to bypass teamwork and work independently", "Employees who think critically are more effective problem-solvers, decision-makers, and contributors to innovation", "It makes employees focus exclusively on assigned tasks without questioning processes", "It discourages risk-taking and promotes strict adherence to rules"], a: 1 },
 
             // ═══ CH2: ELEMENTS OF LOGIC (30) ═══
             { c: 2, q: "In logical reasoning, premises are best defined as:", o: ["Foundational statements that support a conclusion", "Statements that challenge the argument", "Questions used to introduce a topic", "Emotional opinions used to persuade others"], a: 0 },
@@ -673,7 +782,7 @@
             { c: 2, q: "Which is an application of logical elements in analysis?", o: ["Ignoring premises", "Detecting logical fallacies", "Avoiding evidence", "Relying on emotions"], a: 1 },
             { c: 2, q: "Logical thinking is based on:", o: ["Deductive and inductive reasoning", "Emotional intelligence only", "Memorization", "Random processes"], a: 0 },
             { c: 2, q: "Which involves expressing thoughts clearly and in an organized manner?", o: ["Deductive Reasoning", "Clarity and Coherence", "Analytical Skills", "Avoiding Fallacies"], a: 1 },
-            { c: 2, q: "How many elements of logic are discussed in Chapter 2?", o: ["8", "10", "12", "15"], a: 2 },
+            { c: 2, q: "Which best describes the role of 'Rationality' as an element of logical thinking?", o: ["Making decisions based primarily on emotions and personal feelings", "Forming beliefs and decisions based on reason and evidence rather than emotion or unsupported beliefs", "Prioritising social consensus and group approval over factual evidence", "Avoiding situations that require weighing conflicting evidence"], a: 1 },
             { c: 2, q: "Emma assumes a 23-year-old cannot lead because of age. This is:", o: ["A warranted assumption", "No assumption", "An unwarranted assumption based on age bias", "A logical conclusion"], a: 2 },
             { c: 2, q: "A school proposes banning smartphones. Phones are also used for research. The best action is:", o: ["Ban all technology", "Allow restricted use for educational purposes", "Ignore the counterargument", "Make no decision"], a: 1 },
             { c: 2, q: "A teacher says 'The assignment is due soon.' This lacks:", o: ["Relevance", "Validity", "Clarity", "Soundness"], a: 2 },
@@ -845,7 +954,7 @@
             // ═══ CH8: CRITICAL THINKING STANDARDS (30) ═══
             { c: 8, q: "Critical thinking standards are:", o: ["Personal opinions", "Criteria or benchmarks to assess quality of thinking", "Emotional measures", "Random assessments"], a: 1 },
             { c: 8, q: "Which best describes the purpose of standards?", o: ["Encourage ideas without evaluation", "Provide criteria to assess quality and effectiveness of thinking", "Ensure arguments support personal beliefs", "Simplify complex issues"], a: 1 },
-            { c: 8, q: "The Paul-Elder Framework outlines how many standards?", o: ["6", "8", "10", "12"], a: 1 },
+            { c: 8, q: "What is the primary purpose of the Paul-Elder Critical Thinking Framework?", o: ["To measure a person's intelligence quotient through standardised tests", "To provide criteria and benchmarks for assessing the quality and effectiveness of thinking", "To outline a step-by-step process for scientific experimentation", "To classify different personality types and their reasoning styles"], a: 1 },
             { c: 8, q: "'Clarity' involves:", o: ["Using vague language", "Expressing ideas clearly, concisely, and understandably", "Keeping ideas ambiguous", "Avoiding examples"], a: 1 },
             { c: 8, q: "'Accuracy' requires:", o: ["Approximate info is fine", "Thinking with precision and correctness, ensuring reliability", "Personal feelings matter most", "Only secondary sources"], a: 1 },
             { c: 8, q: "Which standard focuses on ensuring info is correct, reliable, and evidence-based?", o: ["Accuracy", "Breadth", "Logic", "Relevance"], a: 0 },
@@ -873,6 +982,106 @@
             { c: 8, q: "Exploring a topic only at surface level needs improvement in:", o: ["Clarity", "Precision", "Depth", "Breadth"], a: 2 },
             { c: 8, q: "Ensuring conclusions are based on evidence and sound logic relates to:", o: ["Clarity", "Accuracy", "Logic", "Fairness"], a: 2 },
             { c: 8, q: "A politician claims a policy is good without addressing downsides. This lacks:", o: ["Precision", "Breadth", "Accuracy", "Clarity"], a: 1 },
+
+            // ═══ CH1: ADDITIONAL QUESTIONS ═══
+            { c: 1, q: "'Reflection' as a basic concept of critical thinking involves:", o: ["Ignoring personal biases", "Thinking about one's own thinking and learning from experience", "Accepting conclusions at face value", "Focusing only on others' viewpoints"], a: 1 },
+            { c: 1, q: "Which basic concept of critical thinking relates to selecting the best course of action after carefully evaluating available options?", o: ["Analysis", "Context", "Decision-Making", "Reasoning"], a: 2 },
+            { c: 1, q: "'Communication' as a basic concept in critical thinking refers to:", o: ["Expressing ideas impulsively without structure", "Clearly expressing thoughts, arguments, and reasoning to others", "Avoiding discussions to prevent conflict", "Repeating information without analysis"], a: 1 },
+            { c: 1, q: "Self-Regulation as a key aspect of critical thinking means:", o: ["Controlling others' behaviour in group settings", "Monitoring and correcting one's own thinking processes and biases", "Strictly following routines without deviation", "Avoiding all emotional involvement in decisions"], a: 1 },
+            { c: 1, q: "Which key aspect of critical thinking involves expressing the results of your analysis clearly and coherently?", o: ["Inference", "Interpretation", "Open-mindedness", "Explanation"], a: 3 },
+            { c: 1, q: "'Evaluation' as a key aspect of critical thinking means:", o: ["Judging only on first impressions", "Assessing the credibility and quality of arguments, evidence, and claims", "Accepting all peer-reviewed claims automatically", "Avoiding judgments about others' work"], a: 1 },
+            { c: 1, q: "Which benefit of critical thinking relates to generating new and original approaches to challenges?", o: ["Memorization", "Creative Solutions", "Emotional Reasoning", "Blind Acceptance"], a: 1 },
+            { c: 1, q: "Critical thinking is important for Financial Literacy because it helps individuals:", o: ["Avoid all investment risks entirely", "Make informed financial decisions and avoid scams or misleading advice", "Follow the crowd in investment trends", "Rely on financial advisors without questioning them"], a: 1 },
+            { c: 1, q: "Critical thinking contributes to Mental Health by:", o: ["Eliminating all stress completely", "Helping individuals process and manage emotional challenges more rationally", "Avoiding all difficult personal reflections", "Focusing only on positive emotions"], a: 1 },
+            { c: 1, q: "Critical thinking fosters adaptability by enabling individuals to:", o: ["Resist all changes to maintain stability", "Stick to established routines regardless of new information", "Adjust their thinking and strategies when faced with new information or environments", "Rely on past decisions without reconsideration"], a: 2 },
+            { c: 1, q: "A patient researches treatment options, asks their doctor critical questions, and weighs risks before deciding. Which necessity does this reflect?", o: ["Career Success", "Civic Engagement", "Health & Wellbeing", "Financial Literacy"], a: 2 },
+            { c: 1, q: "Critical Media Consumption as a necessity of critical thinking helps people:", o: ["Accept all media content without question", "Identify misinformation, propaganda, and biases in media", "Avoid consuming any media content", "Only consume entertainment media"], a: 1 },
+
+            // ═══ CH2: ADDITIONAL QUESTIONS ═══
+            { c: 2, q: "Objectivity as a key aspect of logical thinking means:", o: ["Making decisions based on personal feelings", "Basing judgments on facts and evidence rather than personal bias", "Considering only majority opinions", "Avoiding all subjective information entirely"], a: 1 },
+            { c: 2, q: "Which key aspect of logical thinking involves being receptive to new evidence even when it contradicts current beliefs?", o: ["Analytical Thinking", "Rationality", "Open-Mindedness", "Consistency"], a: 2 },
+            { c: 2, q: "Pattern Recognition in logical thinking involves:", o: ["Creating random sequences of data", "Identifying regularities and connections across multiple pieces of information", "Memorizing sequences without understanding them", "Avoiding all generalizations"], a: 1 },
+            { c: 2, q: "Which key aspect of logical thinking involves systematically breaking down problems into components for detailed examination?", o: ["Deductive Reasoning", "Analytical Thinking", "Counterargument", "Consistency"], a: 1 },
+            { c: 2, q: "The Problem-Solving Approach in logical thinking means:", o: ["Using intuition exclusively", "Applying logical frameworks to approach challenges in an organised and systematic way", "Avoiding structured methods", "Accepting the first viable solution without evaluation"], a: 1 },
+            { c: 2, q: "Detecting logical fallacies is an application of logical elements because it:", o: ["Strengthens the emotional appeal of an argument", "Helps identify flaws in reasoning that weaken an argument's validity", "Reduces the need for evidence", "Supports confirmation bias"], a: 1 },
+            { c: 2, q: "Which application of logical elements involves considering the potential consequences of an action before deciding?", o: ["Evaluating premises", "Assessing implications", "Testing validity", "Checking clarity"], a: 1 },
+            { c: 2, q: "Logical thinking is best described as:", o: ["Reasoning based on personal emotions", "The process of using reasoning consistently to arrive at a conclusion", "Memorizing logical rules without applying them", "Accepting premises without questioning"], a: 1 },
+            { c: 2, q: "A debater states: 'All politicians are corrupt; Hana is a politician; therefore Hana is corrupt.' This argument is:", o: ["Valid and sound", "Valid in form but potentially unsound due to a questionable premise", "Invalid and unsound", "Sound but invalid"], a: 1 },
+            { c: 2, q: "When a logical argument's conclusion does NOT follow from its premises, it is described as:", o: ["Inconsistent", "Irrelevant", "Invalid", "Unsound"], a: 2 },
+            { c: 2, q: "Which element of logic ensures that an argument does not contain self-contradictions?", o: ["Validity", "Relevance", "Consistency", "Soundness"], a: 2 },
+            { c: 2, q: "Clarity and Coherence in logical thinking refers to:", o: ["Using complex jargon to appear authoritative", "Expressing thoughts clearly and in an organised manner to avoid misunderstandings", "Keeping ideas intentionally vague", "Avoiding structured arguments"], a: 1 },
+
+            // ═══ CH3: ADDITIONAL QUESTIONS ═══
+            { c: 3, q: "The 'Take Notes' step in gathering information is important because:", o: ["Notes are never needed for analysis", "Recording information helps retain, organise, and reference key points during analysis", "Notes replace the need for critical thinking", "Taking notes slows down the research process unnecessarily"], a: 1 },
+            { c: 3, q: "Using a variety of sources when gathering information helps:", o: ["Create confusion by presenting too many views", "Ensure a more well-rounded and comprehensive understanding of the topic", "Replace the need for evaluating individual sources", "Simplify analysis by narrowing the scope"], a: 1 },
+            { c: 3, q: "Which method of identifying problems involves gathering feedback from those affected by a situation?", o: ["Environmental Scanning", "Data Analysis", "Stakeholder Feedback", "SWOT Analysis"], a: 2 },
+            { c: 3, q: "Data Analysis helps identify problems by:", o: ["Replacing qualitative research entirely", "Examining patterns, trends, and anomalies in collected data", "Avoiding the use of numbers in analysis", "Focusing only on past performance"], a: 1 },
+            { c: 3, q: "Root cause analysis is a key step in solving problems because:", o: ["It focuses on treating symptoms rather than causes", "Identifying the underlying cause prevents the problem from recurring", "It eliminates the need for data collection", "It replaces the need for brainstorming solutions"], a: 1 },
+            { c: 3, q: "Which step in evaluating information involves determining if a source is credible, current, and relevant?", o: ["Define Your Purpose", "Take Notes", "Assess Source Credibility", "Formulate Your Conclusion"], a: 2 },
+            { c: 3, q: "Brainstorming as a method to identify problems helps by:", o: ["Limiting ideas to ensure quality", "Generating a wide range of potential explanations or issues", "Avoiding group input", "Focusing on a single hypothesis"], a: 1 },
+            { c: 3, q: "Self-observation as a way to identify problems means:", o: ["Ignoring your own behaviours", "Monitoring your own performance to spot inefficiencies or recurring challenges", "Relying entirely on external feedback", "Avoiding introspection in professional settings"], a: 1 },
+            { c: 3, q: "The purpose of gathering information in analytical problem-solving is to:", o: ["Confirm pre-existing assumptions", "Collect a broad range of relevant data to inform accurate analysis", "Speed up the decision without deeper investigation", "Limit the scope of analysis"], a: 1 },
+            { c: 3, q: "A student identifies a knowledge gap, researches multiple sources, takes notes, and forms a conclusion. This describes:", o: ["Emotional reasoning", "Gathering and evaluating information analytically", "Memorization", "Following instructions without reflection"], a: 1 },
+
+            // ═══ CH4: ADDITIONAL QUESTIONS ═══
+            { c: 4, q: "The 'Implement the Solution' step in the problem-solving process involves:", o: ["Planning without action", "Putting the chosen solution into practice", "Evaluating alternatives", "Defining the problem"], a: 1 },
+            { c: 4, q: "Reviewing results after implementation is important because:", o: ["It confirms the solution is always perfect", "It identifies whether the solution worked and guides future improvements", "It replaces the need to define the problem", "It eliminates all future problems"], a: 1 },
+            { c: 4, q: "The circular nature of the problem-solving process implies:", o: ["Problems are only solved once", "After reviewing results, new problems may be identified and the process begins again", "Each stage is optional", "The process always ends at implementation"], a: 1 },
+            { c: 4, q: "Heuristics were introduced and studied by which scholars?", o: ["Paul and Elder", "Kaufman and Beghetto", "Tversky and Kahneman", "Maslow and Rogers"], a: 2 },
+            { c: 4, q: "Which is a recognised advantage of using heuristics?", o: ["They always produce optimal outcomes", "They allow quick decisions when extensive analysis is not feasible", "They eliminate cognitive biases completely", "They work equally well in all situations"], a: 1 },
+            { c: 4, q: "In problem-solving, the 'Generate Solutions' stage involves:", o: ["Choosing the first available option", "Listing possible approaches while suspending judgment", "Analysing the root cause only", "Implementing the plan immediately"], a: 1 },
+            { c: 4, q: "SWOT analysis can be applied to personal career planning by:", o: ["Only assessing external threats", "Evaluating personal strengths, development areas, career opportunities, and risks", "Ignoring internal factors", "Focusing solely on salary comparison"], a: 1 },
+            { c: 4, q: "In the 5-stage problem-solving model, 'Evaluate Solutions' involves:", o: ["Defining what the problem is", "Brainstorming without limits", "Analysing the pros and cons of each possible solution", "Deciding immediately without analysis"], a: 2 },
+            { c: 4, q: "A business experiencing declining sales brainstorms discounts, new products, and marketing campaigns. Which stage is this?", o: ["Define the Problem", "Generate Solutions", "Evaluate Solutions", "Make a Plan"], a: 1 },
+            { c: 4, q: "After flooding, citizens discuss drainage, flood walls, and relocation. After picking the best option, they create a timeline. Which stage is creating the timeline?", o: ["Generate Solutions", "Evaluate Solutions", "Pick a Solution", "Make a Plan"], a: 3 },
+
+            // ═══ CH5: ADDITIONAL QUESTIONS ═══
+            { c: 5, q: "'Purpose' in the OPVL framework asks:", o: ["What are the source's limitations?", "Why was this source created and what is its intended audience?", "Who is the author of this source?", "How useful is this source for the current topic?"], a: 1 },
+            { c: 5, q: "Health Assessment evaluates:", o: ["Career performance based on KPIs", "An individual's health status using clinical tests and observations", "Financial risk levels", "Academic achievement over a semester"], a: 1 },
+            { c: 5, q: "Which key element of critical judgment involves carefully examining and interpreting information?", o: ["Contextualization", "Judgment", "Analysis", "Synthesis"], a: 2 },
+            { c: 5, q: "'Judgment' in critical thinking means:", o: ["Making snap decisions based on first impressions", "Making well-reasoned evaluations by weighing evidence and applying criteria", "Accepting conclusions from trusted sources automatically", "Avoiding decisions in ambiguous situations"], a: 1 },
+            { c: 5, q: "'Feedback' as a key element of assessment refers to:", o: ["Ignoring evaluation results", "Providing information about performance to guide improvement", "Only assigning grades without explanation", "Telling the assessed person they failed"], a: 1 },
+            { c: 5, q: "Which section of a case study presents the core content, including evidence, data, and analysis?", o: ["Introduction", "Body", "Conclusion", "Appendix"], a: 1 },
+            { c: 5, q: "The 'Conclusion' section of a case study should:", o: ["Introduce the background context", "Present the main data and analysis", "Summarise findings and evaluate the effectiveness of solutions", "List references only"], a: 2 },
+            { c: 5, q: "Criteria in assessment are best described as:", o: ["Random standards based on personal preference", "Clear and specific benchmarks used to evaluate performance", "General impressions of quality", "Emotional responses to work quality"], a: 1 },
+            { c: 5, q: "'Real-context problem solving' differs from theoretical problem solving because:", o: ["It avoids data collection", "It applies critical thinking to genuine, complex real-world situations", "It uses only textbook methods", "It ignores stakeholder perspectives"], a: 1 },
+            { c: 5, q: "A nurse evaluates a patient's vital signs, test results, and medical history before recommending treatment. This is an example of:", o: ["Health Assessment", "Performance Assessment", "Educational Assessment", "Self-Assessment"], a: 0 },
+
+            // ═══ CH6: ADDITIONAL QUESTIONS ═══
+            { c: 6, q: "Which brainstorming tip involves using diagrams or visual representations to stimulate idea generation?", o: ["Tip 1: Let ideas flow", "Tip 2: Build on ideas", "Tip 3: Visual brainstorming", "Tip 4: Make alternative plans"], a: 2 },
+            { c: 6, q: "'Build on ideas' as a brainstorming tip means:", o: ["Dismissing others' ideas quickly", "Using existing ideas as a springboard to create or improve upon new ones", "Working alone without collaboration", "Limiting the number of ideas generated"], a: 1 },
+            { c: 6, q: "Creative thinking contributes to critical thinking by enabling:", o: ["Rigid problem-solving approaches only", "Divergent thinking that explores multiple possibilities before convergent analysis", "Avoiding analytical frameworks", "Restricting solutions to proven methods"], a: 1 },
+            { c: 6, q: "Which aspect of the creativity-CT relationship involves articulating creative ideas clearly and persuasively?", o: ["Open-mindedness and Flexibility", "Divergent Thinking", "Communication and Expression", "Continuous Improvement"], a: 2 },
+            { c: 6, q: "An 'Aha moment' in creativity refers to:", o: ["A planned, step-by-step discovery process", "A sudden insight or realisation that leads to a creative breakthrough", "A conclusion reached through pure deductive reasoning", "A memorised solution applied to a familiar problem"], a: 1 },
+            { c: 6, q: "Convergent thinking in the context of creativity and critical thinking involves:", o: ["Generating as many ideas as possible without judgment", "Narrowing down multiple ideas to identify the best solution", "Avoiding all structured approaches", "Focusing only on artistic expression"], a: 1 },
+            { c: 6, q: "Critical thinking helps evaluate creative ideas by assessing whether they are:", o: ["Emotionally appealing to the creator", "Feasible, logical, and practical in context", "Supported by the greatest number of people", "Entirely original with no prior inspiration"], a: 1 },
+            { c: 6, q: "A musician who trained for a decade releases professional albums recognised by critics but is not yet a historical legend. This represents:", o: ["Mini-c", "Little-c", "Pro-c", "Big-C"], a: 2 },
+            { c: 6, q: "Which statement best illustrates the relationship between creativity and innovation?", o: ["Creativity and innovation are separate, unrelated processes", "Innovation generates ideas; creativity implements them", "Creativity is the source of ideas; innovation transforms those ideas into real-world solutions", "Critical thinking replaces the need for creativity"], a: 2 },
+            { c: 6, q: "Tip 5 in creative brainstorming advises to 'stay focused' because:", o: ["Focus prevents any new ideas from emerging", "Maintaining direction ensures brainstorming leads to actionable outcomes rather than drifting", "It limits thinking to one perspective", "Staying focused replaces the need for visual brainstorming"], a: 1 },
+
+            // ═══ CH7: ADDITIONAL QUESTIONS ═══
+            { c: 7, q: "Which of the following is NOT listed as a method to overcome barriers to critical thinking?", o: ["Expanding thinking", "Accepting new challenges", "Rewarding", "Stereotyping others"], a: 3 },
+            { c: 7, q: "'Rewarding' as a method to overcome barriers to critical thinking involves:", o: ["Punishing those who challenge the group", "Acknowledging and reinforcing open-minded and analytical thinking behaviours", "Ignoring achievements in critical reasoning", "Rewarding conformity to avoid conflict"], a: 1 },
+            { c: 7, q: "Practising intellectual humility primarily helps overcome which barrier?", o: ["Discomfort with uncertainty", "Egocentrism", "Lack of information", "Groupthink"], a: 1 },
+            { c: 7, q: "Seeking diverse perspectives is a strategy that primarily helps overcome:", o: ["Lack of Information", "Uncontrolled Emotions", "Egocentrism and Sociocentrism", "Discomfort with Uncertainty"], a: 2 },
+            { c: 7, q: "Education and continuous learning as a way to overcome barriers primarily addresses:", o: ["Groupthink", "Lack of Knowledge and Information", "Uncontrolled Emotions", "Egocentrism"], a: 1 },
+            { c: 7, q: "A team leader actively encourages dissenting opinions and devil's advocacy to prevent:", o: ["Confirmation bias", "Stereotyping", "Groupthink", "Egocentrism"], a: 2 },
+            { c: 7, q: "A researcher notices they only cite studies supporting their hypothesis. Recognising this and deliberately seeking contradicting research addresses:", o: ["Sociocentrism", "Groupthink", "Confirmation Bias", "Lack of Information"], a: 2 },
+            { c: 7, q: "Uncontrolled emotions act as a barrier to critical thinking because they:", o: ["Enhance rational decision-making", "Cloud judgment and prevent objective analysis", "Promote open-mindedness", "Strengthen logical reasoning"], a: 1 },
+            { c: 7, q: "Which barrier involves a whole group failing to think critically due to social pressure to conform?", o: ["Egocentrism", "Sociocentrism", "Stereotyping", "Groupthink"], a: 3 },
+            { c: 7, q: "Developing emotional regulation skills helps overcome which barrier to critical thinking?", o: ["Stereotyping", "Groupthink", "Uncontrolled Emotions", "Sociocentrism"], a: 2 },
+
+            // ═══ CH8: ADDITIONAL QUESTIONS ═══
+            { c: 8, q: "A key question for the 'Accuracy' standard is:", o: ["Can you elaborate on that point?", "How does this relate to the issue?", "Can you verify that information?", "What are the underlying assumptions?"], a: 2 },
+            { c: 8, q: "A key question for the 'Breadth' standard is:", o: ["Can you be more specific?", "Are there fallacies in the reasoning?", "What alternative viewpoints should be considered?", "Can you verify the facts?"], a: 2 },
+            { c: 8, q: "A key question for the 'Logic' standard is:", o: ["Can you elaborate on that?", "How does this relate to the issue?", "What are the underlying assumptions?", "Do the conclusions follow from the premises?"], a: 3 },
+            { c: 8, q: "Which standard ensures that all important considerations and perspectives are included and not overlooked?", o: ["Clarity", "Precision", "Relevance", "Breadth"], a: 3 },
+            { c: 8, q: "Applying the 'Depth' standard to a problem means:", o: ["Summarising the main point briefly", "Exploring contributing factors, complexities, and underlying issues thoroughly", "Including as many perspectives as possible", "Verifying that all facts are accurate"], a: 1 },
+            { c: 8, q: "A student supports their entire argument with only personal anecdotes instead of verified evidence. Their argument most clearly lacks:", o: ["Breadth", "Relevance", "Accuracy", "Clarity"], a: 2 },
+            { c: 8, q: "An essay explores a social issue from economic, political, and cultural angles. This primarily demonstrates:", o: ["Precision", "Depth", "Breadth", "Logic"], a: 2 },
+            { c: 8, q: "Which combination of standards is MOST directly relevant when crafting a thesis statement?", o: ["Clarity and Precision", "Breadth and Depth", "Logic and Fairness", "Accuracy and Relevance"], a: 0 },
+            { c: 8, q: "An argument's conclusion does not logically follow from its premises despite being internally consistent. Which standard is violated?", o: ["Accuracy", "Depth", "Logic", "Fairness"], a: 2 },
+            { c: 8, q: "A manager presents a report that is well-organised and easy to understand but contains factual errors. Which standard is MOST violated?", o: ["Clarity", "Accuracy", "Breadth", "Logic"], a: 1 },
         ];
 
         const CH = { 1: { n: "Intro to Critical Thinking", cl: "var(--ch1)" }, 2: { n: "Elements of Logic", cl: "var(--ch2)" }, 3: { n: "Analytical Skills", cl: "var(--ch3)" }, 4: { n: "Problem Solving", cl: "var(--ch4)" }, 5: { n: "Assessment & Critical Judgement", cl: "var(--ch5)" }, 6: { n: "Creativity & Innovation", cl: "var(--ch6)" }, 7: { n: "Barriers to Critical Thinking", cl: "var(--ch7)" }, 8: { n: "Critical Thinking Standards", cl: "var(--ch8)" } };
