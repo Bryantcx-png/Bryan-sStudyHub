@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MPU 3212 Critical Thinking — Quiz Bank</title>
     <link rel="icon" type="image/png" href="web_icon.png">
+    <!-- Preconnect to Firebase & Google CDN for faster loads on all browsers -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap"
         rel="stylesheet">
@@ -729,6 +735,44 @@
         .pct-lo { background: var(--no-bg); color: var(--no) }
 
 
+        /* ── Wrong-questions badge & graduate toggle ── */
+        .wbadge {
+            display: inline-block;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--no);
+            margin-left: 4px;
+            vertical-align: middle
+        }
+
+        #graduate-wrap {
+            text-align: right;
+            margin: 6px 0 2px
+        }
+
+        #graduate-wrap label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--ok);
+            cursor: pointer;
+            user-select: none;
+            background: var(--ok-bg);
+            padding: 5px 11px;
+            border-radius: 6px;
+            border: 1px solid var(--ok)
+        }
+
+        #graduate-wrap input[type="checkbox"] {
+            accent-color: var(--ok);
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            flex-shrink: 0
+        }
+
         @media(max-width:600px) {
             .ms {
                 flex-direction: column
@@ -820,6 +864,7 @@
             <div class="smart-sub" id="smart-sub">
                 <button onclick="go('unanswered')">Unanswered Only<span>Only questions you haven't seen yet.</span></button>
                 <button onclick="go('mixed')">Mixed<span>Unanswered first, then seen questions.</span></button>
+                <button onclick="go('retry-wrong')" id="retry-wrong-btn" style="display:none">Retry Wrong<span id="wrong-count-badge" class="wbadge">0</span><span>Redo every question you've gotten wrong across all sessions.</span></button>
             </div>
             <p class="si" id="SI"></p>
         </div>
@@ -829,6 +874,13 @@
                 <div class="pb">
                     <div class="pf" id="PF"></div>
                 </div>
+            </div>
+            <!-- Graduate toggle: shown in Retry Wrong mode when answered correctly -->
+            <div id="graduate-wrap" style="display:none">
+                <label>
+                    <input type="checkbox" id="graduate-cb" checked>
+                    Remove from wrong list
+                </label>
             </div>
             <div class="ct" id="CT"></div>
             <div class="qt" id="QT"></div>
@@ -1221,6 +1273,7 @@
 
         let quiz = [], ci = 0, results = [], sel = new Set([1, 2, 3, 4, 5, 6, 7, 8]), quizMode = '';
         let bankAnswered = new Set();
+        let wrongQs = new Set(); // indices of all questions ever answered wrong
 
         function toggleSmart() {
             const sub = document.getElementById('smart-sub');
@@ -1241,24 +1294,30 @@
         function sh(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
 
         function go(mode) {
-            if (!sel.size) { alert('Select at least one chapter.'); return; }
             ci = 0; results = []; quizMode = mode;
-            const pool = Q.filter(x => sel.has(x.c));
-            if (mode === 'full') { quiz = sh([...pool]); }
-            else if (mode === 'unanswered') {
-                const unseen = pool.filter(q => !bankAnswered.has(Q.indexOf(q)));
-                if (!unseen.length) { alert('You\'ve already answered all questions in the selected chapters! Try Mixed or Full Bank.'); return; }
-                quiz = sh(unseen).slice(0, 40);
+            if (mode === 'retry-wrong') {
+                if (!wrongQs.size) { alert('No wrong questions recorded yet — complete a quiz first!'); return; }
+                quiz = sh(Q.filter((_, i) => wrongQs.has(i)));
+            } else {
+                if (!sel.size) { alert('Select at least one chapter.'); return; }
+                const pool = Q.filter(x => sel.has(x.c));
+                if (mode === 'full') { quiz = sh([...pool]); }
+                else if (mode === 'unanswered') {
+                    const unseen = pool.filter(q => !bankAnswered.has(Q.indexOf(q)));
+                    if (!unseen.length) { alert('You\'ve already answered all questions in the selected chapters! Try Mixed or Full Bank.'); return; }
+                    quiz = sh(unseen).slice(0, 40);
+                }
+                else if (mode === 'mixed') {
+                    const unseen = sh(pool.filter(q => !bankAnswered.has(Q.indexOf(q))));
+                    const seen   = sh(pool.filter(q =>  bankAnswered.has(Q.indexOf(q))));
+                    const need   = Math.max(0, 40 - unseen.length);
+                    quiz = sh([...unseen, ...seen.slice(0, need)]).slice(0, 40);
+                    if (!quiz.length) { alert('No questions available. Try Full Bank instead.'); return; }
+                }
+                else { let pk = [], chs = [...sel], per = Math.max(1, Math.floor(40 / chs.length)), ex = 40 - per * chs.length; chs.forEach((c, i) => { let cq = sh(pool.filter(x => x.c === c)); pk.push(...cq.slice(0, per + (i < ex ? 1 : 0))); }); quiz = sh(pk); if (quiz.length > 40) quiz = quiz.slice(0, 40); }
             }
-            else if (mode === 'mixed') {
-                const unseen = sh(pool.filter(q => !bankAnswered.has(Q.indexOf(q))));
-                const seen   = sh(pool.filter(q =>  bankAnswered.has(Q.indexOf(q))));
-                const need   = Math.max(0, 40 - unseen.length);
-                quiz = sh([...unseen, ...seen.slice(0, need)]).slice(0, 40);
-                if (!quiz.length) { alert('No questions available. Try Full Bank instead.'); return; }
-            }
-            else { let pk = [], chs = [...sel], per = Math.max(1, Math.floor(40 / chs.length)), ex = 40 - per * chs.length; chs.forEach((c, i) => { let cq = sh(pool.filter(x => x.c === c)); pk.push(...cq.slice(0, per + (i < ex ? 1 : 0))); }); quiz = sh(pk); if (quiz.length > 40) quiz = quiz.slice(0, 40); }
             results = quiz.map(() => null);
+            document.getElementById('graduate-wrap').style.display = 'none';
             document.getElementById('S').style.display = 'none';
             document.getElementById('QS').style.display = 'block';
             document.getElementById('home-link').style.display = 'none';
@@ -1291,10 +1350,47 @@
             results[ci] = { q: q.q, ch: q.c, ua: text, ca: q.o[correct], ok };
             const nb = document.getElementById('NB'); nb.disabled = false;
             if (ci === quiz.length - 1) { nb.textContent = 'See Results'; nb.className = 'nb pr'; }
+            // In Retry Wrong mode: show graduate toggle only when correct
+            if (quizMode === 'retry-wrong') {
+                const wrap = document.getElementById('graduate-wrap');
+                wrap.style.display = ok ? '' : 'none';
+                if (ok) document.getElementById('graduate-cb').checked = true;
+            }
         }
 
-        function nq() { if (results[ci] === null) return; if (ci >= quiz.length - 1) { sR(); return; } ci++; sQ(); }
+        function nq() {
+            if (results[ci] === null) return;
+            // Retry Wrong: process graduation decision before advancing
+            if (quizMode === 'retry-wrong' && results[ci] && results[ci].ok) {
+                if (document.getElementById('graduate-cb').checked) graduateQuestion(quiz[ci]);
+            }
+            document.getElementById('graduate-wrap').style.display = 'none';
+            if (ci >= quiz.length - 1) { sR(); return; }
+            ci++; sQ();
+        }
         function pq() { if (ci <= 0) return; ci--; sQ(); }
+
+        function graduateQuestion(q) {
+            const qIdx = Q.indexOf(q);
+            if (qIdx === -1) return;
+            wrongQs.delete(qIdx);
+            updateWrongBadge();
+            if (currentUid) {
+                db.collection('users').doc(currentUid).collection('progress')
+                  .doc('critical-thinking').set(
+                    { wrongIds: firebase.firestore.FieldValue.arrayRemove(qIdx) },
+                    { merge: true }
+                  );
+            }
+        }
+
+        function updateWrongBadge() {
+            const n = wrongQs.size;
+            const btn = document.getElementById('retry-wrong-btn');
+            const badge = document.getElementById('wrong-count-badge');
+            if (btn) btn.style.display = n > 0 ? '' : 'none';
+            if (badge) badge.textContent = n;
+        }
 
         function sR() {
             document.getElementById('QS').style.display = 'none';
@@ -1334,10 +1430,23 @@
                 answeredIds: firebase.firestore.FieldValue.arrayUnion(...answeredIds),
                 totalBank: Q.length
             }, { merge: true });
+            // Track newly wrong questions (skip retry-wrong; graduations handled per-question)
+            if (quizMode !== 'retry-wrong') {
+                const newWrong = quiz
+                    .map((q, i) => (results[i] && !results[i].ok) ? Q.indexOf(q) : -1)
+                    .filter(i => i !== -1);
+                if (newWrong.length) {
+                    newWrong.forEach(i => wrongQs.add(i));
+                    updateWrongBadge();
+                    fdb.collection('users').doc(uid).collection('progress').doc('critical-thinking').set({
+                        wrongIds: firebase.firestore.FieldValue.arrayUnion(...newWrong)
+                    }, { merge: true });
+                }
+            }
         }
 
         function tRev() { const s = document.getElementById('RV'); s.classList.toggle('hid'); const b = document.getElementById('TB'), w = results.filter(r => r && !r.ok).length; b.textContent = s.classList.contains('hid') ? `View Wrong Answers (${w})` : 'Hide Wrong Answers'; }
-        function goHome() { Q.forEach(q => delete q._s); document.getElementById('QS').style.display = 'none'; document.getElementById('RS').style.display = 'none'; document.getElementById('RV').classList.add('hid'); document.getElementById('result-image-container').style.display = 'none'; document.getElementById('S').style.display = ''; document.getElementById('home-link').style.display = ''; document.getElementById('back-link').style.display = 'none'; quiz = []; ci = 0; results = []; }
+        function goHome() { Q.forEach(q => delete q._s); document.getElementById('QS').style.display = 'none'; document.getElementById('RS').style.display = 'none'; document.getElementById('RV').classList.add('hid'); document.getElementById('result-image-container').style.display = 'none'; document.getElementById('graduate-wrap').style.display = 'none'; document.getElementById('S').style.display = ''; document.getElementById('home-link').style.display = ''; document.getElementById('back-link').style.display = 'none'; quiz = []; ci = 0; results = []; }
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -1347,10 +1456,15 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db   = firebase.firestore();
+        // SESSION persistence avoids Safari's slow IndexedDB auth lookup
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
 
         let currentUid = null;
 
+        // Safari can stall on auth — redirect to login if no response in 8s
+        const _authTimeout = setTimeout(() => window.location.href = 'login.html', 8000);
         auth.onAuthStateChanged(user => {
+            clearTimeout(_authTimeout);
             if (!user) {
                 window.location.href = 'login.html';
             } else {
@@ -1365,8 +1479,10 @@
             db.collection('users').doc(uid).collection('progress').doc('critical-thinking').get()
                 .then(doc => {
                     if (!doc.exists) return;
-                    const { answeredIds = [], totalBank = 0 } = doc.data();
+                    const { answeredIds = [], wrongIds = [], totalBank = 0 } = doc.data();
                     bankAnswered = new Set(answeredIds);
+                    wrongQs = new Set(wrongIds);
+                    updateWrongBadge();
                     const answered = answeredIds.length;
                     const unansCount = Math.max(0, (totalBank || Q.length) - answered);
                     const sd = document.getElementById('smart-desc');

@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin — Bryan's Study Hub</title>
     <link rel="icon" type="image/png" href="web_icon.png">
+    <!-- Preconnect to Firebase & Google CDN for faster loads on all browsers -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -367,10 +373,15 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db   = firebase.firestore();
+        // SESSION persistence avoids Safari's slow IndexedDB auth lookup
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
 
         let allUsers = []; // cache for search
 
+        // Safari can stall on auth — redirect to login if no response in 8s
+        const _authTimeout = setTimeout(() => window.location.href = 'login.html', 8000);
         auth.onAuthStateChanged(async user => {
+            clearTimeout(_authTimeout);
             if (!user) { window.location.href = 'login.html'; return; }
             document.getElementById('admin-email').textContent = user.displayName || user.email;
             document.body.style.display = '';
