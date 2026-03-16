@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MPU 3212 Critical Thinking — Quiz Bank</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap"
         rel="stylesheet">
@@ -642,7 +643,7 @@
 
 <body style="display:none">
     <div class="c">
-        <div class="topbar"><span>MPU 3212 Critical Thinking</span><div style="display:flex;align-items:center;gap:14px"><a href="index.html" style="font-size:.82rem;color:var(--accent);font-weight:500;text-decoration:none;font-family:inherit">← Home</a><button onclick="signOut()" style="font-size:.82rem;color:var(--text2);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">Sign out</button></div></div>
+        <div class="topbar"><span>MPU 3212 Critical Thinking</span><div style="display:flex;align-items:center;gap:14px"><a id="home-link" href="index.html" style="font-size:.82rem;color:var(--accent);font-weight:500;text-decoration:none;font-family:inherit">← Home</a><button id="back-link" onclick="goHome()" style="display:none;font-size:.82rem;color:var(--accent);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">← Back to Selection</button><button onclick="signOut()" style="font-size:.82rem;color:var(--text2);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">Sign out</button></div></div>
         <div class="ss" id="S">
             <h1>Critical Thinking Quiz Bank</h1>
             <p class="sub">Sunway University — Select chapters and start practicing.</p>
@@ -713,7 +714,6 @@
             <div class="ct" id="CT"></div>
             <div class="qt" id="QT"></div>
             <div class="opts" id="OW"></div>
-            <div class="fb" id="FB"><span id="FT"></span></div>
             <div class="nr"><button class="nb" id="PB" onclick="pq()">Previous</button><button class="nb pr" id="NB"
                     onclick="nq()">Next</button></div>
         </div>
@@ -1122,6 +1122,8 @@
             results = quiz.map(() => null);
             document.getElementById('S').style.display = 'none';
             document.getElementById('QS').style.display = 'block';
+            document.getElementById('home-link').style.display = 'none';
+            document.getElementById('back-link').style.display = '';
             sQ();
         }
 
@@ -1136,9 +1138,6 @@
             if (!q._s) q._s = sh(q.o.map((o, i) => ({ t: o, i })));
             const w = document.getElementById('OW'); w.innerHTML = '';
             q._s.forEach((op, i) => { const b = document.createElement('button'); b.className = 'ob'; if (ans) { b.classList.add('dis'); const r = results[ci]; if (op.i === q.a) b.classList.add('ok'); if (op.t === r.ua && !r.ok) b.classList.add('no'); } b.innerHTML = `<span class="le">${L[i]}</span><span>${op.t}</span>`; if (!ans) b.onclick = () => pick(b, op.i, q.a, op.t); w.appendChild(b); });
-            const fb = document.getElementById('FB');
-            if (ans) { const r = results[ci]; fb.className = `fb sh ${r.ok ? 'fc' : 'fw'}`; document.getElementById('FT').textContent = r.ok ? 'Correct' : 'Incorrect — the correct answer is highlighted above.'; }
-            else { fb.className = 'fb'; }
             document.getElementById('PB').disabled = ci === 0;
             const nb = document.getElementById('NB');
             nb.disabled = !ans;
@@ -1151,7 +1150,6 @@
             document.querySelectorAll('.ob').forEach(b => { b.classList.add('dis'); const t = b.querySelector('span:last-child').textContent; if (q.o.indexOf(t) === correct) b.classList.add('ok'); });
             if (!ok) btn.classList.add('no');
             results[ci] = { q: q.q, ch: q.c, ua: text, ca: q.o[correct], ok };
-            const fb = document.getElementById('FB'); fb.className = `fb sh ${ok ? 'fc' : 'fw'}`; document.getElementById('FT').textContent = ok ? 'Correct' : 'Incorrect — the correct answer is highlighted above.';
             const nb = document.getElementById('NB'); nb.disabled = false;
             if (ci === quiz.length - 1) { nb.textContent = 'See Results'; nb.className = 'nb pr'; }
         }
@@ -1161,6 +1159,8 @@
 
         function sR() {
             document.getElementById('QS').style.display = 'none';
+            document.getElementById('home-link').style.display = 'none';
+            document.getElementById('back-link').style.display = '';
             const rs = document.getElementById('RS'); rs.style.display = 'block';
             document.getElementById('result-image-container').style.display = 'block';
             const ok = results.filter(r => r && r.ok).length, t = quiz.length, pct = Math.round((ok / t) * 100);
@@ -1198,7 +1198,7 @@
         }
 
         function tRev() { const s = document.getElementById('RV'); s.classList.toggle('hid'); const b = document.getElementById('TB'), w = results.filter(r => r && !r.ok).length; b.textContent = s.classList.contains('hid') ? `View Wrong Answers (${w})` : 'Hide Wrong Answers'; }
-        function goHome() { Q.forEach(q => delete q._s); document.getElementById('QS').style.display = 'none'; document.getElementById('RS').style.display = 'none'; document.getElementById('RV').classList.add('hid'); document.getElementById('result-image-container').style.display = 'none'; document.getElementById('S').style.display = ''; quiz = []; ci = 0; results = []; }
+        function goHome() { Q.forEach(q => delete q._s); document.getElementById('QS').style.display = 'none'; document.getElementById('RS').style.display = 'none'; document.getElementById('RV').classList.add('hid'); document.getElementById('result-image-container').style.display = 'none'; document.getElementById('S').style.display = ''; document.getElementById('home-link').style.display = ''; document.getElementById('back-link').style.display = 'none'; quiz = []; ci = 0; results = []; }
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
