@@ -1086,7 +1086,7 @@
 
         const CH = { 1: { n: "Intro to Critical Thinking", cl: "var(--ch1)" }, 2: { n: "Elements of Logic", cl: "var(--ch2)" }, 3: { n: "Analytical Skills", cl: "var(--ch3)" }, 4: { n: "Problem Solving", cl: "var(--ch4)" }, 5: { n: "Assessment & Critical Judgement", cl: "var(--ch5)" }, 6: { n: "Creativity & Innovation", cl: "var(--ch6)" }, 7: { n: "Barriers to Critical Thinking", cl: "var(--ch7)" }, 8: { n: "Critical Thinking Standards", cl: "var(--ch8)" } };
 
-        let quiz = [], ci = 0, results = [], sel = new Set([1, 2, 3, 4, 5, 6, 7, 8]);
+        let quiz = [], ci = 0, results = [], sel = new Set([1, 2, 3, 4, 5, 6, 7, 8]), quizMode = '';
 
         (function () {
             const w = document.getElementById('CS');
@@ -1101,7 +1101,7 @@
 
         function go(mode) {
             if (!sel.size) { alert('Select at least one chapter.'); return; }
-            ci = 0; results = [];
+            ci = 0; results = []; quizMode = mode;
             const pool = Q.filter(x => sel.has(x.c));
             if (mode === 'full') { quiz = sh([...pool]); }
             else { let pk = [], chs = [...sel], per = Math.max(1, Math.floor(40 / chs.length)), ex = 40 - per * chs.length; chs.forEach((c, i) => { let cq = sh(pool.filter(x => x.c === c)); pk.push(...cq.slice(0, per + (i < ex ? 1 : 0))); }); quiz = sh(pk); if (quiz.length > 40) quiz = quiz.slice(0, 40); }
@@ -1150,6 +1150,7 @@
             const rs = document.getElementById('RS'); rs.style.display = 'block';
             document.getElementById('result-image-container').style.display = 'block';
             const ok = results.filter(r => r && r.ok).length, t = quiz.length, pct = Math.round((ok / t) * 100);
+            saveSession(ok, t, pct);
             const pe = document.getElementById('RP'); pe.textContent = `${pct}%`; pe.className = 'rp ' + (pct >= 70 ? 'hi' : pct >= 50 ? 'mi' : 'lo');
             document.getElementById('RB').textContent = `${ok} out of ${t} correct`;
             const wr = results.filter(r => r && !r.ok), rl = document.getElementById('RL'); rl.innerHTML = '';
@@ -1159,11 +1160,36 @@
                 wr.forEach((r, i) => { rl.innerHTML += `<div class="ri"><div class="ric">Chapter ${r.ch}: ${CH[r.ch].n}</div><div class="riq">${i + 1}. ${r.q}</div><div class="riy">Your answer: ${r.ua}</div><div class="rik">Correct: ${r.ca}</div></div>`; });
             }
         }
+        function saveSession(correct, total, pct) {
+            if (!firebase.apps.length) return;
+            const user = firebase.auth().currentUser;
+            if (!user) return;
+            const db = firebase.firestore();
+            const uid = user.uid;
+            const answeredIds = quiz.map(q => Q.indexOf(q)).filter(i => i !== -1);
+            // Save session record
+            db.collection('users').doc(uid).collection('sessions').add({
+                subject: 'critical-thinking',
+                date: firebase.firestore.FieldValue.serverTimestamp(),
+                score: correct,
+                total: total,
+                pct: pct,
+                chapters: [...sel].sort((a, b) => a - b),
+                mode: quizMode
+            });
+            // Merge unique answered question indices
+            db.collection('users').doc(uid).collection('progress').doc('critical-thinking').set({
+                answeredIds: firebase.firestore.FieldValue.arrayUnion(...answeredIds),
+                totalBank: Q.length
+            }, { merge: true });
+        }
+
         function tRev() { const s = document.getElementById('RV'); s.classList.toggle('hid'); const b = document.getElementById('TB'), w = results.filter(r => r && !r.ok).length; b.textContent = s.classList.contains('hid') ? `View Wrong Answers (${w})` : 'Hide Wrong Answers'; }
         function goHome() { Q.forEach(q => delete q._s); document.getElementById('QS').style.display = 'none'; document.getElementById('RS').style.display = 'none'; document.getElementById('RV').classList.add('hid'); document.getElementById('result-image-container').style.display = 'none'; document.getElementById('S').style.display = ''; quiz = []; ci = 0; results = []; }
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script>
         firebase.initializeApp(firebaseConfig);
