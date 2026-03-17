@@ -296,6 +296,133 @@
 
         .no-sessions { font-size: .82rem; color: var(--dim); font-style: italic }
 
+        /* Transfer button */
+        .transfer-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 7px 14px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: var(--bg);
+            font-family: inherit;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--text2);
+            cursor: pointer;
+            transition: border-color .15s, color .15s
+        }
+        .transfer-btn:hover { border-color: var(--warn); color: var(--warn) }
+
+        /* Transfer modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+        .modal-overlay.show { display: flex }
+
+        .modal {
+            background: var(--bg);
+            border-radius: 14px;
+            padding: 28px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 40px rgba(0,0,0,.18)
+        }
+
+        .modal h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .modal-sub {
+            font-size: .8rem;
+            color: var(--text2);
+            margin-bottom: 20px
+        }
+
+        .modal-field { margin-bottom: 14px }
+
+        .modal-field label {
+            display: block;
+            font-size: .72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--dim);
+            margin-bottom: 6px
+        }
+
+        .modal-field select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: .88rem;
+            color: var(--text);
+            background: var(--bg);
+            outline: none;
+            cursor: pointer
+        }
+
+        .modal-warn {
+            font-size: .78rem;
+            color: var(--warn);
+            background: #fef3c7;
+            border-radius: 7px;
+            padding: 9px 12px;
+            margin-bottom: 16px
+        }
+
+        .modal-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .82rem;
+            color: var(--text2);
+            margin-bottom: 20px;
+            cursor: pointer
+        }
+
+        .modal-check input { cursor: pointer }
+
+        .modal-btns { display: flex; gap: 10px; justify-content: flex-end }
+
+        .btn-cancel {
+            padding: 8px 18px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: var(--bg);
+            font-family: inherit;
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--text2);
+            cursor: pointer
+        }
+
+        .btn-confirm {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 7px;
+            background: var(--warn);
+            color: #fff;
+            font-family: inherit;
+            font-size: .85rem;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .btn-confirm:disabled { opacity: .6; cursor: default }
+
         /* Loading / empty */
         .loading {
             text-align: center;
@@ -362,6 +489,35 @@
 
             <div class="section-label">Users</div>
             <div id="user-list"><div class="loading">Loading users…</div></div>
+        </div>
+    </div>
+
+    <!-- Transfer Progress Modal -->
+    <div class="modal-overlay" id="transfer-modal" onclick="closeTransferModal(event)">
+        <div class="modal">
+            <h3>Transfer Progress</h3>
+            <p class="modal-sub" id="transfer-sub">Moving progress from <strong id="transfer-from-name"></strong></p>
+
+            <div class="modal-field">
+                <label>Transfer To</label>
+                <select id="transfer-to-select">
+                    <option value="">— Select destination user —</option>
+                </select>
+            </div>
+
+            <div class="modal-warn">
+                ⚠️ This will <strong>overwrite</strong> the destination user's progress and sessions with the source user's data.
+            </div>
+
+            <label class="modal-check">
+                <input type="checkbox" id="clear-source" checked>
+                Clear source user's progress after transfer
+            </label>
+
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeTransferModal()">Cancel</button>
+                <button class="btn-confirm" id="confirm-transfer-btn" onclick="doTransfer()">Transfer</button>
+            </div>
         </div>
     </div>
 
@@ -473,6 +629,10 @@
 
                         <div class="detail-label" style="margin-top:18px">Recent Sessions</div>
                         ${renderSessions(u.sessions)}
+
+                        <button class="transfer-btn" onclick="openTransferModal('${u.uid}')">
+                            ⇄ Transfer Progress to Another User
+                        </button>
                     </div>`;
 
                 list.appendChild(card);
@@ -535,6 +695,98 @@
             const q = document.getElementById('search').value.toLowerCase();
             const filtered = q ? allUsers.filter(u => (u.displayName + ' ' + u.email).toLowerCase().includes(q)) : allUsers;
             renderUsers(filtered);
+        }
+
+        // ── Transfer Progress ──
+        let transferSourceUid = null;
+
+        function openTransferModal(sourceUid) {
+            transferSourceUid = sourceUid;
+            const sourceUser = allUsers.find(u => u.uid === sourceUid);
+            const sourceName = sourceUser ? (sourceUser.displayName || sourceUser.email || 'Unknown') : 'Unknown';
+
+            document.getElementById('transfer-from-name').textContent = sourceName;
+
+            // Populate destination dropdown (exclude source user)
+            const sel = document.getElementById('transfer-to-select');
+            sel.innerHTML = '<option value="">— Select destination user —</option>';
+            allUsers
+                .filter(u => u.uid !== sourceUid)
+                .forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u.uid;
+                    opt.textContent = u.displayName || u.email || u.uid;
+                    sel.appendChild(opt);
+                });
+
+            document.getElementById('confirm-transfer-btn').disabled = false;
+            document.getElementById('transfer-modal').classList.add('show');
+        }
+
+        function closeTransferModal(e) {
+            // Close only if clicking overlay background or cancel button directly
+            if (e && e.target !== document.getElementById('transfer-modal')) return;
+            document.getElementById('transfer-modal').classList.remove('show');
+            transferSourceUid = null;
+        }
+
+        async function doTransfer() {
+            const destUid = document.getElementById('transfer-to-select').value;
+            if (!destUid) { alert('Please select a destination user.'); return; }
+
+            const clearSource = document.getElementById('clear-source').checked;
+            const btn = document.getElementById('confirm-transfer-btn');
+            btn.disabled = true;
+            btn.textContent = 'Transferring…';
+
+            try {
+                const srcBase  = db.collection('users').doc(transferSourceUid);
+                const destBase = db.collection('users').doc(destUid);
+
+                // 1. Fetch all source data
+                const [progDoc, allSessSnap] = await Promise.all([
+                    srcBase.collection('progress').doc('critical-thinking').get(),
+                    srcBase.collection('sessions').get()
+                ]);
+
+                // 2. Write to destination in chunks of 490 (Firestore batch limit is 500)
+                const writes = [];
+                if (progDoc.exists) {
+                    writes.push({ ref: destBase.collection('progress').doc('critical-thinking'), data: progDoc.data() });
+                }
+                allSessSnap.docs.forEach(d => {
+                    writes.push({ ref: destBase.collection('sessions').doc(d.id), data: d.data() });
+                });
+
+                for (let i = 0; i < writes.length; i += 490) {
+                    const batch = db.batch();
+                    writes.slice(i, i + 490).forEach(w => batch.set(w.ref, w.data));
+                    await batch.commit();
+                }
+
+                // 3. Optionally clear source
+                if (clearSource) {
+                    const deletes = [];
+                    if (progDoc.exists) deletes.push(progDoc.ref);
+                    allSessSnap.docs.forEach(d => deletes.push(d.ref));
+
+                    for (let i = 0; i < deletes.length; i += 490) {
+                        const batch = db.batch();
+                        deletes.slice(i, i + 490).forEach(ref => batch.delete(ref));
+                        await batch.commit();
+                    }
+                }
+
+                document.getElementById('transfer-modal').classList.remove('show');
+                alert('Transfer complete! Reloading user list…');
+                loadUsers();
+
+            } catch (err) {
+                console.error(err);
+                alert('Transfer failed: ' + err.message);
+                btn.disabled = false;
+                btn.textContent = 'Transfer';
+            }
         }
 
         function signOut() { auth.signOut().then(() => window.location.href = 'login.html'); }
