@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSC2103 Data Structures & Algorithms — Quiz Bank</title>
+    <link rel="icon" type="image/png" href="web_icon.png">
+    <!-- Preconnect to Firebase & Google CDN for faster loads on all browsers -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="shared/styles.css">
+    <link rel="stylesheet" href="shared/quiz.css">
+    <link rel="stylesheet" href="shared/apple-theme.css">
+    <style>
+        .c { max-width: 740px; padding-top: 0 }
+
+        .topbar-inner { max-width: 740px }
+
+        .topbar button {
+            font-size: .82rem;
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 500;
+            background: none;
+            border: none;
+            font-family: inherit
+        }
+
+        .topbar button:hover {
+            text-decoration: underline
+        }
+    </style>
+</head>
+
+<body style="display:none">
+    <div class="c">
+        <div class="topbar"><div class="topbar-inner"><span>CSC2103 Data Structures & Algorithms</span><div style="display:flex;align-items:center;gap:14px"><a id="home-link" href="index.html" style="font-size:.82rem;color:var(--accent);font-weight:500;text-decoration:none;font-family:inherit">← Home</a><button id="back-link" onclick="goHome()" style="display:none;font-size:.82rem;color:var(--accent);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">← Back to Selection</button><button onclick="signOut()" style="font-size:.82rem;color:var(--text2);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">Sign out</button></div></div></div>
+        <div class="ss" id="S">
+            <h1>Data Structures & Algorithms Quiz Bank</h1>
+            <p class="sub">Sunway University — Select chapters and start practicing.</p>
+            <p style="font-size:.82rem;color:var(--dim);margin-top:-24px;margin-bottom:16px;">Made by Bryan Tan Chun
+                Xing</p>
+
+            <!-- Bank progress -->
+            <div id="bank-progress" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:20px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                    <span style="font-size:.82rem;font-weight:600;color:var(--text)">Question Bank Progress</span>
+                    <span id="bp-pct" style="font-size:.82rem;font-weight:700;color:var(--accent)">0%</span>
+                </div>
+                <div style="width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px">
+                    <div id="bp-fill" style="height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width .4s ease"></div>
+                </div>
+                <div style="font-size:.75rem;color:var(--dim)">
+                    <strong id="bp-answered" style="color:var(--text2)">0</strong> of <strong id="bp-total" style="color:var(--text2)">0</strong> unique questions answered &mdash; <span id="bp-remaining" style="color:var(--text2)">0</span> remaining
+                </div>
+            </div>
+
+            <div class="cl" id="recent-sess-block" style="display:none">
+                <div class="cl-hd" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.cl-arrow').classList.toggle('open')">
+                    <span class="cl-title">Recent Sessions</span>
+                    <span class="cl-arrow">▼</span>
+                </div>
+                <div class="cl-body" id="recent-sess-list"></div>
+            </div>
+
+            <p class="sl">Select Chapters</p>
+            <div class="sa"><button onclick="tAll(true)">Select All</button><button onclick="tAll(false)">Deselect
+                    All</button></div>
+            <div class="cs" id="CS"></div>
+            <p class="sl">Choose Mode</p>
+            <div class="ms">
+                <div class="mb" onclick="go('quick')">
+                    <h3>Quick 40</h3>
+                    <p>40 questions evenly split across selected chapters.</p>
+                </div>
+                <div class="mb" onclick="go('full')">
+                    <h3>Full Bank</h3>
+                    <p id="FD">All questions from selected chapters.</p>
+                </div>
+            </div>
+            <button class="mb-smart" onclick="toggleSmart()">
+                <div>
+                    <h3>Smart Practice</h3>
+                    <p id="smart-desc">Focus on questions you haven't answered yet.</p>
+                </div>
+                <span class="arrow" id="smart-arrow">▼</span>
+            </button>
+            <div class="smart-sub" id="smart-sub">
+                <button onclick="go('unanswered')">Unanswered Only<span>Only questions you haven't seen yet.</span></button>
+                <button onclick="go('mixed')">Mixed<span>Unanswered first, then seen questions.</span></button>
+                <button onclick="go('retry-wrong')" id="retry-wrong-btn" style="display:none">Retry Wrong<span id="wrong-count-badge" class="wbadge">0</span><span>Redo every question you've gotten wrong across all sessions.</span></button>
+            </div>
+            <p class="si" id="SI"></p>
+        </div>
+        <div class="qs" id="QS">
+            <div class="pw">
+                <div class="pt"><span id="QC">1/40</span><span class="sl2" id="SL">Score: 0/0</span></div>
+                <div class="pb">
+                    <div class="pf" id="PF"></div>
+                </div>
+            </div>
+            <!-- Graduate toggle: shown in Retry Wrong mode when answered correctly -->
+            <div id="graduate-wrap" style="display:none">
+                <label>
+                    <input type="checkbox" id="graduate-cb" checked>
+                    Remove from wrong list
+                </label>
+            </div>
+            <div class="ct" id="CT"></div>
+            <div class="qt" id="QT"></div>
+            <div class="opts" id="OW"></div>
+            <div class="nr"><button class="nb" id="PB" onclick="pq()">Previous</button><button class="nb pr" id="NB"
+                    onclick="nq()">Next</button></div>
+        </div>
+        <div class="rs" id="RS">
+            <div class="rh">
+                <div class="rp" id="RP">0%</div>
+                <div class="rsb" id="RB"></div>
+            </div>
+
+            <div id="result-image-container" style="text-align: center; margin-bottom: 20px; display: none;">
+                <img src="mingze_good.png" alt="Good Job"
+                    style="max-width: 200px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            </div>
+
+            <div class="ra">
+                <button class="pr" onclick="goHome()">Try Again</button>
+                <button id="TB" onclick="tRev()">View Wrong Answers</button>
+            </div>
+            <div class="rvs hid" id="RV">
+                <h3 id="RT">Wrong Answers</h3>
+                <div id="RL"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="shared/firebase-init.js"></script>
+    <script src="shared/scroll-effects.js"></script>
+    <script src="data/dsa-questions.js"></script>
+    <script src="shared/quiz-engine.js"></script>
+    <script>
+        initQuizApp({
+            subjectId: 'dsa',
+            questions: DSA_QUESTIONS,
+            chapters: DSA_CHAPTERS,
+            quickCount: 40
+        });
+    </script>
+</body>
+
+</html>

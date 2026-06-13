@@ -449,6 +449,50 @@
                     <span class="semester-badge">Y2S3</span>
                 </div>
                 <div class="subjects-list" id="list-y2s3">
+                    <a href="dsa.html" class="subject-row fade-up" data-sid="dsa">
+                        <span class="subject-dot dot-purple"></span>
+                        <div class="subject-info">
+                            <div class="subject-name">Data Structures & Algorithms</div>
+                            <div class="subject-code">CSC2103</div>
+                            <div id="dsa-progress" class="prog-wrap" style="display:none">
+                                <div class="prog-meta">
+                                    <span><strong id="dsa-answered">0</strong> / <span id="dsa-total">0</span> questions answered</span>
+                                    <span id="dsa-pct">0%</span>
+                                </div>
+                                <div class="prog-track">
+                                    <div class="prog-fill" id="dsa-fill" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div id="dsa-progress-empty" style="font-size:.75rem;color:var(--dim);margin-top:4px">No quizzes yet</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+                            <span class="subject-tag">Quiz Bank</span>
+                            <span class="subject-arrow">→</span>
+                        </div>
+                        <button class="vis-toggle" onclick="toggleHide(event,'dsa')" title="Toggle visibility">👁</button>
+                    </a>
+                    <a href="dsa-labtest1.html" class="subject-row fade-up" data-sid="dsa-lt1">
+                        <span class="subject-dot dot-indigo"></span>
+                        <div class="subject-info">
+                            <div class="subject-name">DSA — Lab Test 1 Prep</div>
+                            <div class="subject-code">CSC2103</div>
+                            <div id="dsa-lt1-progress" class="prog-wrap" style="display:none">
+                                <div class="prog-meta">
+                                    <span><strong id="dsa-lt1-answered">0</strong> / <span id="dsa-lt1-total">0</span> questions answered</span>
+                                    <span id="dsa-lt1-pct">0%</span>
+                                </div>
+                                <div class="prog-track">
+                                    <div class="prog-fill" id="dsa-lt1-fill" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div id="dsa-lt1-progress-empty" style="font-size:.75rem;color:var(--dim);margin-top:4px">No quizzes yet</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+                            <span class="subject-tag">Quiz Bank</span>
+                            <span class="subject-arrow">→</span>
+                        </div>
+                        <button class="vis-toggle" onclick="toggleHide(event,'dsa-lt1')" title="Toggle visibility">👁</button>
+                    </a>
                     <div class="subject-row disabled fade-up" data-sid="re">
                         <span class="subject-dot dot-teal"></span>
                         <div class="subject-info">
@@ -628,20 +672,23 @@
 
         // ── Progress bar ──
         function loadProgress(uid) {
-            db.collection('users').doc(uid).collection('progress').doc('critical-thinking').get()
-                .then(doc => {
-                    if (!doc.exists) return;
-                    const { answeredIds = [], totalBank = 0 } = doc.data();
-                    const answered = answeredIds.length;
-                    const total    = totalBank || 0;
-                    const pct      = total > 0 ? Math.round((answered / total) * 100) : 0;
-                    document.getElementById('ct-answered').textContent   = answered;
-                    document.getElementById('ct-total').textContent      = total;
-                    document.getElementById('ct-pct').textContent        = pct + '%';
-                    document.getElementById('ct-fill').style.width       = pct + '%';
-                    document.getElementById('ct-progress').style.display = '';
-                    document.getElementById('ct-progress-empty').style.display = 'none';
-                });
+            ['critical-thinking', 'dsa', 'dsa-labtest1'].forEach(subjectId => {
+                const prefix = subjectId === 'critical-thinking' ? 'ct' : (subjectId === 'dsa' ? 'dsa' : 'dsa-lt1');
+                db.collection('users').doc(uid).collection('progress').doc(subjectId).get()
+                    .then(doc => {
+                        if (!doc.exists) return;
+                        const { answeredIds = [], totalBank = 0 } = doc.data();
+                        const answered = answeredIds.length;
+                        const total    = totalBank || 0;
+                        const pct      = total > 0 ? Math.round((answered / total) * 100) : 0;
+                        document.getElementById(prefix + '-answered').textContent   = answered;
+                        document.getElementById(prefix + '-total').textContent      = total;
+                        document.getElementById(prefix + '-pct').textContent        = pct + '%';
+                        document.getElementById(prefix + '-fill').style.width       = pct + '%';
+                        document.getElementById(prefix + '-progress').style.display = '';
+                        document.getElementById(prefix + '-progress-empty').style.display = 'none';
+                    });
+            });
         }
 
 
