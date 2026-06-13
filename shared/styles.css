@@ -1,0 +1,45 @@
+/* Shared base styles — variables, reset, body, container, topbar.
+   Loaded by every page; page-specific <style> blocks add overrides. */
+
+:root {
+    --bg: #fff;
+    --bg2: #f7f7f5;
+    --card: #fff;
+    --border: #e3e3e0;
+    --text: #1a1a1a;
+    --text2: #6b6b6b;
+    --dim: #9b9b9b;
+    --accent: #2383e2;
+    --accent2: #1b6ec2;
+    --ok: #2ea043;
+    --ok-bg: #dafbe1;
+    --no: #cf222e;
+    --no-bg: #ffebe9;
+    --warn: #d97706;
+    --ch1: #2383e2;
+    --ch2: #8e44ad;
+    --ch3: #0d9488;
+    --ch4: #d97706;
+    --ch5: #cf222e;
+    --ch6: #db2777;
+    --ch7: #7c3aed;
+    --ch8: #059669;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased
+}
+
+.c {
+    margin: 0 auto;
+    padding: 24px 20px 60px
+}
+
+/* .topbar / .topbar-inner are defined in shared/apple-theme.css
+   (fixed, edge-to-edge glass nav), loaded by every page. */

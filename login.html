@@ -14,32 +14,16 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="shared/styles.css">
+    <link rel="stylesheet" href="shared/apple-theme.css">
     <style>
-        :root {
-            --bg: #fff;
-            --bg2: #f7f7f5;
-            --border: #e3e3e0;
-            --text: #1a1a1a;
-            --text2: #6b6b6b;
-            --dim: #9b9b9b;
-            --accent: #2383e2;
-            --accent2: #1b6ec2;
-            --no: #cf222e;
-            --no-bg: #ffebe9;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box }
-
         body {
-            font-family: 'Inter', sans-serif;
             background: var(--bg2);
-            color: var(--text);
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-font-smoothing: antialiased;
-            padding: 20px
+            padding: 20px;
+            padding-top: 20px
         }
 
         .card {
@@ -232,10 +216,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="shared/firebase-init.js"></script>
     <script>
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
         // If already logged in, skip login page
         auth.onAuthStateChanged(user => {
             if (user) window.location.href = 'index.html';

@@ -13,47 +13,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared/styles.css">
+    <link rel="stylesheet" href="shared/apple-theme.css">
     <style>
-        :root {
-            --bg: #fff;
-            --bg2: #f7f7f5;
-            --border: #e3e3e0;
-            --text: #1a1a1a;
-            --text2: #6b6b6b;
-            --dim: #9b9b9b;
-            --accent: #2383e2;
-            --accent2: #1b6ec2;
-            --ok: #2ea043;
-            --ok-bg: #dafbe1;
-            --no: #cf222e;
-            --no-bg: #ffebe9;
-            --warn: #d97706;
-        }
+        body { background: var(--bg2) }
 
-        * { margin: 0; padding: 0; box-sizing: border-box }
+        .c { max-width: 860px; padding-top: 0 }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg2);
-            color: var(--text);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased
-        }
-
-        .c {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 24px 20px 60px
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            margin-bottom: 24px;
-            border-bottom: 1px solid var(--border)
-        }
+        .topbar-inner { max-width: 860px }
 
         .topbar-left { display: flex; align-items: center; gap: 12px }
 
@@ -444,14 +411,16 @@
 <body style="display:none">
     <div class="c">
         <div class="topbar">
-            <div class="topbar-left">
-                <a href="index.html">← Home</a>
-                <span style="color:var(--border)">|</span>
-                <span style="font-size:.82rem;font-weight:600;color:var(--text)">Admin Panel</span>
-            </div>
-            <div class="topbar-right">
-                <span id="admin-email"></span>
-                <button class="signout-btn" onclick="signOut()">Sign out</button>
+            <div class="topbar-inner">
+                <div class="topbar-left">
+                    <a href="index.html">← Home</a>
+                    <span style="color:var(--border)">|</span>
+                    <span style="font-size:.82rem;font-weight:600;color:var(--text)">Admin Panel</span>
+                </div>
+                <div class="topbar-right">
+                    <span id="admin-email"></span>
+                    <button class="signout-btn" onclick="signOut()">Sign out</button>
+                </div>
             </div>
         </div>
 
@@ -525,20 +494,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="shared/firebase-init.js"></script>
+    <script src="shared/scroll-effects.js"></script>
     <script>
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db   = firebase.firestore();
-        // SESSION persistence avoids Safari's slow IndexedDB auth lookup
-        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
-
         let allUsers = []; // cache for search
 
-        // Safari can stall on auth — redirect to login if no response in 8s
-        const _authTimeout = setTimeout(() => window.location.href = 'login.html', 8000);
-        auth.onAuthStateChanged(async user => {
-            clearTimeout(_authTimeout);
-            if (!user) { window.location.href = 'login.html'; return; }
+        requireAuth(async user => {
             document.getElementById('admin-email').textContent = user.displayName || user.email;
             document.body.style.display = '';
 
@@ -788,8 +749,6 @@
                 btn.textContent = 'Transfer';
             }
         }
-
-        function signOut() { auth.signOut().then(() => window.location.href = 'login.html'); }
     </script>
 </body>
 

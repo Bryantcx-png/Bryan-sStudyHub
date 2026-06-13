@@ -1,0 +1,190 @@
+/* Apple-inspired theme layer — load AFTER shared/styles.css to override
+   tokens and add new component classes (glass nav, pill buttons, bento
+   cards, fade-up animation). Pages opt in by adding:
+   <link rel="stylesheet" href="shared/apple-theme.css">
+*/
+
+:root {
+    /* Core palette */
+    --bg: #ffffff;
+    --bg2: #f5f5f7;
+    --card: #ffffff;
+    --border: #d2d2d7;
+    --text: #1d1d1f;
+    --text2: #6e6e73;
+    --dim: #86868b;
+    --accent: #0071e3;
+    --accent2: #0077ed;
+    --ok: #1d8a3e;
+    --ok-bg: #e6f7ec;
+    --no: #d4373e;
+    --no-bg: #fdecec;
+    --warn: #d97706;
+
+    /* New tokens */
+    --radius-pill: 980px;
+    --radius-card: 20px;
+    --radius-control: 12px;
+    --shadow-card: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --shadow-card-hover: 0 2px 4px rgba(0,0,0,.05), 0 16px 40px rgba(0,0,0,.10);
+    --ease-apple: cubic-bezier(.25,.1,.25,1);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #000000;
+        --bg2: #1d1d1f;
+        --card: #2c2c2e;
+        --border: #424245;
+        --text: #f5f5f7;
+        --text2: #a1a1a6;
+        --dim: #6e6e73;
+        --shadow-card: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.4);
+        --shadow-card-hover: 0 2px 4px rgba(0,0,0,.35), 0 16px 40px rgba(0,0,0,.5);
+    }
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", 'Inter', sans-serif;
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    line-height: 1.05;
+    text-align: center;
+}
+
+.hero-sub {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    font-weight: 400;
+    color: var(--text2);
+    text-align: center;
+    margin-top: 12px;
+}
+
+.label {
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--text2);
+}
+
+/* ── Glass navigation bar ───────────────────────────────────
+   .topbar is fixed edge-to-edge at the very top of the viewport
+   with a liquid-glass blur. .topbar-inner centers the content to
+   match the page's .c max-width (set per page). Pages add
+   `body { padding-top: var(--topbar-h) }` (done below) so fixed
+   positioning doesn't cover content. ───────────────────────── */
+
+:root {
+    --topbar-h: 60px;
+}
+
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: var(--topbar-h);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,255,255,.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .topbar {
+        background: rgba(0,0,0,.6);
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+}
+
+.topbar-inner {
+    max-width: 740px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topbar span {
+    font-size: .85rem;
+    color: var(--text2);
+    font-weight: 500;
+}
+
+body { padding-top: var(--topbar-h); }
+
+/* ── Buttons ─────────────────────────────────────────────── */
+
+.btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: #fff;
+    font-size: .95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .25s var(--ease-apple), transform .15s var(--ease-apple);
+}
+
+.btn-pill:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-pill:active { transform: translateY(0); }
+
+.btn-pill.secondary {
+    background: var(--bg2);
+    color: var(--text);
+}
+
+.btn-pill.secondary:hover { background: var(--border); }
+
+/* ── Bento cards ─────────────────────────────────────────── */
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.bento-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow .3s var(--ease-apple), transform .3s var(--ease-apple);
+}
+
+.bento-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+}
+
+.bento-card.span-2 { grid-column: span 2; }
+.bento-card.span-2-row { grid-row: span 2; }
+
+/* ── Scroll fade-up animation ───────────────────────────── */
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s var(--ease-apple), transform .6s var(--ease-apple);
+}
+
+.fade-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
