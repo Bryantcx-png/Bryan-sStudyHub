@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — Bryan's Study Hub</title>
+    <link rel="icon" type="image/png" href="web_icon.png">
+    <!-- Preconnect to Firebase & Google CDN for faster loads on all browsers -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fff;
+            --bg2: #f7f7f5;
+            --border: #e3e3e0;
+            --text: #1a1a1a;
+            --text2: #6b6b6b;
+            --dim: #9b9b9b;
+            --accent: #2383e2;
+            --accent2: #1b6ec2;
+            --no: #cf222e;
+            --no-bg: #ffebe9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg2);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+            padding: 20px
+        }
+
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 36px 32px;
+            width: 100%;
+            max-width: 380px
+        }
+
+        .brand {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            margin-bottom: 20px
+        }
+
+        h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -.02em;
+            margin-bottom: 6px
+        }
+
+        .sub {
+            font-size: .88rem;
+            color: var(--text2);
+            margin-bottom: 28px
+        }
+
+        .field {
+            margin-bottom: 14px
+        }
+
+        label {
+            display: block;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--text2);
+            margin-bottom: 5px
+        }
+
+        input {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: .9rem;
+            color: var(--text);
+            background: var(--bg);
+            outline: none;
+            transition: border-color .15s
+        }
+
+        input:focus { border-color: var(--accent) }
+
+        .btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            font-family: inherit;
+            font-size: .9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s
+        }
+
+        .btn:hover { background: var(--accent2) }
+        .btn:disabled { opacity: .6; cursor: default }
+
+        .toggle {
+            text-align: center;
+            margin-top: 18px;
+            font-size: .82rem;
+            color: var(--text2)
+        }
+
+        .toggle a {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none
+        }
+
+        .toggle a:hover { text-decoration: underline }
+
+        .err {
+            display: none;
+            margin-top: 14px;
+            padding: 9px 12px;
+            background: var(--no-bg);
+            color: var(--no);
+            border-radius: 7px;
+            font-size: .82rem;
+            font-weight: 500
+        }
+
+        .err.show { display: block }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0 0;
+            color: var(--dim);
+            font-size: .78rem
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border)
+        }
+
+        .btn-google {
+            width: 100%;
+            margin-top: 12px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text);
+            font-family: inherit;
+            font-size: .9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background .15s
+        }
+
+        .btn-google:hover { background: var(--bg2) }
+        .btn-google:disabled { opacity: .6; cursor: default }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div style="text-align:center;margin-bottom:16px">
+            <img src="lizard-lizard-lizard.gif" alt="lizard" style="height:90px;border-radius:10px;object-fit:cover">
+        </div>
+        <div class="brand">Bryan's Study Hub</div>
+        <h1 id="form-title">Welcome back</h1>
+        <p class="sub" id="form-sub">Sign in to access your subjects.</p>
+
+        <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+
+        <div class="err" id="err-msg"></div>
+
+        <button class="btn" id="submit-btn" onclick="handleSubmit()">Sign in</button>
+
+        <div class="divider">or</div>
+        <button class="btn-google" id="google-btn" onclick="signInWithGoogle()">
+            <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                <path fill="none" d="M0 0h48v48H0z"/>
+            </svg>
+            Sign in with Google
+        </button>
+
+        <div class="toggle">
+            <span id="toggle-text">Don't have an account?</span>
+            <a onclick="toggleMode()"> <span id="toggle-link">Sign up</span></a>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // If already logged in, skip login page
+        auth.onAuthStateChanged(user => {
+            if (user) window.location.href = 'index.html';
+        });
+
+        let isSignUp = false;
+
+        function toggleMode() {
+            isSignUp = !isSignUp;
+            document.getElementById('form-title').textContent  = isSignUp ? 'Create account'              : 'Welcome back';
+            document.getElementById('form-sub').textContent    = isSignUp ? 'Sign up to get started.'     : 'Sign in to access your subjects.';
+            document.getElementById('submit-btn').textContent  = isSignUp ? 'Sign up'                     : 'Sign in';
+            document.getElementById('toggle-text').textContent = isSignUp ? 'Already have an account?'    : "Don't have an account?";
+            document.getElementById('toggle-link').textContent = isSignUp ? 'Sign in'                     : 'Sign up';
+            showErr('');
+        }
+
+        function showErr(msg) {
+            const el = document.getElementById('err-msg');
+            el.textContent = msg;
+            el.classList.toggle('show', !!msg);
+        }
+
+        function handleSubmit() {
+            const email    = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const btn      = document.getElementById('submit-btn');
+
+            if (!email || !password) { showErr('Please fill in all fields.'); return; }
+
+            btn.disabled = true;
+            btn.textContent = isSignUp ? 'Creating account…' : 'Signing in…';
+            showErr('');
+
+            const action = isSignUp
+                ? auth.createUserWithEmailAndPassword(email, password)
+                : auth.signInWithEmailAndPassword(email, password);
+
+            action
+                .then(() => window.location.href = 'index.html')
+                .catch(e => {
+                    showErr(friendlyError(e.code));
+                    btn.disabled = false;
+                    btn.textContent = isSignUp ? 'Sign up' : 'Sign in';
+                });
+        }
+
+        function friendlyError(code) {
+            const map = {
+                'auth/user-not-found':       'No account found with that email.',
+                'auth/wrong-password':        'Incorrect password.',
+                'auth/invalid-email':         'Please enter a valid email address.',
+                'auth/email-already-in-use':  'An account with that email already exists.',
+                'auth/weak-password':         'Password must be at least 6 characters.',
+                'auth/too-many-requests':     'Too many attempts. Please try again later.',
+                'auth/invalid-credential':    'Incorrect email or password.',
+            };
+            return map[code] || 'Something went wrong. Please try again.';
+        }
+
+        const googleSvg = `<svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg> Sign in with Google`;
+
+        function signInWithGoogle() {
+            const btn = document.getElementById('google-btn');
+            btn.disabled = true;
+            btn.textContent = 'Signing in…';
+            showErr('');
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then(() => window.location.href = 'index.html')
+                .catch(e => {
+                    showErr(friendlyError(e.code));
+                    btn.disabled = false;
+                    btn.innerHTML = googleSvg;
+                });
+        }
+
+        // Allow pressing Enter to submit
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter') handleSubmit();
+        });
+    </script>
+</body>
+
+</html>

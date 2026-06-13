@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Read(//Users/productivebryan/**)",
+      "Bash(env)",
+      "Bash(echo \"exit: $?\")"
+    ]
+  }
+}

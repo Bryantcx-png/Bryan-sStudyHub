@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Bryan's Study Hub</title>
+    <link rel="icon" type="image/png" href="web_icon.png">
+    <!-- Preconnect to Firebase & Google CDN for faster loads on all browsers -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fff;
+            --bg2: #f7f7f5;
+            --border: #e3e3e0;
+            --text: #1a1a1a;
+            --text2: #6b6b6b;
+            --dim: #9b9b9b;
+            --accent: #2383e2;
+            --accent2: #1b6ec2;
+            --ok: #2ea043;
+            --ok-bg: #dafbe1;
+            --no: #cf222e;
+            --no-bg: #ffebe9;
+            --warn: #d97706;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg2);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased
+        }
+
+        .c {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 24px 20px 60px
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .topbar-left { display: flex; align-items: center; gap: 12px }
+
+        .topbar a {
+            font-size: .82rem;
+            color: var(--accent);
+            font-weight: 500;
+            text-decoration: none
+        }
+
+        .topbar a:hover { text-decoration: underline }
+
+        .topbar-right { display: flex; align-items: center; gap: 14px }
+
+        .topbar-right span { font-size: .82rem; color: var(--dim) }
+
+        .signout-btn {
+            font-size: .82rem;
+            color: var(--text2);
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit
+        }
+
+        .page-title {
+            font-family: 'Noto Serif', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -.02em;
+            margin-bottom: 4px
+        }
+
+        .page-sub { font-size: .9rem; color: var(--text2); margin-bottom: 28px }
+
+        /* Summary cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 28px
+        }
+
+        .stat-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px
+        }
+
+        .stat-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--dim); margin-bottom: 6px }
+        .stat-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em }
+
+        /* Search */
+        .search-wrap { margin-bottom: 16px }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: .88rem;
+            font-family: inherit;
+            color: var(--text);
+            background: var(--bg);
+            outline: none;
+            transition: border-color .15s
+        }
+
+        .search-wrap input:focus { border-color: var(--accent) }
+
+        /* Section label */
+        .section-label {
+            font-size: .72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--dim);
+            margin-bottom: 10px
+        }
+
+        /* User cards */
+        .user-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px
+        }
+
+        .user-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: background .12s
+        }
+
+        .user-head:hover { background: var(--bg2) }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            font-size: .88rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .user-meta { flex: 1; min-width: 0 }
+
+        .user-name {
+            font-size: .92rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .user-email { font-size: .75rem; color: var(--dim); margin-top: 1px }
+
+        .user-last-seen { font-size: .72rem; color: var(--dim); flex-shrink: 0 }
+
+        .user-chevron {
+            font-size: .75rem;
+            color: var(--dim);
+            transition: transform .2s;
+            flex-shrink: 0
+        }
+
+        .user-card.open .user-chevron { transform: rotate(180deg) }
+
+        /* Progress mini bar inside head */
+        .user-prog {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            flex-shrink: 0;
+            min-width: 100px
+        }
+
+        .user-prog-text { font-size: .72rem; color: var(--dim) }
+        .user-prog-text strong { color: var(--text2); font-weight: 600 }
+
+        .mini-track {
+            width: 100px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden
+        }
+
+        .mini-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--accent);
+            transition: width .4s ease
+        }
+
+        /* Expanded detail */
+        .user-detail {
+            display: none;
+            border-top: 1px solid var(--border);
+            padding: 16px 18px
+        }
+
+        .user-card.open .user-detail { display: block }
+
+        .detail-label {
+            font-size: .7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--dim);
+            margin-bottom: 8px;
+            margin-top: 16px
+        }
+
+        .detail-label:first-child { margin-top: 0 }
+
+        /* Full progress bar */
+        .full-track {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 6px
+        }
+
+        .full-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: var(--accent);
+            transition: width .4s ease
+        }
+
+        .prog-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: .75rem;
+            color: var(--dim)
+        }
+
+        .prog-stats strong { color: var(--text2) }
+
+        /* Session rows */
+        .session-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: .82rem
+        }
+
+        .session-row:last-child { border-bottom: none }
+
+        .session-info { flex: 1; color: var(--text2) }
+        .session-score { font-weight: 600 }
+
+        .pct-badge {
+            font-size: .72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px
+        }
+
+        .pct-hi { background: var(--ok-bg); color: var(--ok) }
+        .pct-mi { background: #fef3c7; color: var(--warn) }
+        .pct-lo { background: var(--no-bg); color: var(--no) }
+
+        .no-sessions { font-size: .82rem; color: var(--dim); font-style: italic }
+
+        /* Transfer button */
+        .transfer-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 7px 14px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: var(--bg);
+            font-family: inherit;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--text2);
+            cursor: pointer;
+            transition: border-color .15s, color .15s
+        }
+        .transfer-btn:hover { border-color: var(--warn); color: var(--warn) }
+
+        /* Transfer modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+        .modal-overlay.show { display: flex }
+
+        .modal {
+            background: var(--bg);
+            border-radius: 14px;
+            padding: 28px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 40px rgba(0,0,0,.18)
+        }
+
+        .modal h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .modal-sub {
+            font-size: .8rem;
+            color: var(--text2);
+            margin-bottom: 20px
+        }
+
+        .modal-field { margin-bottom: 14px }
+
+        .modal-field label {
+            display: block;
+            font-size: .72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--dim);
+            margin-bottom: 6px
+        }
+
+        .modal-field select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: .88rem;
+            color: var(--text);
+            background: var(--bg);
+            outline: none;
+            cursor: pointer
+        }
+
+        .modal-warn {
+            font-size: .78rem;
+            color: var(--warn);
+            background: #fef3c7;
+            border-radius: 7px;
+            padding: 9px 12px;
+            margin-bottom: 16px
+        }
+
+        .modal-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .82rem;
+            color: var(--text2);
+            margin-bottom: 20px;
+            cursor: pointer
+        }
+
+        .modal-check input { cursor: pointer }
+
+        .modal-btns { display: flex; gap: 10px; justify-content: flex-end }
+
+        .btn-cancel {
+            padding: 8px 18px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: var(--bg);
+            font-family: inherit;
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--text2);
+            cursor: pointer
+        }
+
+        .btn-confirm {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 7px;
+            background: var(--warn);
+            color: #fff;
+            font-family: inherit;
+            font-size: .85rem;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .btn-confirm:disabled { opacity: .6; cursor: default }
+
+        /* Loading / empty */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--dim);
+            font-size: .88rem
+        }
+
+        .access-denied {
+            text-align: center;
+            padding: 60px 20px
+        }
+
+        .access-denied h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 8px }
+        .access-denied p { color: var(--text2); font-size: .9rem }
+    </style>
+</head>
+
+<body style="display:none">
+    <div class="c">
+        <div class="topbar">
+            <div class="topbar-left">
+                <a href="index.html">← Home</a>
+                <span style="color:var(--border)">|</span>
+                <span style="font-size:.82rem;font-weight:600;color:var(--text)">Admin Panel</span>
+            </div>
+            <div class="topbar-right">
+                <span id="admin-email"></span>
+                <button class="signout-btn" onclick="signOut()">Sign out</button>
+            </div>
+        </div>
+
+        <!-- Access denied screen (hidden by default) -->
+        <div id="denied" style="display:none" class="access-denied">
+            <h2>Access Denied</h2>
+            <p>You don't have admin privileges to view this page.</p>
+        </div>
+
+        <!-- Admin content -->
+        <div id="admin-content" style="display:none">
+            <div class="page-title">Admin Panel</div>
+            <p class="page-sub">Overview of all users, progress, and quiz sessions.</p>
+
+            <!-- Summary stats (reflects selected user) -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total Sessions</div>
+                    <div class="stat-value" id="stat-sessions">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg. Score</div>
+                    <div class="stat-value" id="stat-avg">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Questions Covered</div>
+                    <div class="stat-value" id="stat-coverage">—</div>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-wrap">
+                <input id="search" type="text" placeholder="Search users by name or email…" oninput="filterUsers()">
+            </div>
+
+            <div class="section-label">Users</div>
+            <div id="user-list"><div class="loading">Loading users…</div></div>
+        </div>
+    </div>
+
+    <!-- Transfer Progress Modal -->
+    <div class="modal-overlay" id="transfer-modal" onclick="closeTransferModal(event)">
+        <div class="modal">
+            <h3>Transfer Progress</h3>
+            <p class="modal-sub" id="transfer-sub">Moving progress from <strong id="transfer-from-name"></strong></p>
+
+            <div class="modal-field">
+                <label>Transfer To</label>
+                <select id="transfer-to-select">
+                    <option value="">— Select destination user —</option>
+                </select>
+            </div>
+
+            <div class="modal-warn">
+                ⚠️ This will <strong>overwrite</strong> the destination user's progress and sessions with the source user's data.
+            </div>
+
+            <label class="modal-check">
+                <input type="checkbox" id="clear-source" checked>
+                Clear source user's progress after transfer
+            </label>
+
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeTransferModal()">Cancel</button>
+                <button class="btn-confirm" id="confirm-transfer-btn" onclick="doTransfer()">Transfer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db   = firebase.firestore();
+        // SESSION persistence avoids Safari's slow IndexedDB auth lookup
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
+
+        let allUsers = []; // cache for search
+
+        // Safari can stall on auth — redirect to login if no response in 8s
+        const _authTimeout = setTimeout(() => window.location.href = 'login.html', 8000);
+        auth.onAuthStateChanged(async user => {
+            clearTimeout(_authTimeout);
+            if (!user) { window.location.href = 'login.html'; return; }
+            document.getElementById('admin-email').textContent = user.displayName || user.email;
+            document.body.style.display = '';
+
+            // Check admin status
+            const adminDoc = await db.collection('admins').doc(user.uid).get();
+            if (!adminDoc.exists) {
+                document.getElementById('denied').style.display = '';
+                return;
+            }
+
+            document.getElementById('admin-content').style.display = '';
+            loadUsers();
+        });
+
+        async function loadUsers() {
+            const snap = await db.collection('users').orderBy('lastSeen', 'desc').get();
+            const list  = document.getElementById('user-list');
+
+            if (snap.empty) {
+                list.innerHTML = '<div class="loading">No users found.</div>';
+                return;
+            }
+
+            list.innerHTML = '';
+            allUsers = [];
+
+            // Load each user's data in parallel
+            const userPromises = snap.docs.map(async doc => {
+                const u    = { uid: doc.id, ...doc.data() };
+
+                // Fetch progress + sessions in parallel
+                const [progDoc, sessSnap] = await Promise.all([
+                    db.collection('users').doc(u.uid).collection('progress').doc('critical-thinking').get(),
+                    db.collection('users').doc(u.uid).collection('sessions').orderBy('date', 'desc').limit(10).get()
+                ]);
+
+                u.progress = progDoc.exists ? progDoc.data() : null;
+                u.sessions = sessSnap.docs.map(d => d.data());
+
+                return u;
+            });
+
+            const users = await Promise.all(userPromises);
+            allUsers = users;
+
+            renderUsers(users);
+        }
+
+        function renderUsers(users) {
+            const list = document.getElementById('user-list');
+            list.innerHTML = '';
+            if (!users.length) { list.innerHTML = '<div class="loading">No users match.</div>'; return; }
+
+            users.forEach(u => {
+                const name     = u.displayName || u.email || 'Unknown';
+                const initial  = name.charAt(0).toUpperCase();
+                const answered = u.progress ? (u.progress.answeredIds || []).length : 0;
+                const bank     = u.progress ? (u.progress.totalBank || 0) : 0;
+                const pct      = bank > 0 ? Math.round((answered / bank) * 100) : 0;
+                const lastSeen = u.lastSeen ? u.lastSeen.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+
+                const card = document.createElement('div');
+                card.className   = 'user-card';
+                card.dataset.uid = u.uid;
+                card.dataset.search = (name + ' ' + (u.email || '')).toLowerCase();
+
+                card.innerHTML = `
+                    <div class="user-head" onclick="toggleCard(this)">
+                        <div class="user-avatar">${initial}</div>
+                        <div class="user-meta">
+                            <div class="user-name">${name}</div>
+                            <div class="user-email">${u.email || '—'}</div>
+                        </div>
+                        <div class="user-prog">
+                            <div class="user-prog-text"><strong>${answered}</strong> / ${bank || '?'} Qs</div>
+                            <div class="mini-track"><div class="mini-fill" style="width:${pct}%"></div></div>
+                        </div>
+                        <div class="user-last-seen">${lastSeen}</div>
+                        <div class="user-chevron">▼</div>
+                    </div>
+                    <div class="user-detail">
+                        <div class="detail-label">Critical Thinking — Question Bank Progress</div>
+                        <div class="full-track"><div class="full-fill" style="width:${pct}%"></div></div>
+                        <div class="prog-stats">
+                            <span><strong>${answered}</strong> of <strong>${bank || '?'}</strong> unique questions answered</span>
+                            <span style="font-weight:700;color:var(--accent)">${pct}%</span>
+                        </div>
+
+                        <div class="detail-label" style="margin-top:18px">Recent Sessions</div>
+                        ${renderSessions(u.sessions)}
+
+                        <button class="transfer-btn" onclick="openTransferModal('${u.uid}')">
+                            ⇄ Transfer Progress to Another User
+                        </button>
+                    </div>`;
+
+                list.appendChild(card);
+            });
+        }
+
+
+        function renderSessions(sessions) {
+            if (!sessions.length) return '<div class="no-sessions">No sessions yet.</div>';
+            const CH = {1:'Ch1',2:'Ch2',3:'Ch3',4:'Ch4',5:'Ch5',6:'Ch6',7:'Ch7',8:'Ch8'};
+            return sessions.map(s => {
+                const date  = s.date ? s.date.toDate().toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : '—';
+                const chs   = (s.chapters||[]).map(c => CH[c]||`Ch${c}`).join(', ');
+                const mode  = s.mode === 'quick' ? 'Quick 40' : s.mode === 'unanswered' ? 'Unanswered' : s.mode === 'mixed' ? 'Mixed' : 'Full Bank';
+                const cls   = s.pct >= 70 ? 'pct-hi' : s.pct >= 50 ? 'pct-mi' : 'pct-lo';
+                return `<div class="session-row">
+                    <div class="session-info">${chs} · ${mode} · ${date}</div>
+                    <div class="session-score">${s.score}/${s.total}</div>
+                    <div class="pct-badge ${cls}">${s.pct}%</div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleCard(head) {
+            const card = head.closest('.user-card');
+            const isOpen = card.classList.contains('open');
+
+            // Close all open cards
+            document.querySelectorAll('.user-card.open').forEach(c => c.classList.remove('open'));
+
+            if (!isOpen) {
+                card.classList.add('open');
+                const uid = card.dataset.uid;
+                const u = allUsers.find(x => x.uid === uid);
+                if (u) updateStatCards(u);
+            } else {
+                resetStatCards();
+            }
+        }
+
+        function updateStatCards(u) {
+            const sessions = u.sessions || [];
+            const pctsWithVal = sessions.filter(s => s.pct != null);
+            const avgScore = pctsWithVal.length ? Math.round(pctsWithVal.reduce((a, s) => a + s.pct, 0) / pctsWithVal.length) + '%' : '—';
+            const answered = u.progress ? (u.progress.answeredIds || []).length : 0;
+            const bank = u.progress ? (u.progress.totalBank || 0) : 0;
+
+            document.getElementById('stat-sessions').textContent = sessions.length;
+            document.getElementById('stat-avg').textContent      = avgScore;
+            document.getElementById('stat-coverage').textContent = bank ? `${answered}/${bank}` : '—';
+        }
+
+        function resetStatCards() {
+            document.getElementById('stat-sessions').textContent = '—';
+            document.getElementById('stat-avg').textContent      = '—';
+            document.getElementById('stat-coverage').textContent = '—';
+        }
+
+        function filterUsers() {
+            const q = document.getElementById('search').value.toLowerCase();
+            const filtered = q ? allUsers.filter(u => (u.displayName + ' ' + u.email).toLowerCase().includes(q)) : allUsers;
+            renderUsers(filtered);
+        }
+
+        // ── Transfer Progress ──
+        let transferSourceUid = null;
+
+        function openTransferModal(sourceUid) {
+            transferSourceUid = sourceUid;
+            const sourceUser = allUsers.find(u => u.uid === sourceUid);
+            const sourceName = sourceUser ? (sourceUser.displayName || sourceUser.email || 'Unknown') : 'Unknown';
+
+            document.getElementById('transfer-from-name').textContent = sourceName;
+
+            // Populate destination dropdown (exclude source user)
+            const sel = document.getElementById('transfer-to-select');
+            sel.innerHTML = '<option value="">— Select destination user —</option>';
+            allUsers
+                .filter(u => u.uid !== sourceUid)
+                .forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u.uid;
+                    opt.textContent = u.displayName || u.email || u.uid;
+                    sel.appendChild(opt);
+                });
+
+            document.getElementById('confirm-transfer-btn').disabled = false;
+            document.getElementById('transfer-modal').classList.add('show');
+        }
+
+        function closeTransferModal(e) {
+            // Close only if clicking overlay background or cancel button directly
+            if (e && e.target !== document.getElementById('transfer-modal')) return;
+            document.getElementById('transfer-modal').classList.remove('show');
+            transferSourceUid = null;
+        }
+
+        async function doTransfer() {
+            const destUid = document.getElementById('transfer-to-select').value;
+            if (!destUid) { alert('Please select a destination user.'); return; }
+
+            const clearSource = document.getElementById('clear-source').checked;
+            const btn = document.getElementById('confirm-transfer-btn');
+            btn.disabled = true;
+            btn.textContent = 'Transferring…';
+
+            try {
+                const srcBase  = db.collection('users').doc(transferSourceUid);
+                const destBase = db.collection('users').doc(destUid);
+
+                // 1. Fetch all source data
+                const [progDoc, allSessSnap] = await Promise.all([
+                    srcBase.collection('progress').doc('critical-thinking').get(),
+                    srcBase.collection('sessions').get()
+                ]);
+
+                // 2. Write to destination in chunks of 490 (Firestore batch limit is 500)
+                const writes = [];
+                if (progDoc.exists) {
+                    writes.push({ ref: destBase.collection('progress').doc('critical-thinking'), data: progDoc.data() });
+                }
+                allSessSnap.docs.forEach(d => {
+                    writes.push({ ref: destBase.collection('sessions').doc(d.id), data: d.data() });
+                });
+
+                for (let i = 0; i < writes.length; i += 490) {
+                    const batch = db.batch();
+                    writes.slice(i, i + 490).forEach(w => batch.set(w.ref, w.data));
+                    await batch.commit();
+                }
+
+                // 3. Optionally clear source
+                if (clearSource) {
+                    const deletes = [];
+                    if (progDoc.exists) deletes.push(progDoc.ref);
+                    allSessSnap.docs.forEach(d => deletes.push(d.ref));
+
+                    for (let i = 0; i < deletes.length; i += 490) {
+                        const batch = db.batch();
+                        deletes.slice(i, i + 490).forEach(ref => batch.delete(ref));
+                        await batch.commit();
+                    }
+                }
+
+                document.getElementById('transfer-modal').classList.remove('show');
+                alert('Transfer complete! Reloading user list…');
+                loadUsers();
+
+            } catch (err) {
+                console.error(err);
+                alert('Transfer failed: ' + err.message);
+                btn.disabled = false;
+                btn.textContent = 'Transfer';
+            }
+        }
+
+        function signOut() { auth.signOut().then(() => window.location.href = 'login.html'); }
+    </script>
+</body>
+
+</html>
