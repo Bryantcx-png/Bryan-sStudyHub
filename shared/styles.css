@@ -6,28 +6,28 @@
    Serif 4 for body copy, Space Mono for codes/labels. */
 
 :root {
-    --bg: #faf6ee;
-    --bg2: #f0e9da;
-    --card: #fffdf7;
-    --border: #d9cdb8;
-    --text: #232a3d;
-    --text2: #5b5f6e;
-    --dim: #9b9690;
-    --accent: #b3402a;
-    --accent2: #8f3019;
-    --ok: #3f6b3f;
-    --ok-bg: #e7efe3;
-    --no: #ad3a26;
-    --no-bg: #fbe9e3;
-    --warn: #b07a1e;
-    --ch1: #3a5a8c;
-    --ch2: #b3402a;
-    --ch3: #3f7a5c;
-    --ch4: #b07a1e;
-    --ch5: #6b4e8c;
-    --ch6: #2f7d8c;
-    --ch7: #9c4f2f;
-    --ch8: #5c6b2f;
+    --bg: #ffffff;
+    --bg2: #eef1f5;
+    --card: #ffffff;
+    --border: #d7dde6;
+    --text: #0f1b2d;
+    --text2: #4a5568;
+    --dim: #94a3b8;
+    --accent: #1e3a6e;
+    --accent2: #14264d;
+    --ok: #1f7a4d;
+    --ok-bg: #e3f3ea;
+    --no: #b91c1c;
+    --no-bg: #fbe6e6;
+    --warn: #8a6d1e;
+    --ch1: #1e3a6e;
+    --ch2: #334e68;
+    --ch3: #2c4a7c;
+    --ch4: #5b7ca0;
+    --ch5: #0f2942;
+    --ch6: #4a6fa5;
+    --ch7: #1a1f29;
+    --ch8: #223a5e;
 
     --font-display: 'Fraunces', serif;
     --font-body: 'Source Serif 4', serif;
