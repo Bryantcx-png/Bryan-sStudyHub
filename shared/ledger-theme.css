@@ -60,20 +60,25 @@ h1, h2, h3, h4, .qt, .rp {
 
 body { padding-top: var(--topbar-h); }
 
-/* ── Mobile background image ────────────────────────────────
-   Faint full-viewport background photo on small screens, using a
-   fixed pseudo-element behind everything so it doesn't fight with
-   each page's own `body { background: ... }` rule and never
-   competes with foreground content (cards stay opaque). */
+/* ── Background image ───────────────────────────────────────
+   Faint full-viewport background photo, using a fixed
+   pseudo-element behind everything so it doesn't fight with each
+   page's own `body { background: ... }` rule and never competes
+   with foreground content (cards stay opaque). Mobile and desktop
+   load differently-sized exports of the same photo. */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: url('../background-desktop.jpg') center top / cover no-repeat;
+    opacity: .25;
+    pointer-events: none;
+}
+
 @media (max-width: 600px) {
     body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        background: url('../background-mobile.jpg') center top / cover no-repeat;
-        opacity: .25;
-        pointer-events: none;
+        background-image: url('../background-mobile.jpg');
     }
 }
 
