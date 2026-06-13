@@ -12,9 +12,9 @@
     <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Source+Serif+4:opsz,wght@8..60,400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="shared/styles.css">
-    <link rel="stylesheet" href="shared/apple-theme.css">
+    <link rel="stylesheet" href="shared/ledger-theme.css">
     <style>
         .c { max-width: 900px; padding-top: 0 }
 
@@ -68,8 +68,9 @@
         .semester-header h2 { font-size: 1.3rem; font-weight: 600; letter-spacing: -.02em }
 
         .semester-badge {
+            font-family: var(--font-mono);
             font-size: .7rem;
-            font-weight: 600;
+            font-weight: 700;
             padding: 2px 8px;
             border-radius: 4px;
             background: var(--card);
@@ -114,7 +115,7 @@
 
         .subject-info { flex: 1 }
         .subject-name { font-size: .92rem; font-weight: 500 }
-        .subject-code { font-size: .78rem; color: var(--dim); margin-top: 1px }
+        .subject-code { font-family: var(--font-mono); font-size: .76rem; color: var(--dim); margin-top: 2px }
         .subject-arrow { font-size: .85rem; color: var(--dim) }
 
         .subject-tag {
@@ -128,14 +129,14 @@
         }
 
         /* Colour accents */
-        .dot-blue   { background: #2383e2 }
-        .dot-purple { background: #8e44ad }
-        .dot-teal   { background: #0d9488 }
-        .dot-amber  { background: #d97706 }
-        .dot-green  { background: #059669 }
-        .dot-pink   { background: #db2777 }
-        .dot-red    { background: #cf222e }
-        .dot-indigo { background: #7c3aed }
+        .dot-blue   { background: #3a5a8c }
+        .dot-purple { background: #6b4e8c }
+        .dot-teal   { background: #2f7d8c }
+        .dot-amber  { background: #b07a1e }
+        .dot-green  { background: #5c6b2f }
+        .dot-pink   { background: #8c4a5c }
+        .dot-red    { background: #ad3a26 }
+        .dot-indigo { background: #5a4a8c }
 
         /* Progress bar */
         .prog-wrap { margin-top: 6px }
@@ -160,7 +161,7 @@
 
         .prog-fill {
             height: 100%;
-            background: #2383e2;
+            background: var(--accent);
             border-radius: 2px;
             transition: width .4s ease
         }
@@ -205,16 +206,16 @@
             width: 28px;
             height: 28px;
             border-radius: 6px;
-            border: 1px solid #ffebe9;
+            border: 1px solid var(--no-bg);
             background: none;
             cursor: pointer;
             flex-shrink: 0;
             font-size: .8rem;
-            color: #cf222e;
+            color: var(--no);
             transition: background .12s
         }
 
-        .del-btn:hover { background: #ffebe9 }
+        .del-btn:hover { background: var(--no-bg) }
 
         /* add-subject row */
         .add-row {
@@ -544,14 +545,14 @@
                 <div class="field">
                     <label>Colour</label>
                     <div class="color-swatches">
-                        <div class="swatch selected" data-color="blue"   style="background:#2383e2" onclick="pickColor(this)"></div>
-                        <div class="swatch"          data-color="purple" style="background:#8e44ad" onclick="pickColor(this)"></div>
-                        <div class="swatch"          data-color="teal"   style="background:#0d9488" onclick="pickColor(this)"></div>
-                        <div class="swatch"          data-color="amber"  style="background:#d97706" onclick="pickColor(this)"></div>
-                        <div class="swatch"          data-color="green"  style="background:#059669" onclick="pickColor(this)"></div>
-                        <div class="swatch"          data-color="pink"   style="background:#db2777" onclick="pickColor(this)"></div>
-                        <div class="swatch"          data-color="red"    style="background:#cf222e" onclick="pickColor(this)"></div>
-                        <div class="swatch"          data-color="indigo" style="background:#7c3aed" onclick="pickColor(this)"></div>
+                        <div class="swatch selected" data-color="blue"   style="background:#3a5a8c" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="purple" style="background:#6b4e8c" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="teal"   style="background:#2f7d8c" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="amber"  style="background:#b07a1e" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="green"  style="background:#5c6b2f" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="pink"   style="background:#8c4a5c" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="red"    style="background:#ad3a26" onclick="pickColor(this)"></div>
+                        <div class="swatch"          data-color="indigo" style="background:#5a4a8c" onclick="pickColor(this)"></div>
                     </div>
                 </div>
                 <div class="field">

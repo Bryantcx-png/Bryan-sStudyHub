@@ -2,7 +2,7 @@
    Used by critical-thinking.html and future subject quiz pages. */
 
         .ss h1 {
-            font-family: 'Noto Serif', serif;
+            font-family: var(--font-display);
             font-size: 2rem;
             font-weight: 700;
             margin: 20px 0 4px;
@@ -37,7 +37,7 @@
             gap: 10px;
             padding: 10px 14px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all .15s;
             user-select: none
@@ -49,7 +49,7 @@
 
         .cr.sel {
             border-color: var(--accent);
-            background: rgba(35, 131, 226, .05)
+            background: rgba(179, 64, 42, .07)
         }
 
         .cr input {
@@ -90,7 +90,7 @@
             font-size: .8rem;
             padding: 4px 12px;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 4px;
             background: var(--bg);
             color: var(--text2);
             cursor: pointer
@@ -112,7 +112,7 @@
             min-width: 200px;
             padding: 16px 18px;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 4px;
             background: var(--bg);
             cursor: pointer;
             transition: all .15s;
@@ -121,7 +121,7 @@
 
         .mb:hover {
             border-color: var(--accent);
-            background: rgba(35, 131, 226, .03)
+            background: rgba(179, 64, 42, .05)
         }
 
         .mb h3 {
@@ -139,9 +139,9 @@
         .mb-smart {
             width: 100%;
             padding: 16px 18px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 10px;
+            background: var(--text);
+            border: 1px solid var(--text);
+            border-radius: 4px;
             cursor: pointer;
             transition: background .15s;
             text-align: left;
@@ -151,7 +151,7 @@
             margin-top: 2px
         }
 
-        .mb-smart:hover { background: #2c2c2c }
+        .mb-smart:hover { background: var(--accent2) }
 
         .mb-smart h3 {
             font-size: .95rem;
@@ -187,9 +187,9 @@
         .smart-sub button {
             flex: 1;
             padding: 11px 14px;
-            border-radius: 8px;
-            border: 1px solid #1a1a1a;
-            background: #1a1a1a;
+            border-radius: 4px;
+            border: 1px solid var(--text);
+            background: var(--text);
             color: #fff;
             font-family: inherit;
             font-size: .84rem;
@@ -199,7 +199,7 @@
             text-align: left
         }
 
-        .smart-sub button:hover { background: #2c2c2c }
+        .smart-sub button:hover { background: var(--accent2) }
 
         .smart-sub button span {
             display: block;
@@ -220,6 +220,7 @@
         }
 
         .pw {
+            margin-top: 24px;
             margin-bottom: 20px
         }
 
@@ -266,7 +267,7 @@
         }
 
         .qt {
-            font-family: 'Noto Serif', serif;
+            font-family: var(--font-display);
             font-size: 1.1rem;
             font-weight: 600;
             line-height: 1.6;
@@ -285,7 +286,7 @@
             gap: 12px;
             background: var(--bg);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 4px;
             padding: 12px 14px;
             cursor: pointer;
             transition: all .15s;
@@ -299,7 +300,7 @@
 
         .ob:hover:not(.dis) {
             border-color: var(--accent);
-            background: rgba(35, 131, 226, .03)
+            background: rgba(179, 64, 42, .05)
         }
 
         .ob .le {
@@ -308,7 +309,7 @@
             justify-content: center;
             min-width: 28px;
             height: 28px;
-            border-radius: 6px;
+            border-radius: 4px;
             border: 1px solid var(--border);
             font-weight: 600;
             font-size: .8rem;
@@ -355,7 +356,7 @@
             gap: 8px;
             margin-top: 14px;
             padding: 10px 14px;
-            border-radius: 8px;
+            border-radius: 4px;
             font-weight: 600;
             font-size: .85rem
         }
@@ -384,7 +385,7 @@
             flex: 1;
             padding: 10px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 4px;
             background: var(--bg);
             font-family: inherit;
             font-size: .88rem;
@@ -425,7 +426,7 @@
         }
 
         .rp {
-            font-family: 'Noto Serif', serif;
+            font-family: var(--font-display);
             font-size: 3.5rem;
             font-weight: 700;
             letter-spacing: -.03em
@@ -459,7 +460,7 @@
 
         .ra button {
             padding: 8px 20px;
-            border-radius: 8px;
+            border-radius: 4px;
             border: 1px solid var(--border);
             background: var(--bg);
             color: var(--text);
@@ -538,7 +539,7 @@
         .cl {
             margin-bottom: 28px;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 4px;
             overflow: hidden
         }
 
@@ -643,7 +644,7 @@
         }
 
         .pct-hi { background: var(--ok-bg); color: var(--ok) }
-        .pct-mi { background: #fef3c7; color: #d97706 }
+        .pct-mi { background: #f5e8d0; color: var(--warn) }
         .pct-lo { background: var(--no-bg); color: var(--no) }
 
 
@@ -673,7 +674,7 @@
             user-select: none;
             background: var(--ok-bg);
             padding: 5px 11px;
-            border-radius: 6px;
+            border-radius: 4px;
             border: 1px solid var(--ok)
         }
 

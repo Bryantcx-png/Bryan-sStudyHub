@@ -1,35 +1,43 @@
 /* Shared base styles — variables, reset, body, container, topbar.
-   Loaded by every page; page-specific <style> blocks add overrides. */
+   Loaded by every page; page-specific <style> blocks add overrides.
+
+   "Library Ledger" palette: warm cream paper, ink-navy text,
+   crimson "red pen" accents. Fraunces for display type, Source
+   Serif 4 for body copy, Space Mono for codes/labels. */
 
 :root {
-    --bg: #fff;
-    --bg2: #f7f7f5;
-    --card: #fff;
-    --border: #e3e3e0;
-    --text: #1a1a1a;
-    --text2: #6b6b6b;
-    --dim: #9b9b9b;
-    --accent: #2383e2;
-    --accent2: #1b6ec2;
-    --ok: #2ea043;
-    --ok-bg: #dafbe1;
-    --no: #cf222e;
-    --no-bg: #ffebe9;
-    --warn: #d97706;
-    --ch1: #2383e2;
-    --ch2: #8e44ad;
-    --ch3: #0d9488;
-    --ch4: #d97706;
-    --ch5: #cf222e;
-    --ch6: #db2777;
-    --ch7: #7c3aed;
-    --ch8: #059669;
+    --bg: #faf6ee;
+    --bg2: #f0e9da;
+    --card: #fffdf7;
+    --border: #d9cdb8;
+    --text: #232a3d;
+    --text2: #5b5f6e;
+    --dim: #9b9690;
+    --accent: #b3402a;
+    --accent2: #8f3019;
+    --ok: #3f6b3f;
+    --ok-bg: #e7efe3;
+    --no: #ad3a26;
+    --no-bg: #fbe9e3;
+    --warn: #b07a1e;
+    --ch1: #3a5a8c;
+    --ch2: #b3402a;
+    --ch3: #3f7a5c;
+    --ch4: #b07a1e;
+    --ch5: #6b4e8c;
+    --ch6: #2f7d8c;
+    --ch7: #9c4f2f;
+    --ch8: #5c6b2f;
+
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'Space Mono', monospace;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -41,5 +49,5 @@ body {
     padding: 24px 20px 60px
 }
 
-/* .topbar / .topbar-inner are defined in shared/apple-theme.css
-   (fixed, edge-to-edge glass nav), loaded by every page. */
+/* .topbar / .topbar-inner are defined in shared/ledger-theme.css
+   (fixed, edge-to-edge ledger nav), loaded by every page. */
