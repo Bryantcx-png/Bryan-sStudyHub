@@ -124,6 +124,26 @@ body {
 
 body { padding-top: var(--topbar-h); }
 
+/* ── Mobile background image ────────────────────────────────
+   Faint full-viewport background photo on small screens, blended
+   with the page background color so it sits at ~25% opacity and
+   never competes with foreground content (cards stay opaque). */
+@media (max-width: 600px) {
+    body {
+        background-image: linear-gradient(rgba(255,255,255,.75), rgba(255,255,255,.75)), url('../background-mobile.jpg');
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+}
+
+@media (max-width: 600px) and (prefers-color-scheme: dark) {
+    body {
+        background-image: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url('../background-mobile.jpg');
+    }
+}
+
 /* ── Minimal mobile topbar ──────────────────────────────────
    Shrinks the bar, truncates long titles, hides secondary
    labels (email addresses), and tightens nav link spacing. */
