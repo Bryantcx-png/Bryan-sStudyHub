@@ -124,6 +124,39 @@ body {
 
 body { padding-top: var(--topbar-h); }
 
+/* ── Minimal mobile topbar ──────────────────────────────────
+   Shrinks the bar, truncates long titles, hides secondary
+   labels (email addresses), and tightens nav link spacing. */
+@media (max-width: 600px) {
+    :root { --topbar-h: 50px; }
+
+    .topbar-inner { padding: 0 14px; gap: 10px; }
+
+    .topbar-inner > *:first-child {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: .8rem;
+    }
+
+    .topbar-inner > *:last-child {
+        flex-shrink: 0;
+        gap: 8px !important;
+    }
+
+    .topbar-inner #user-email,
+    .topbar-inner #admin-email {
+        display: none;
+    }
+
+    .topbar-inner a,
+    .topbar-inner button {
+        font-size: .76rem;
+    }
+}
+
 /* ── Buttons ─────────────────────────────────────────────── */
 
 .btn-pill {
