@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script>(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})()</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MPU 3212 Critical Thinking — Quiz Bank</title>
@@ -41,7 +42,7 @@
 
 <body style="display:none">
     <div class="c">
-        <div class="topbar"><div class="topbar-inner"><span>MPU 3212 Critical Thinking</span><div style="display:flex;align-items:center;gap:14px"><a id="home-link" href="index.html" style="font-size:.82rem;color:var(--accent);font-weight:500;text-decoration:none;font-family:inherit">← Home</a><button id="back-link" onclick="goHome()" style="display:none;font-size:.82rem;color:var(--accent);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">← Back to Selection</button><button onclick="signOut()" style="font-size:.82rem;color:var(--text2);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">Sign out</button></div></div></div>
+        <div class="topbar"><div class="topbar-inner"><span>MPU 3212 Critical Thinking</span><div style="display:flex;align-items:center;gap:14px"><a id="home-link" href="index.html" style="font-size:.82rem;color:var(--accent);font-weight:500;text-decoration:none;font-family:inherit">← Home</a><button id="back-link" onclick="goHome()" style="display:none;font-size:.82rem;color:var(--accent);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">← Back to Selection</button><button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">☾</button><button onclick="signOut()" style="font-size:.82rem;color:var(--text2);font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;padding:0">Sign out</button></div></div></div>
         <div class="ss" id="S">
             <h1>Critical Thinking Quiz Bank</h1>
             <p class="sub">Sunway University — Select chapters and start practicing.</p>
@@ -170,6 +171,7 @@
     <script src="firebase-config.js"></script>
     <script src="shared/firebase-init.js"></script>
     <script src="shared/scroll-effects.js"></script>
+    <script src="shared/theme.js"></script>
     <script src="data/critical-thinking-questions.js"></script>
     <script src="shared/quiz-engine.js"></script>
     <script>

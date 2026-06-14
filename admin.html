@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script>(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})()</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin — Bryan's Study Hub</title>
@@ -258,7 +259,7 @@
         }
 
         .pct-hi { background: var(--ok-bg); color: var(--ok) }
-        .pct-mi { background: #eef0f3; color: var(--warn) }
+        .pct-mi { background: var(--bg2); color: var(--warn) }
         .pct-lo { background: var(--no-bg); color: var(--no) }
 
         .no-sessions { font-size: .82rem; color: var(--dim); font-style: italic }
@@ -344,7 +345,7 @@
         .modal-warn {
             font-size: .78rem;
             color: var(--warn);
-            background: #eef0f3;
+            background: var(--bg2);
             border-radius: 7px;
             padding: 9px 12px;
             margin-bottom: 16px
@@ -419,6 +420,7 @@
                 </div>
                 <div class="topbar-right">
                     <span id="admin-email"></span>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">☾</button>
                     <button class="signout-btn" onclick="signOut()">Sign out</button>
                 </div>
             </div>
@@ -496,6 +498,7 @@
     <script src="firebase-config.js"></script>
     <script src="shared/firebase-init.js"></script>
     <script src="shared/scroll-effects.js"></script>
+    <script src="shared/theme.js"></script>
     <script>
         let allUsers = []; // cache for search
 

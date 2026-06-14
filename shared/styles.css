@@ -13,6 +13,7 @@
     --text: #0f1b2d;
     --text2: #4a5568;
     --dim: #94a3b8;
+    --ink: #0f1b2d;
     --accent: #1e3a6e;
     --accent2: #14264d;
     --ok: #1f7a4d;
@@ -34,6 +35,28 @@
     --font-mono: 'Space Mono', monospace;
 }
 
+/* ── Dark mode ──────────────────────────────────────────────
+   Toggled via [data-theme="dark"] on <html> (see shared/theme.js).
+   --ink stays dark in both themes for the "inverted" quiz blocks
+   (.mb-smart, .smart-sub button) that always show white text. */
+html[data-theme="dark"] {
+    --bg: #10151e;
+    --bg2: #0a0e15;
+    --card: #1a212e;
+    --border: #2b3544;
+    --text: #e7ebf1;
+    --text2: #9aa6ba;
+    --dim: #5e6a7e;
+    --ink: #2a3a5e;
+    --accent: #6e9eed;
+    --accent2: #12233f;
+    --ok: #3ddc8c;
+    --ok-bg: #16302a;
+    --no: #f87171;
+    --no-bg: #3a1c1c;
+    --warn: #d3a04a;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box }
 
 body {
@@ -41,12 +64,41 @@ body {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    -webkit-font-smoothing: antialiased
+    -webkit-font-smoothing: antialiased;
+    transition: background-color .25s ease, color .25s ease;
 }
 
 .c {
     margin: 0 auto;
     padding: 24px 20px 60px
+}
+
+/* ── Dark mode toggle button ─────────────────────────────────
+   Icon swapped by shared/theme.js (☾ light mode → ☀ dark mode).
+   shared/ledger-theme.css overrides the colors when placed in
+   the dark navy topbar. */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--text2);
+    cursor: pointer;
+    font-size: .85rem;
+    line-height: 1;
+    flex-shrink: 0;
+    padding: 0;
+    font-family: inherit;
+    transition: background .12s, border-color .12s;
+}
+
+.theme-toggle:hover {
+    background: var(--bg2);
+    border-color: var(--text2);
 }
 
 /* .topbar / .topbar-inner are defined in shared/ledger-theme.css
