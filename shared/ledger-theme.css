@@ -69,16 +69,22 @@ body { padding-top: var(--topbar-h); }
 body::before {
     content: '';
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    height: 100dvh;
     z-index: -1;
-    background: url('../background-desktop.jpg') center top / cover no-repeat;
+    background: url('../assets/background-desktop.jpg') center top / cover no-repeat;
     opacity: .15;
     pointer-events: none;
+    transform: translateZ(0);
 }
 
 @media (max-width: 600px) {
     body::before {
-        background-image: url('../background-mobile.jpg');
+        background-image: url('../assets/background-mobile.jpg');
     }
 }
 

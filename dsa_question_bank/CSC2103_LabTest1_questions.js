@@ -1,4 +1,4 @@
-const DSA_LAB1_QUESTIONS = [
+const DSA_QUESTIONS = [
 
     // ═══ CH1: Algorithm Analysis & Big O (25) ═══
     { c: 1, q: "An algorithm is defined in the lecture slides as:", o: ["A data structure for organising values", "A procedure or formula to solve a problem", "A way of organising raw facts", "A mathematical proof technique"], a: 1 },
@@ -110,7 +110,7 @@ const DSA_LAB1_QUESTIONS = [
 
 ];
 
-const DSA_LAB1_CHAPTERS = {
+const DSA_CHAPTERS = {
     1: { n: "Algorithm Analysis & Big O",      cl: "var(--ch1)" },
     2: { n: "Searching & Sorting",             cl: "var(--ch2)" },
     3: { n: "Linear Data Structures",          cl: "var(--ch3)" },

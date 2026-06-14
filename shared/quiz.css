@@ -219,6 +219,32 @@
             display: none
         }
 
+        /* ── Quiz-active: lock the page so questions never scroll ──
+           Toggled via body.quiz-active by shared/quiz-engine.js while
+           a question is on screen. .qs becomes the flexible column
+           that fills the remaining viewport; if content is taller
+           than the screen, it scrolls internally instead of the page. */
+        body.quiz-active {
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        body.quiz-active .c {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        body.quiz-active .qs {
+            display: flex !important;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
         .pw {
             margin-top: 24px;
             margin-bottom: 20px
