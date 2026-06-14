@@ -73,6 +73,7 @@ function initQuizApp(config) {
         document.getElementById('home-link').style.display = 'none';
         document.getElementById('back-link').style.display = '';
         document.body.classList.add('quiz-active');
+        document.body.classList.remove('results-active');
         sQ();
     }
 
@@ -226,6 +227,7 @@ function initQuizApp(config) {
 
     function sR() {
         document.body.classList.remove('quiz-active');
+        document.body.classList.add('results-active');
         document.getElementById('QS').style.display = 'none';
         document.getElementById('home-link').style.display = 'none';
         document.getElementById('back-link').style.display = '';
@@ -279,7 +281,7 @@ function initQuizApp(config) {
     }
 
     function tRev() { const s = document.getElementById('RV'); s.classList.toggle('hid'); const b = document.getElementById('TB'), w = results.filter(r => r && !r.ok).length; b.textContent = s.classList.contains('hid') ? `View Wrong Answers (${w})` : 'Hide Wrong Answers'; }
-    function goHome() { Q.forEach(q => delete q._s); document.body.classList.remove('quiz-active'); document.getElementById('QS').style.display = 'none'; document.getElementById('RS').style.display = 'none'; document.getElementById('RV').classList.add('hid'); document.getElementById('result-image-container').style.display = 'none'; document.getElementById('graduate-wrap').style.display = 'none'; document.getElementById('S').style.display = ''; document.getElementById('home-link').style.display = ''; document.getElementById('back-link').style.display = 'none'; quiz = []; ci = 0; results = []; }
+    function goHome() { Q.forEach(q => delete q._s); document.body.classList.remove('quiz-active'); document.body.classList.remove('results-active'); document.getElementById('QS').style.display = 'none'; document.getElementById('RS').style.display = 'none'; document.getElementById('RV').classList.add('hid'); document.getElementById('result-image-container').style.display = 'none'; document.getElementById('graduate-wrap').style.display = 'none'; document.getElementById('S').style.display = ''; document.getElementById('home-link').style.display = ''; document.getElementById('back-link').style.display = 'none'; quiz = []; ci = 0; results = []; }
 
     function loadBankProgress(uid) {
         db.collection('users').doc(uid).collection('progress').doc(subjectId).get()

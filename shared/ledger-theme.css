@@ -21,11 +21,10 @@ h1, h2, h3, h4, .qt, .rp {
 }
 
 /* ── Ledger navigation bar ───────────────────────────────────
-   Fixed edge-to-edge bar in cream with a solid ink rule along the
-   bottom — a ledger header, not a glass panel. .topbar-inner centers
-   the content to match the page's .c max-width (set per page).
-   Pages get `body { padding-top: var(--topbar-h) }` (below) so the
-   fixed bar doesn't cover content. ───────────────────────────── */
+   Fixed edge-to-edge dark navy bar with white text. .topbar-inner
+   centers the content to match the page's .c max-width (set per
+   page). Pages get `body { padding-top: var(--topbar-h) }` (below)
+   so the fixed bar doesn't cover content. ───────────────────────── */
 
 .topbar {
     position: fixed;
@@ -34,9 +33,9 @@ h1, h2, h3, h4, .qt, .rp {
     right: 0;
     z-index: 100;
     height: var(--topbar-h);
-    background: var(--bg);
-    border-bottom: 1px solid var(--text);
-    box-shadow: 0 1px 0 var(--border);
+    background: var(--accent2);
+    border-bottom: 1px solid var(--accent2);
+    box-shadow: 0 1px 0 rgba(0,0,0,.2);
     margin: 0;
 }
 
@@ -50,42 +49,39 @@ h1, h2, h3, h4, .qt, .rp {
     justify-content: space-between;
 }
 
+.topbar span,
+.topbar a,
+.topbar button {
+    color: #fff !important;
+}
+
 .topbar span {
     font-family: var(--font-mono);
     font-size: .8rem;
-    color: var(--text2);
     font-weight: 700;
     letter-spacing: .02em;
 }
 
-body { padding-top: var(--topbar-h); }
-
-/* ── Background image ───────────────────────────────────────
-   Faint full-viewport background photo, using a fixed
-   pseudo-element behind everything so it doesn't fight with each
-   page's own `body { background: ... }` rule and never competes
-   with foreground content (cards stay opaque). Mobile and desktop
-   load differently-sized exports of the same photo. */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100vh;
-    height: 100dvh;
-    z-index: -1;
-    background: url('../assets/background-desktop.jpg') center top / cover no-repeat;
-    opacity: .15;
-    pointer-events: none;
-    transform: translateZ(0);
+.topbar #user-email,
+.topbar #admin-email {
+    color: rgba(255, 255, 255, .65) !important;
 }
 
-@media (max-width: 600px) {
-    body::before {
-        background-image: url('../assets/background-mobile.jpg');
-    }
+body { padding-top: var(--topbar-h); }
+
+/* ── Results view: header scrolls away with the page ──────────
+   While reviewing wrong answers, the page is allowed to scroll
+   normally and the topbar moves with it instead of staying
+   pinned. Toggled via body.results-active by quiz-engine.js. */
+body.results-active .topbar {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+}
+
+body.results-active {
+    padding-top: 0;
 }
 
 /* ── Minimal mobile topbar ──────────────────────────────────
