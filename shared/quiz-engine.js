@@ -83,14 +83,95 @@ function initQuizApp(config) {
         document.getElementById('PF').style.width = `${((ci + 1) / t) * 100}%`;
         const tag = document.getElementById('CT'); tag.textContent = `Chapter ${q.c}: ${CH[q.c].n}`; tag.style.background = CH[q.c].cl;
         document.getElementById('QT').textContent = q.q;
-        const L = ['A', 'B', 'C', 'D'];
-        if (!q._s) q._s = sh(q.o.map((o, i) => ({ t: o, i })));
         const w = document.getElementById('OW'); w.innerHTML = '';
-        q._s.forEach((op, i) => { const b = document.createElement('button'); b.className = 'ob'; if (ans) { b.classList.add('dis'); const r = results[ci]; if (op.i === q.a) b.classList.add('ok'); if (op.t === r.ua && !r.ok) b.classList.add('no'); } b.innerHTML = `<span class="le">${L[i]}</span><span>${op.t}</span>`; if (!ans) b.onclick = () => pick(b, op.i, q.a, op.t); w.appendChild(b); });
+        if (q.type === 'text' || q.type === 'complexity') {
+            w.classList.add('opts-text');
+            const isComplexity = q.type === 'complexity';
+            const correct = Array.isArray(q.a) ? q.a[0] : q.a;
+            const correctDisplay = isComplexity ? `O(${correct})` : correct;
+            if (q.img) {
+                const img = document.createElement('img');
+                img.className = 'ti-gif';
+                img.src = q.img;
+                img.alt = q.q;
+                w.appendChild(img);
+            }
+            if (ans) {
+                const r = results[ci];
+                const wrap = document.createElement('div');
+                wrap.className = 'ti-complexity-wrap';
+                if (isComplexity) wrap.insertAdjacentHTML('beforeend', '<span class="ti-bracket">O(</span>');
+                const input = document.createElement('input');
+                input.className = 'ti-input dis ' + (r.ok ? 'ok' : 'no') + (isComplexity ? ' ti-complexity-input' : '');
+                input.value = r.ua;
+                input.disabled = true;
+                wrap.appendChild(input);
+                if (isComplexity) wrap.insertAdjacentHTML('beforeend', '<span class="ti-bracket">)</span>');
+                w.appendChild(wrap);
+                if (!r.ok) {
+                    const fb = document.createElement('div');
+                    fb.className = 'ti-fb';
+                    fb.textContent = `Correct answer: ${correctDisplay}`;
+                    w.appendChild(fb);
+                }
+            } else {
+                const wrap = document.createElement('div');
+                wrap.className = 'ti-complexity-wrap';
+                if (isComplexity) wrap.insertAdjacentHTML('beforeend', '<span class="ti-bracket">O(</span>');
+                const input = document.createElement('input');
+                input.className = 'ti-input' + (isComplexity ? ' ti-complexity-input' : '');
+                input.type = 'text';
+                input.id = 'TI';
+                input.placeholder = isComplexity ? 'e.g. n log n' : 'Type the algorithm name…';
+                input.autocomplete = 'off';
+                input.setAttribute('autocapitalize', 'off');
+                input.spellcheck = false;
+                input.onkeydown = e => { if (e.key === 'Enter') submitText(); };
+                wrap.appendChild(input);
+                if (isComplexity) wrap.insertAdjacentHTML('beforeend', '<span class="ti-bracket">)</span>');
+                w.appendChild(wrap);
+                const btn = document.createElement('button');
+                btn.className = 'nb pr ti-submit';
+                btn.id = 'TISUB';
+                btn.textContent = 'Submit';
+                btn.onclick = () => submitText();
+                w.appendChild(btn);
+                setTimeout(() => input.focus(), 0);
+            }
+        } else {
+            w.classList.remove('opts-text');
+            const L = ['A', 'B', 'C', 'D'];
+            if (!q._s) q._s = sh(q.o.map((o, i) => ({ t: o, i })));
+            q._s.forEach((op, i) => { const b = document.createElement('button'); b.className = 'ob'; if (ans) { b.classList.add('dis'); const r = results[ci]; if (op.i === q.a) b.classList.add('ok'); if (op.t === r.ua && !r.ok) b.classList.add('no'); } b.innerHTML = `<span class="le">${L[i]}</span><span>${op.t}</span>`; if (!ans) b.onclick = () => pick(b, op.i, q.a, op.t); w.appendChild(b); });
+        }
         document.getElementById('PB').disabled = ci === 0;
         const nb = document.getElementById('NB');
         nb.disabled = !ans;
         if (ci === t - 1 && ans) { nb.textContent = 'See Results'; nb.className = 'nb pr'; } else { nb.textContent = 'Next'; nb.className = 'nb pr'; }
+    }
+
+    function normalizeAnswer(s) {
+        return s.toLowerCase().replace(/²/g, '2').replace(/\^/g, '').replace(/\s+/g, '');
+    }
+
+    function submitText() {
+        if (results[ci] !== null) return;
+        const q = quiz[ci];
+        const input = document.getElementById('TI');
+        const typed = input.value.trim();
+        const accepted = (Array.isArray(q.a) ? q.a : [q.a]).map(normalizeAnswer);
+        const ok = accepted.includes(normalizeAnswer(typed));
+        const correct = Array.isArray(q.a) ? q.a[0] : q.a;
+        const ca = q.type === 'complexity' ? `O(${correct})` : correct;
+        results[ci] = { q: q.q, ch: q.c, ua: typed || '(no answer)', ca, ok };
+        const nb = document.getElementById('NB'); nb.disabled = false;
+        if (ci === quiz.length - 1) { nb.textContent = 'See Results'; nb.className = 'nb pr'; }
+        if (quizMode === 'retry-wrong') {
+            const wrap = document.getElementById('graduate-wrap');
+            wrap.style.display = ok ? '' : 'none';
+            if (ok) document.getElementById('graduate-cb').checked = true;
+        }
+        sQ();
     }
 
     function pick(btn, chosen, correct, text) {

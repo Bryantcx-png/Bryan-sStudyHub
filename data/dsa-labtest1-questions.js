@@ -27,7 +27,7 @@ const DSA_LAB1_QUESTIONS = [
     { c: 1, q: "Proof by contradiction works by:", o: ["Proving base case then inductive step", "Testing the proposition with many examples", "Assuming the proposition is false, showing this leads to a contradiction, therefore the proposition must be true", "Assuming the proposition is true and verifying it for specific cases"], a: 2 },
     { c: 1, q: "Which label from the slides corresponds to O(n!)?", o: ["O-no", "O-ops", "O-oh", "O-mg!"], a: 3 },
 
-    // ═══ CH2: Searching & Sorting (22) ═══
+    // ═══ CH2: Searching & Sorting (34) ═══
     { c: 2, q: "Arrays are described in the slides as collections of values of the same memory size arranged:", o: ["Non-contiguously with pointer links", "In a hierarchy with parent-child relationships", "Contiguously, identified by array index (typically starting from 0)", "Dynamically with automatic resizing"], a: 2 },
     { c: 2, q: "A search algorithm finds:", o: ["The minimum value in a data structure", "The sorted order of a collection", "Data satisfying a certain condition or having a binary relation", "The position of all elements simultaneously"], a: 2 },
     { c: 2, q: "Linear search checks each element:", o: ["By dividing the array in half each step", "Starting from the middle element", "One by one until the target is found or the array ends", "By jumping to random positions"], a: 2 },
@@ -50,6 +50,22 @@ const DSA_LAB1_QUESTIONS = [
     { c: 2, q: "Heap Sort achieves which time complexity in both best and worst cases?", o: ["O(n²)", "O(n log n)", "O(n)", "O(log n)"], a: 1 },
     { c: 2, q: "Which two algorithms from the lecture table share O(n log n) for both best and worst case?", o: ["Quick Sort and Insertion Sort", "Bubble Sort and Insertion Sort", "Merge Sort and Heap Sort", "Selection Sort and Merge Sort"], a: 2 },
     { c: 2, q: "According to the lecture table, which algorithm has Ω(n²) as its best case?", o: ["Bubble Sort", "Insertion Sort", "Heap Sort", "Selection Sort"], a: 3 },
+
+    // ── Identify the sorting algorithm from its animation ──
+    { c: 2, type: "text", q: "Type the name of the sorting algorithm shown in the animation below:", img: "assets/bubble.gif", a: ["bubble sort", "bubblesort"] },
+    { c: 2, type: "text", q: "Type the name of the sorting algorithm shown in the animation below:", img: "assets/selection.gif", a: ["selection sort", "selectionsort"] },
+    { c: 2, type: "text", q: "Type the name of the sorting algorithm shown in the animation below:", img: "assets/insertion.gif", a: ["insertion sort", "insertionsort"] },
+    { c: 2, type: "text", q: "Type the name of the sorting algorithm shown in the animation below:", img: "assets/Merge.gif", a: ["merge sort", "mergesort"] },
+    { c: 2, type: "text", q: "Type the name of the sorting algorithm shown in the animation below:", img: "assets/quick.gif", a: ["quick sort", "quicksort"] },
+    { c: 2, type: "text", q: "Type the name of the sorting algorithm shown in the animation below:", img: "assets/Heapsort.gif", a: ["heap sort", "heapsort"] },
+
+    // ── Fill in the blank: worst-case time complexity ──
+    { c: 2, type: "complexity", q: "What is the worst-case time complexity of Bubble Sort? Fill in the blank:", a: ["n^2", "n²", "n2", "n*n"] },
+    { c: 2, type: "complexity", q: "What is the worst-case time complexity of Selection Sort? Fill in the blank:", a: ["n^2", "n²", "n2", "n*n"] },
+    { c: 2, type: "complexity", q: "What is the worst-case time complexity of Insertion Sort? Fill in the blank:", a: ["n^2", "n²", "n2", "n*n"] },
+    { c: 2, type: "complexity", q: "What is the worst-case time complexity of Merge Sort? Fill in the blank:", a: ["n log n", "nlogn", "n*log n", "n*logn"] },
+    { c: 2, type: "complexity", q: "What is the worst-case time complexity of Quick Sort? Fill in the blank:", a: ["n^2", "n²", "n2", "n*n"] },
+    { c: 2, type: "complexity", q: "What is the worst-case time complexity of Heap Sort? Fill in the blank:", a: ["n log n", "nlogn", "n*log n", "n*logn"] },
 
     // ═══ CH3: Linear Data Structures (28) ═══
     { c: 3, q: "A stack is described in the slides as operating on which principle?", o: ["First In, First Out (FIFO)", "Last In, First Out (LIFO)", "Priority-based ordering", "Sorted order access"], a: 1 },
