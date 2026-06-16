@@ -1,0 +1,3 @@
+[allowlist]
+  description = "Firebase config is intentionally public — security is enforced by Firebase Security Rules"
+  paths = ['''firebase-config\.js''', '''firebase-config\.example\.js''']
